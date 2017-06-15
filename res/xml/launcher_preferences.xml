@@ -61,6 +61,12 @@
         android:defaultValue="average"
         android:persistent="true" />
 
+    <com.android.launcher3.preferences.IconPackPreference
+        android:key="pref_iconPackPackage"
+        android:title="@string/icon_pack"
+        android:summary="@string/icon_pack_summary"
+        android:persistent="true" />
+
     <Preference
         android:key="pref_grid_size"
         android:title="@string/grid_size_text"

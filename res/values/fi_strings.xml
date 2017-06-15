@@ -19,4 +19,10 @@
     <string name="icon_size_average">Default</string>
     <string name="icon_size_large">Large</string>
     <string name="icon_size_extra_large">Extra large</string>
+
+    <!-- Icon packs -->
+    <string name="iconPackPackageDefault" translatable="false">""</string>
+    <string name="icon_pack">Icon pack</string>
+    <string name="icon_pack_summary">Select a custom icon pack</string>
+    <string name="icon_pack_none">None</string>
 </resources>

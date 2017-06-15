@@ -144,7 +144,7 @@ import java.util.Set;
  * Default launcher application.
  */
 public class Launcher extends BaseDraggingActivity implements LauncherExterns,
-        LauncherModel.Callbacks, LauncherProviderChangeListener, UserEventDelegate{
+        LauncherModel.Callbacks, LauncherProviderChangeListener, UserEventDelegate, SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String TAG = "Launcher";
     static final boolean LOGD = false;
 
@@ -276,6 +276,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         initDeviceProfile(app.getInvariantDeviceProfile());
 
         mSharedPrefs = Utilities.getPrefs(this);
+        mSharedPrefs.registerOnSharedPreferenceChangeListener(this);
         mIconCache = app.getIconCache();
         mAccessibilityDelegate = new LauncherAccessibilityDelegate(this);
 
@@ -818,6 +819,14 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         mStateManager.onWindowFocusChanged();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("pref_iconPackPackage")) {
+            mModel.clearIconCache();
+            mModel.forceReload();
+        }
     }
 
     public interface LauncherOverlay {
