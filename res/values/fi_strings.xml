@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- Grid size -->
+    <string name="grid_size_text">Home screen grid size</string>
+    <string name="grid_size_rows">Rows</string>
+    <string name="grid_size_columns">Columns</string>
+    <string name="grid_size_custom_positive">Set</string>
+    <string name="grid_size_custom_message">Select custom columns and rows count</string>
+</resources>

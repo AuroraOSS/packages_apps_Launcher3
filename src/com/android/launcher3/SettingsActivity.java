@@ -31,6 +31,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -41,6 +44,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ListView;
+import android.util.Pair;
+import android.view.LayoutInflater;
+import android.widget.NumberPicker;
 
 import com.android.launcher3.graphics.IconShapeOverride;
 import com.android.launcher3.notification.NotificationListener;
@@ -66,6 +72,9 @@ public class SettingsActivity extends Activity {
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
     private static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
 
+    public static final String KEY_MINUS_ONE = "pref_enable_minus_one";
+    private static final String KEY_GRID_SIZE = "pref_grid_size";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,12 +94,17 @@ public class SettingsActivity extends Activity {
     /**
      * This fragment shows the launcher preferences.
      */
-    public static class LauncherSettingsFragment extends PreferenceFragment {
+    public static class LauncherSettingsFragment extends PreferenceFragment 
+            implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         private IconBadgingObserver mIconBadgingObserver;
 
         private String mPreferenceKey;
         private boolean mPreferenceHighlighted = false;
+        private boolean mShouldRestart = false;
+
+        private SharedPreferences mPrefs;
+        private Preference mGridPref;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +115,9 @@ public class SettingsActivity extends Activity {
 
             getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
             addPreferencesFromResource(R.xml.launcher_preferences);
+
+            mPrefs = Utilities.getPrefs(getActivity().getApplicationContext());
+            mPrefs.registerOnSharedPreferenceChangeListener(this);
 
             ContentResolver resolver = getActivity().getContentResolver();
 
@@ -136,6 +153,16 @@ public class SettingsActivity extends Activity {
             } else {
                 // Initialize the UI once
                 rotationPref.setDefaultValue(getAllowRotationDefaultValue());
+            }
+
+            mGridPref = findPreference(KEY_GRID_SIZE);
+            if (mGridPref != null) {
+                mGridPref.setOnPreferenceClickListener(preference -> {
+                    setCustomGridSize();
+                    return true;
+                });
+
+                mGridPref.setSummary(mPrefs.getString(KEY_GRID_SIZE, getDefaultGridSize()));
             }
         }
 
@@ -195,7 +222,72 @@ public class SettingsActivity extends Activity {
                 mIconBadgingObserver.unregister();
                 mIconBadgingObserver = null;
             }
+            mPrefs.unregisterOnSharedPreferenceChangeListener(this);
+
+            if (mShouldRestart) {
+                triggerRestart();
+            }
             super.onDestroy();
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+            if (KEY_GRID_SIZE.equals(key)) {
+                mGridPref.setSummary(mPrefs.getString(KEY_GRID_SIZE, getDefaultGridSize()));
+                mShouldRestart = true;
+            }
+        }
+
+        private void setCustomGridSize() {
+            int minValue = 3;
+            int maxValue = 9;
+
+            String storedValue = mPrefs.getString(KEY_GRID_SIZE, "4x4");
+            Pair<Integer, Integer> currentValues = Utilities.extractCustomGrid(storedValue);
+
+            LayoutInflater inflater = (LayoutInflater)
+                    getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (inflater == null) {
+                return;
+            }
+            View contentView = inflater.inflate(R.layout.dialog_custom_grid, null);
+            NumberPicker columnPicker = contentView.findViewById(R.id.dialog_grid_column);
+            NumberPicker rowPicker = contentView.findViewById(R.id.dialog_grid_row);
+
+            columnPicker.setMinValue(minValue);
+            rowPicker.setMinValue(minValue);
+            columnPicker.setMaxValue(maxValue);
+            rowPicker.setMaxValue(maxValue);
+            columnPicker.setValue(currentValues.first);
+            rowPicker.setValue(currentValues.second);
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.grid_size_text)
+                    .setMessage(R.string.grid_size_custom_message)
+                    .setView(contentView)
+                    .setPositiveButton(R.string.grid_size_custom_positive, (dialog, i) -> {
+                        String newValues = Utilities.getGridValue(columnPicker.getValue(),
+                                rowPicker.getValue());
+                        mPrefs.edit().putString(KEY_GRID_SIZE, newValues).apply();
+                    })
+                    .show();
+        }
+
+        private String getDefaultGridSize() {
+            InvariantDeviceProfile profile = new InvariantDeviceProfile(getActivity());
+            return Utilities.getGridValue(profile.numColumns, profile.numRows);
+        }
+
+        private void triggerRestart() {
+            Context context = getActivity().getApplicationContext();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent pi = PendingIntent.getActivity(context, 41, intent,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+            AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            manager.set(AlarmManager.RTC, java.lang.System.currentTimeMillis() + 1, pi);
+            java.lang.System.exit(0);
         }
 
         @TargetApi(Build.VERSION_CODES.O)
