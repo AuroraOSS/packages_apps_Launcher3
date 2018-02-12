@@ -16,25 +16,21 @@
 
 package com.android.launcher3;
 
-import static com.android.launcher3.Utilities.getDevicePrefs;
-import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
-import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.ListPreference;
@@ -44,11 +40,11 @@ import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ListView;
-import android.util.Pair;
-import android.view.LayoutInflater;
 import android.widget.NumberPicker;
 
 import com.android.launcher3.graphics.IconShapeOverride;
@@ -60,30 +56,35 @@ import com.android.launcher3.views.ButtonPreference;
 
 import java.util.Objects;
 
+import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
+import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
+
 /**
  * Settings activity for Launcher. Currently implements the following setting: Allow rotation
  */
 public class SettingsActivity extends Activity {
 
+    /**
+     * Hidden field Settings.Secure.NOTIFICATION_BADGING
+     */
+    public static final String NOTIFICATION_BADGING = "notification_badging";
+    public static final String KEY_MINUS_ONE = "pref_enable_minus_one";
     private static final String TAG = "IconShapeOverride";
     private static final long PROCESS_KILL_DELAY_MS = 1000;
     private static final int RESTART_REQUEST_CODE = 42;
-
     private static final String ICON_BADGING_PREFERENCE_KEY = "pref_icon_badging";
-    /** Hidden field Settings.Secure.NOTIFICATION_BADGING */
-    public static final String NOTIFICATION_BADGING = "notification_badging";
-    /** Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS */
+    /**
+     * Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS
+     */
     private static final String NOTIFICATION_ENABLED_LISTENERS = "enabled_notification_listeners";
-
     private static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     private static final String EXTRA_SHOW_FRAGMENT_ARGS = ":settings:show_fragment_args";
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
     private static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
-
-    public static final String KEY_MINUS_ONE = "pref_enable_minus_one";
     private static final String KEY_GRID_SIZE = "pref_grid_size";
     private static final String KEY_SHOW_DESKTOP_LABELS = "pref_desktop_show_labels";
     private static final String KEY_SHOW_DRAWER_LABELS = "pref_drawer_show_labels";
+    private static final String ICON_SIZE = "pref_icon_size";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +175,17 @@ public class SettingsActivity extends Activity {
 
                 mGridPref.setSummary(mPrefs.getString(KEY_GRID_SIZE, getDefaultGridSize()));
             }
+
+            ListPreference iconSizes = (ListPreference) findPreference(ICON_SIZE);
+            iconSizes.setSummary(iconSizes.getEntry());
+            iconSizes.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    int index = iconSizes.findIndexOfValue((String) newValue);
+                    iconSizes.setSummary(iconSizes.getEntries()[index]);
+                    mShouldRestart = true;
+                    return true;
+                }
+            });
         }
 
         @Override
@@ -244,8 +256,8 @@ public class SettingsActivity extends Activity {
         @Override
         public void onStop() {
             if (mShouldRestart) {
-            new LooperExecutor(LauncherModel.getWorkerLooper()).execute(
-                    new OverrideApplyHandler(getActivity()));
+                new LooperExecutor(LauncherModel.getWorkerLooper()).execute(
+                        new OverrideApplyHandler(getActivity()));
             }
             super.onStop();
         }
@@ -305,6 +317,25 @@ public class SettingsActivity extends Activity {
         }
 
         @TargetApi(Build.VERSION_CODES.O)
+        private PreferenceScreen selectPreferenceRecursive(
+                Preference pref, PreferenceScreen topParent) {
+            if (!(pref.getParent() instanceof PreferenceScreen)) {
+                return null;
+            }
+
+            PreferenceScreen parent = (PreferenceScreen) pref.getParent();
+            if (Objects.equals(parent.getKey(), topParent.getKey())) {
+                return parent;
+            } else if (selectPreferenceRecursive(parent, topParent) != null) {
+                ((PreferenceScreen) parent.getParent())
+                        .onItemClick(null, null, parent.getOrder(), 0);
+                return parent;
+            } else {
+                return null;
+            }
+        }
+
+        @TargetApi(Build.VERSION_CODES.O)
         private static class OverrideApplyHandler implements Runnable {
 
             private final Context mContext;
@@ -330,27 +361,8 @@ public class SettingsActivity extends Activity {
                         homeIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
                 mContext.getSystemService(AlarmManager.class).setExact(
                         AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 50, pi);
-                
+
                 android.os.Process.killProcess(android.os.Process.myPid());
-            }
-        }
-
-        @TargetApi(Build.VERSION_CODES.O)
-        private PreferenceScreen selectPreferenceRecursive(
-                Preference pref, PreferenceScreen topParent) {
-            if (!(pref.getParent() instanceof PreferenceScreen)) {
-                return null;
-            }
-
-            PreferenceScreen parent = (PreferenceScreen) pref.getParent();
-            if (Objects.equals(parent.getKey(), topParent.getKey())) {
-                return parent;
-            } else if (selectPreferenceRecursive(parent, topParent) != null) {
-                ((PreferenceScreen) parent.getParent())
-                        .onItemClick(null, null, parent.getOrder(), 0);
-                return parent;
-            } else {
-                return null;
             }
         }
     }
@@ -367,7 +379,7 @@ public class SettingsActivity extends Activity {
         private final FragmentManager mFragmentManager;
 
         public IconBadgingObserver(ButtonPreference badgingPref, ContentResolver resolver,
-                FragmentManager fragmentManager) {
+                                   FragmentManager fragmentManager) {
             super(resolver);
             mBadgingPref = badgingPref;
             mResolver = resolver;
