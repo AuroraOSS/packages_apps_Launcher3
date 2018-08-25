@@ -45,4 +45,10 @@
     <string name="pref_notifications_gesture_title">Notifications gesture</string>
     <string name="pref_notifications_gesture_summary">Swipe down to show Quick Settings</string>
 
+    <!-- Themes -->
+    <string name="theme_style_title">Theme style</string>
+    <string name="theme_style_auto">Wallpaper based</string>
+    <string name="theme_style_light">Light style</string>
+    <string name="theme_style_dark">Dark style</string>
+
 </resources>

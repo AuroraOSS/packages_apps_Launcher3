@@ -37,7 +37,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -87,6 +86,8 @@ public class SettingsActivity extends Activity {
     private static final String KEY_SHOW_DESKTOP_LABELS = "pref_desktop_show_labels";
     private static final String KEY_SHOW_DRAWER_LABELS = "pref_drawer_show_labels";
     private static final String ICON_SIZE = "pref_icon_size";
+
+    public static final String PREF_THEME_STYLE_KEY = "pref_theme_style";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +196,18 @@ public class SettingsActivity extends Activity {
                         startActivity(new Intent(getActivity(), HiddenAppsActivity.class));
                         return false;
                     });
+
+            ListPreference mThemeStyle = (ListPreference) findPreference(PREF_THEME_STYLE_KEY);
+            mThemeStyle.setSummary(mThemeStyle.getEntry());
+            mThemeStyle.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    int valueIndex = mThemeStyle.findIndexOfValue((String)newValue);
+                    mThemeStyle.setSummary(mThemeStyle.getEntries()[valueIndex]);
+                    mShouldRestart = true;
+                    return true;
+                }
+            });
         }
 
         @Override

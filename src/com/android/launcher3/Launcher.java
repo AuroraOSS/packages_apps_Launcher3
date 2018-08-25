@@ -44,6 +44,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
@@ -266,6 +267,8 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
                     .build());
         }
         TraceHelper.beginSection("Launcher-onCreate");
+        mSharedPrefs = Utilities.getPrefs(this);
+        mThemeStyle = Integer.parseInt(mSharedPrefs.getString(SettingsActivity.PREF_THEME_STYLE_KEY, "0"));
 
         super.onCreate(savedInstanceState);
         TraceHelper.partitionSection("Launcher-onCreate", "super call");
@@ -827,6 +830,14 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
             mModel.clearIconCache();
             mModel.forceReload();
         }
+
+        if (key.equals(SettingsActivity.PREF_THEME_STYLE_KEY)) {
+            final int themeStyle = Integer.parseInt(sharedPreferences.getString(SettingsActivity.PREF_THEME_STYLE_KEY, "0"));
+            if (themeStyle != mThemeStyle) {
+                mThemeStyle = themeStyle;
+                recreate();
+            }
+        }
     }
 
     public interface LauncherOverlay {
@@ -1343,6 +1354,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onDestroy();
         }
+        mSharedPrefs.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     public LauncherAccessibilityDelegate getAccessibilityDelegate() {
