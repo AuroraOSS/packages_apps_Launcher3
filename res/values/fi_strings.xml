@@ -29,4 +29,15 @@
     <!-- Icon shape -->
     <string name="icon_shape_override_label_custom">Icon shape</string>
     <string name="icon_shape_rounded_square">Rounded square</string>
+
+    <!-- Hidden apps -->
+    <string name="customize">Customize</string>
+    <string name="hide_app">Hide app</string>
+    <string name="hide_app_sum">Hide app from the app drawer</string>
+    <string name="hide_app_selected">&#160;selected</string>
+    <string name="hidden_app">All apps</string>
+    <string name="hide_selected">Hide selected app(s)</string>
+    <string name="more">More</string>
+    <string name="reset_hidden_apps">Reset all</string>
+    <string name="reset_hidden_apps_done">Hidden apps are now available</string>
 </resources>
