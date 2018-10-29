@@ -126,6 +126,7 @@ public final class Utilities {
     private static final String ICON_SIZE = "pref_icon_size";
     public static final String KEY_HIDDEN_APPS = "hidden_app";
     public static final String KEY_HIDDEN_APPS_SET = "hidden_app_set";
+    public static final String PREF_NOTIFICATIONS_GESTURE = "pref_notifications_gesture";
 
     // These values are same as that in {@link AsyncTask}.
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
@@ -138,6 +139,10 @@ public final class Utilities {
     public static final Executor THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(
             CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
             TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+
+    public static boolean useNotificationsGesture(Context context) {
+        return getPrefs(context).getBoolean(PREF_NOTIFICATIONS_GESTURE, true);
+    }
 
     public static boolean isPropertyEnabled(String propertyName) {
         return Log.isLoggable(propertyName, Log.VERBOSE);

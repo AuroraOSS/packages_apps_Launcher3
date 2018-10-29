@@ -37,6 +37,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -56,6 +57,7 @@ import com.android.launcher3.views.ButtonPreference;
 
 import java.util.Objects;
 
+import static com.android.launcher3.Utilities.PREF_NOTIFICATIONS_GESTURE;
 import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
 import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
 
@@ -278,6 +280,7 @@ public class SettingsActivity extends Activity {
                     break;
                 case KEY_SHOW_DESKTOP_LABELS:
                 case KEY_SHOW_DRAWER_LABELS:
+                case PREF_NOTIFICATIONS_GESTURE:
                     mShouldRestart = true;
                     break;
             }
