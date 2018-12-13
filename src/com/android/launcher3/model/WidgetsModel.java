@@ -175,7 +175,7 @@ public class WidgetsModel {
             }
 
             if (mAppFilter == null) {
-                mAppFilter = new StringSetAppFilter(app.getContext());
+                mAppFilter = new StringSetAppFilter();
             }
             if (!mAppFilter.shouldShowApp(item.componentName.getPackageName(), app.getContext())) {
                 if (DEBUG) {
