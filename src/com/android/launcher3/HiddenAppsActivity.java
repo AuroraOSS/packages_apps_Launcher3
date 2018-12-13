@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -66,7 +67,6 @@ public class HiddenAppsActivity extends Activity implements MultiSelectRecyclerV
             onBackPressed();
         } else if (id == R.id.reset) {
             unhideHiddenApps();
-            recreate();
             itemClicked = false;
         }
         return super.onOptionsItemSelected(item);
@@ -82,6 +82,8 @@ public class HiddenAppsActivity extends Activity implements MultiSelectRecyclerV
 
     private void unhideHiddenApps() {
         mAdapter.removeSelectionsToHideList(HiddenAppsActivity.this);
+        mAdapter.notifyDataSetChanged();
+        mActionBar.setTitle(getString(R.string.hidden_app));
         LauncherAppState appState = LauncherAppState.getInstanceNoCreate();
         if (appState != null) {
             appState.getModel().forceReload();
@@ -112,6 +114,9 @@ public class HiddenAppsActivity extends Activity implements MultiSelectRecyclerV
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(HiddenAppsActivity.this, LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration itemDecorator = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        itemDecorator.setDrawable(getResources().getDrawable(R.drawable.list_divider));
+        recyclerView.addItemDecoration(itemDecorator);
         mAdapter = new MultiSelectRecyclerViewAdapter(HiddenAppsActivity.this, mInstalledPackages, this);
         recyclerView.setAdapter(mAdapter);
     }
@@ -120,7 +125,6 @@ public class HiddenAppsActivity extends Activity implements MultiSelectRecyclerV
     public void onItemClicked(int position) {
         mAdapter.toggleSelection(mActionBar, position);
         updateHiddenApps();
-        recreate();
     }
 
     private List<ResolveInfo> getInstalledApps() {

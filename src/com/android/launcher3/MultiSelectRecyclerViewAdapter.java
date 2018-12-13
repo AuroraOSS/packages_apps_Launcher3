@@ -52,6 +52,7 @@ class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecycl
         mBlackList.add("com.google.android.googlequicksearchbox");
         mBlackList.add("com.google.android.apps.wallpaper");
         mBlackList.add("com.google.android.launcher");
+        mBlackList.add("com.android.launcher3");
         mPackages = new ArrayList<>();
         for (int i = 0; i < resolveInfos.size(); i++) {
             ResolveInfo info = resolveInfos.get(i);
@@ -65,9 +66,7 @@ class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecycl
     // Create new views
     @Override
     public MultiSelectRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.hide_item, null);
-
+        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.hide_item, null);
         return new ViewHolder(itemLayoutView, mClickListener);
     }
 

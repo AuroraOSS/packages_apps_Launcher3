@@ -14,6 +14,7 @@ public class StringSetAppFilter implements AppFilter {
         mBlackList.add("com.google.android.googlequicksearchbox");
         mBlackList.add("com.google.android.apps.wallpaper");
         mBlackList.add("com.google.android.launcher");
+        mBlackList.add("com.android.launcher3");
     }
 
     @Override
