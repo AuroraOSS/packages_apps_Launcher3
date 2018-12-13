@@ -16,6 +16,7 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.Utilities.getDevicePrefs;
 import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
 import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
 
@@ -35,12 +36,14 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ListView;
@@ -51,6 +54,7 @@ import android.widget.NumberPicker;
 import com.android.launcher3.graphics.IconShapeOverride;
 import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.util.ListViewHighlighter;
+import com.android.launcher3.util.LooperExecutor;
 import com.android.launcher3.util.SettingsObserver;
 import com.android.launcher3.views.ButtonPreference;
 
@@ -60,6 +64,10 @@ import java.util.Objects;
  * Settings activity for Launcher. Currently implements the following setting: Allow rotation
  */
 public class SettingsActivity extends Activity {
+
+    private static final String TAG = "IconShapeOverride";
+    private static final long PROCESS_KILL_DELAY_MS = 1000;
+    private static final int RESTART_REQUEST_CODE = 42;
 
     private static final String ICON_BADGING_PREFERENCE_KEY = "pref_icon_badging";
     /** Hidden field Settings.Secure.NOTIFICATION_BADGING */
@@ -94,7 +102,7 @@ public class SettingsActivity extends Activity {
     /**
      * This fragment shows the launcher preferences.
      */
-    public static class LauncherSettingsFragment extends PreferenceFragment 
+    public static class LauncherSettingsFragment extends PreferenceFragment
             implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         private IconBadgingObserver mIconBadgingObserver;
@@ -225,9 +233,19 @@ public class SettingsActivity extends Activity {
             mPrefs.unregisterOnSharedPreferenceChangeListener(this);
 
             if (mShouldRestart) {
-                triggerRestart();
+                new LooperExecutor(LauncherModel.getWorkerLooper()).execute(
+                        new OverrideApplyHandler(getActivity()));
             }
             super.onDestroy();
+        }
+
+        @Override
+        public void onStop() {
+            if (mShouldRestart) {
+            new LooperExecutor(LauncherModel.getWorkerLooper()).execute(
+                    new OverrideApplyHandler(getActivity()));
+            }
+            super.onStop();
         }
 
         @Override
@@ -278,16 +296,35 @@ public class SettingsActivity extends Activity {
             return Utilities.getGridValue(profile.numColumns, profile.numRows);
         }
 
-        private void triggerRestart() {
-            Context context = getActivity().getApplicationContext();
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent pi = PendingIntent.getActivity(context, 41, intent,
-                    PendingIntent.FLAG_CANCEL_CURRENT);
-            AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            manager.set(AlarmManager.RTC, java.lang.System.currentTimeMillis() + 1, pi);
-            java.lang.System.exit(0);
+        @TargetApi(Build.VERSION_CODES.O)
+        private static class OverrideApplyHandler implements Runnable {
+
+            private final Context mContext;
+
+            private OverrideApplyHandler(Context context) {
+                mContext = context;
+            }
+
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(PROCESS_KILL_DELAY_MS);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error waiting", e);
+                }
+
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN)
+                        .addCategory(Intent.CATEGORY_HOME)
+                        .setPackage(mContext.getPackageName())
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                PendingIntent pi = PendingIntent.getActivity(mContext, RESTART_REQUEST_CODE,
+                        homeIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+                mContext.getSystemService(AlarmManager.class).setExact(
+                        AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 50, pi);
+                
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
         }
 
         @TargetApi(Build.VERSION_CODES.O)
