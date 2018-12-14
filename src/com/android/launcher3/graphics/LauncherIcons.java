@@ -190,6 +190,10 @@ public class LauncherIcons implements AutoCloseable {
         return createBadgedIconBitmap(icon, user, iconAppTargetSdk, isInstantApp, null);
     }
 
+    public BitmapInfo createIconPackBitmapInfo(Drawable icon) {
+        return (BitmapInfo) createIconBitmap(createIconBitmap(icon,1.0f));
+    }
+
     /**
      * Returns a bitmap suitable for displaying as an icon at various launcher UIs like all apps
      * view or workspace. The icon is badged for {@param user}.

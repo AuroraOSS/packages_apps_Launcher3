@@ -413,14 +413,16 @@ public class IconCache {
             LauncherIcons li = LauncherIcons.obtain(mContext);
             Drawable iconDrawable = getFullResIcon(app);
             IconPack iconPack = IconPackProvider.loadAndGetIconPack(mContext);
+            Drawable iconPackDrawable = null;
             if (iconPack != null) {
-                Drawable iconPackDrawable = iconPack.getIcon(app, iconDrawable, app.getLabel());
-                if (iconPackDrawable != null) {
-                    iconDrawable = iconPackDrawable;
-                }
+                iconPackDrawable = iconPack.getIcon(app, iconDrawable, app.getLabel());
             }
-            li.createBadgedIconBitmap(iconDrawable, app.getUser(),
-                    app.getApplicationInfo().targetSdkVersion).applyTo(entry);
+            if (iconPackDrawable != null) {
+                li.createIconPackBitmapInfo(iconPackDrawable).applyTo(entry);
+            } else {
+                li.createBadgedIconBitmap(iconDrawable, app.getUser(),
+                        app.getApplicationInfo().targetSdkVersion).applyTo(entry);
+            }
             li.recycle();
         }
         entry.title = app.getLabel();
@@ -589,14 +591,16 @@ public class IconCache {
                     LauncherIcons li = LauncherIcons.obtain(mContext);
                     Drawable iconDrawable = getFullResIcon(info);
                     IconPack iconPack = IconPackProvider.loadAndGetIconPack(mContext);
+                    Drawable iconPackDrawable = null;
                     if (iconPack != null) {
-                        Drawable iconPackDrawable = iconPack.getIcon(info, iconDrawable, info.getLabel());
-                        if (iconPackDrawable != null) {
-                            iconDrawable = iconPackDrawable;
-                        }
+                        iconPackDrawable = iconPack.getIcon(info, iconDrawable, info.getLabel());
                     }
-                    li.createBadgedIconBitmap(iconDrawable, info.getUser(),
-                            info.getApplicationInfo().targetSdkVersion).applyTo(entry);
+                    if (iconPackDrawable != null) {
+                        li.createIconPackBitmapInfo(iconPackDrawable).applyTo(entry);
+                    } else {
+                        li.createBadgedIconBitmap(iconDrawable, info.getUser(),
+                                info.getApplicationInfo().targetSdkVersion).applyTo(entry);
+                    }
                     li.recycle();
                 } else {
                     if (usePackageIcon) {
@@ -700,16 +704,19 @@ public class IconCache {
                     // only keep the low resolution icon instead of the larger full-sized icon
                     Drawable iconDrawable = appInfo.loadIcon(mPackageManager);
                     IconPack iconPack = IconPackProvider.loadAndGetIconPack(mContext);
+                    Drawable iconPackDrawable = null;
                     if (iconPack != null) {
                         // get first one matching packageName
-                        Drawable iconPackDrawable = iconPack.getIcon(packageName, iconDrawable, entry.title);
-                        if (iconPackDrawable != null) {
-                            iconDrawable = iconPackDrawable;
-                        }
+                        iconPackDrawable = iconPack.getIcon(packageName, iconDrawable, entry.title);
                     }
-                    BitmapInfo iconInfo = li.createBadgedIconBitmap(
-                            iconDrawable, user, appInfo.targetSdkVersion,
-                            mInstantAppResolver.isInstantApp(appInfo));
+                    BitmapInfo iconInfo = null;
+                    if (iconPackDrawable!=null) {
+                        iconInfo = li.createIconPackBitmapInfo(iconPackDrawable);
+                    } else {
+                        iconInfo = li.createBadgedIconBitmap(
+                                iconDrawable, user, appInfo.targetSdkVersion,
+                                mInstantAppResolver.isInstantApp(appInfo));
+                    }
                     li.recycle();
 
                     Bitmap lowResIcon =  generateLowResIcon(iconInfo.icon);
