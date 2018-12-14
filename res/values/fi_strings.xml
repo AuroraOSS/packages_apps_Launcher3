@@ -48,7 +48,8 @@
     <!-- Themes -->
     <string name="theme_style_title">Theme style</string>
     <string name="theme_style_auto">Wallpaper based</string>
-    <string name="theme_style_light">Light style</string>
-    <string name="theme_style_dark">Dark style</string>
+    <string name="theme_style_light">Light</string>
+    <string name="theme_style_dark">Dark</string>
+    <string name="theme_style_black">Black</string>
 
 </resources>

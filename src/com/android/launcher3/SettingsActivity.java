@@ -49,6 +49,7 @@ import android.widget.NumberPicker;
 
 import com.android.launcher3.graphics.IconShapeOverride;
 import com.android.launcher3.notification.NotificationListener;
+import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.ListViewHighlighter;
 import com.android.launcher3.util.LooperExecutor;
 import com.android.launcher3.util.SettingsObserver;
@@ -57,19 +58,21 @@ import com.android.launcher3.views.ButtonPreference;
 import java.util.Objects;
 
 import static com.android.launcher3.Utilities.PREF_NOTIFICATIONS_GESTURE;
+import static com.android.launcher3.Utilities.getPrefs;
 import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
 import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
 
 /**
  * Settings activity for Launcher. Currently implements the following setting: Allow rotation
  */
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends Activity implements WallpaperColorInfo.OnChangeListener {
 
     /**
      * Hidden field Settings.Secure.NOTIFICATION_BADGING
      */
     public static final String NOTIFICATION_BADGING = "notification_badging";
     public static final String KEY_MINUS_ONE = "pref_enable_minus_one";
+    public static final String PREF_THEME_STYLE_KEY = "pref_theme_style";
     private static final String TAG = "IconShapeOverride";
     private static final long PROCESS_KILL_DELAY_MS = 1000;
     private static final int RESTART_REQUEST_CODE = 42;
@@ -86,8 +89,8 @@ public class SettingsActivity extends Activity {
     private static final String KEY_SHOW_DESKTOP_LABELS = "pref_desktop_show_labels";
     private static final String KEY_SHOW_DRAWER_LABELS = "pref_drawer_show_labels";
     private static final String ICON_SIZE = "pref_icon_size";
-
-    public static final String PREF_THEME_STYLE_KEY = "pref_theme_style";
+    protected int mThemeStyle;
+    private int mThemeRes = R.style.PreferenceTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +102,44 @@ public class SettingsActivity extends Activity {
                     .replace(android.R.id.content, getNewFragment())
                     .commit();
         }
+
+        WallpaperColorInfo wallpaperColorInfo = WallpaperColorInfo.getInstance(this);
+        wallpaperColorInfo.addOnChangeListener(this);
+        int themeRes = getThemeRes(wallpaperColorInfo);
+        if (themeRes != mThemeRes) {
+            mThemeRes = themeRes;
+            setTheme(themeRes);
+        }
     }
 
     protected PreferenceFragment getNewFragment() {
         return new LauncherSettingsFragment();
+    }
+
+    @Override
+    public void onExtractedColorsChanged(WallpaperColorInfo wallpaperColorInfo) {
+        if (mThemeRes != getThemeRes(wallpaperColorInfo)) {
+            recreate();
+        }
+    }
+
+    protected int getThemeRes(WallpaperColorInfo wallpaperColorInfo) {
+        mThemeStyle = Integer.parseInt(getPrefs(getApplicationContext()).getString(SettingsActivity.PREF_THEME_STYLE_KEY, "0"));
+        if (mThemeStyle == 1) {
+            return R.style.PreferenceTheme;
+        } else if (mThemeStyle == 2) {
+            return R.style.PreferenceTheme_Dark;
+        } else if (mThemeStyle == 3) {
+            return R.style.PreferenceTheme_Black;
+        } else {
+            if (wallpaperColorInfo.isDark()) {
+                return wallpaperColorInfo.supportsDarkText() ?
+                        R.style.LauncherTheme_DarkText : R.style.PreferenceTheme_Dark;
+            } else {
+                return wallpaperColorInfo.supportsDarkText() ?
+                        R.style.LauncherTheme_DarkText : R.style.PreferenceTheme;
+            }
+        }
     }
 
     /**
@@ -202,7 +239,7 @@ public class SettingsActivity extends Activity {
             mThemeStyle.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int valueIndex = mThemeStyle.findIndexOfValue((String)newValue);
+                    int valueIndex = mThemeStyle.findIndexOfValue((String) newValue);
                     mThemeStyle.setSummary(mThemeStyle.getEntries()[valueIndex]);
                     mShouldRestart = true;
                     return true;

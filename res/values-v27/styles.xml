@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PreferenceTheme.Dark" parent="@android:style/Theme.DeviceDefault">
+        <item name="android:colorPrimary">#FF212121</item>
+        <item name="android:colorPrimaryDark">#FF212121</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="isMainColorDark">true</item>
+    </style>
+</resources>

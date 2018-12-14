@@ -95,6 +95,8 @@ public abstract class BaseDraggingActivity extends BaseActivity
             return R.style.LauncherTheme;
         } else if (mThemeStyle == 2) {
             return R.style.LauncherTheme_Dark;
+        } else if (mThemeStyle == 3) {
+            return R.style.LauncherTheme_Black;
         } else {
             if (wallpaperColorInfo.isDark()) {
                 return wallpaperColorInfo.supportsDarkText() ?

@@ -25,5 +25,9 @@
         <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
         <item name="android:colorPrimaryDark">#616161</item> <!-- Gray 700 -->
     </style>
+    <style name="WidgetContainerTheme.Black" parent="WidgetContainerTheme.Dark">
+        <item name="android:colorEdgeEffect">?android:attr/textColorSecondary</item>
+        <item name="android:colorPrimaryDark">#000</item>
+    </style>
 
 </resources>
