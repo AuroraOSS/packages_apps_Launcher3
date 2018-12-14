@@ -248,7 +248,7 @@ public class LauncherIcons implements AutoCloseable {
     private Drawable normalizeAndWrapToAdaptiveIcon(Drawable icon, int iconAppTargetSdk,
             RectF outIconBounds, float[] outScale) {
         float scale = 1f;
-        if ((Utilities.ATLEAST_OREO && iconAppTargetSdk >= Build.VERSION_CODES.O) ||
+        /*if ((Utilities.ATLEAST_OREO && iconAppTargetSdk >= Build.VERSION_CODES.O) ||
                 Utilities.ATLEAST_P) {
             boolean[] outShape = new boolean[1];
             if (mWrapperIcon == null) {
@@ -269,7 +269,7 @@ public class LauncherIcons implements AutoCloseable {
             }
         } else {
             scale = getNormalizer().getScale(icon, outIconBounds, null, null);
-        }
+        }*/
 
         outScale[0] = scale;
         return icon;
