@@ -41,7 +41,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.TransactionTooLargeException;
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;

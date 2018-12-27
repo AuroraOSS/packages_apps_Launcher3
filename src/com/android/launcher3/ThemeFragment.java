@@ -1,11 +1,9 @@
 package com.android.launcher3;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import static com.android.launcher3.SettingsActivity.PREF_THEME_STYLE_KEY;

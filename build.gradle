@@ -5,7 +5,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.0-alpha07'
+        classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.6'
     }
 }
@@ -23,7 +23,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -35,7 +35,6 @@ android {
             storePassword props['keystore.password']
             keyAlias props['keyAlias']
             keyPassword props['keyPassword']
-            final String storeFile = props['keystore']
         }
     }
 
@@ -117,30 +116,28 @@ android {
 }
 
 repositories {
-    maven { url "../../../prebuilts/fullsdk-darwin/extras/android/m2repository" }
-    maven { url "../../../prebuilts/fullsdk-linux/extras/android/m2repository" }
     mavenCentral()
     jcenter()
     google()
 }
 
-final String SUPPORT_LIBS_VERSION = '28.0.0'
+final String SUPPORT_LIBS_VERSION = '1.0.0'
 
 dependencies {
     implementation fileTree(dir: "quickstep/libs", include: 'sysui_shared.jar')
-    implementation "com.android.support:support-v4:${SUPPORT_LIBS_VERSION}"
-    implementation "com.android.support:support-dynamic-animation:${SUPPORT_LIBS_VERSION}"
-    implementation "com.android.support:recyclerview-v7:${SUPPORT_LIBS_VERSION}"
+    implementation "androidx.legacy:legacy-support-v4:${SUPPORT_LIBS_VERSION}"
+    implementation "androidx.dynamicanimation:dynamicanimation:${SUPPORT_LIBS_VERSION}"
+    implementation "androidx.recyclerview:recyclerview:${SUPPORT_LIBS_VERSION}"
     implementation 'com.google.protobuf.nano:protobuf-javanano:3.2.0rc2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation "org.mockito:mockito-core:1.9.5"
     androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
     androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
-    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
-    androidTestImplementation "com.android.support:support-annotations:${SUPPORT_LIBS_VERSION}"
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation "androidx.annotation:annotation:${SUPPORT_LIBS_VERSION}"
 }
 
 protobuf {
