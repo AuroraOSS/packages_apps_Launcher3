@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_add_icon_to_home"
+        android:persistent="true"
+        android:summary="@string/auto_add_shortcuts_description"
+        android:title="@string/auto_add_shortcuts_label" />
+
+    <Preference
+        android:key="pref_grid_size"
+        android:persistent="true"
+        android:title="@string/grid_size_text" />
+
+    <com.android.launcher3.views.ButtonPreference
+        android:key="pref_icon_badging"
+        android:persistent="false"
+        android:title="@string/icon_badging_title"
+        android:widgetLayout="@layout/notification_pref_warning">
+        <intent android:action="android.settings.NOTIFICATION_SETTINGS">
+            <!-- This extra highlights the "Allow icon badges" field in Notification settings -->
+            <extra
+                android:name=":settings:fragment_args_key"
+                android:value="notification_badging" />
+        </intent>
+    </com.android.launcher3.views.ButtonPreference>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_desktop_show_labels"
+        android:persistent="true"
+        android:title="@string/home_screen_show_labels" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_drawer_show_labels"
+        android:persistent="true"
+        android:title="@string/drawer_show_labels" />
+
+</PreferenceScreen>

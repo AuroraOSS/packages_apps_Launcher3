@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2017 Paranoid Android
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.android.launcher3.HiddenAppsActivity">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/reset"
         android:icon="@drawable/ic_reset_hidden_apps"

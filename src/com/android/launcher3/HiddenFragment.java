@@ -17,55 +17,60 @@
 package com.android.launcher3;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class HiddenAppsActivity extends Activity implements MultiSelectRecyclerViewAdapter.ItemClickListener {
 
-    private List<ResolveInfo> mInstalledPackages;
+public class HiddenFragment extends PreferenceFragment implements MultiSelectRecyclerViewAdapter.ItemClickListener {
+
+    boolean itemClicked = true;
     private ActionBar mActionBar;
     private MultiSelectRecyclerViewAdapter mAdapter;
 
-    boolean itemClicked = true;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.hide_menu, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
         if (!itemClicked) {
             menu.findItem(R.id.reset).setVisible(false);
         } else {
             menu.findItem(R.id.reset).setVisible(true);
         }
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater findMenuItems = getMenuInflater();
-        findMenuItems.inflate(R.menu.hide_menu, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-       int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-        } else if (id == R.id.reset) {
+        int id = item.getItemId();
+        if (id == R.id.reset) {
             unhideHiddenApps();
             itemClicked = false;
         }
@@ -73,7 +78,7 @@ public class HiddenAppsActivity extends Activity implements MultiSelectRecyclerV
     }
 
     private void updateHiddenApps() {
-        mAdapter.addSelectionsToHideList(HiddenAppsActivity.this);
+        mAdapter.addSelectionsToHideList(getActivity().getApplicationContext());
         LauncherAppState appState = LauncherAppState.getInstanceNoCreate();
         if (appState != null) {
             appState.getModel().forceReload();
@@ -81,25 +86,30 @@ public class HiddenAppsActivity extends Activity implements MultiSelectRecyclerV
     }
 
     private void unhideHiddenApps() {
-        mAdapter.removeSelectionsToHideList(HiddenAppsActivity.this);
+        mAdapter.removeSelectionsToHideList(getActivity().getApplicationContext());
         mAdapter.notifyDataSetChanged();
         mActionBar.setTitle(getString(R.string.hidden_app));
         LauncherAppState appState = LauncherAppState.getInstanceNoCreate();
         if (appState != null) {
             appState.getModel().forceReload();
         }
-        Toast.makeText(getApplicationContext(), getString(R.string.reset_hidden_apps_done),
+        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.reset_hidden_apps_done),
                 Toast.LENGTH_LONG).show();
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multiselect);
-        mActionBar = getActionBar();
-        if (mActionBar != null) mActionBar.setDisplayHomeAsUpEnabled(true);
+        return inflater.inflate(R.layout.activity_multiselect, container, false);
+    }
 
-        Set<String> hiddenApps = PreferenceManager.getDefaultSharedPreferences(HiddenAppsActivity.this).getStringSet(Utilities.KEY_HIDDEN_APPS_SET, null);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.setBackgroundColor(Utilities.getBackgroundColor(getActivity()));
+        mActionBar = getActivity().getActionBar();
+
+        Set<String> hiddenApps = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).getStringSet(Utilities.KEY_HIDDEN_APPS_SET, null);
         if (hiddenApps != null) {
             if (!hiddenApps.isEmpty()) {
                 mActionBar.setTitle(String.valueOf(hiddenApps.size()) + getString(R.string.hide_app_selected));
@@ -110,14 +120,14 @@ public class HiddenAppsActivity extends Activity implements MultiSelectRecyclerV
             }
         }
 
-        mInstalledPackages = getInstalledApps();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        List<ResolveInfo> mInstalledPackages = getInstalledApps();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(HiddenAppsActivity.this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         DividerItemDecoration itemDecorator = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         itemDecorator.setDrawable(getResources().getDrawable(R.drawable.list_divider));
         recyclerView.addItemDecoration(itemDecorator);
-        mAdapter = new MultiSelectRecyclerViewAdapter(HiddenAppsActivity.this, mInstalledPackages, this);
+        mAdapter = new MultiSelectRecyclerViewAdapter(getActivity().getApplicationContext(), mInstalledPackages, this);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -127,9 +137,16 @@ public class HiddenAppsActivity extends Activity implements MultiSelectRecyclerV
         updateHiddenApps();
     }
 
+    @Override
+    public void onDestroy() {
+        if (mActionBar != null)
+            mActionBar.setTitle(getString(R.string.settings_button_text));
+        super.onDestroy();
+    }
+
     private List<ResolveInfo> getInstalledApps() {
         //get a list of installed apps.
-        PackageManager packageManager = getPackageManager();
+        PackageManager packageManager = getActivity().getPackageManager();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 

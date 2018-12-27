@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:icon="@drawable/ic_round_gesture"
+        android:key="fragment_gesture"
+        android:layout="@layout/item_preferences"
+        android:summary="@string/gestures_summary"
+        android:title="@string/gestures_title" />
+    <Preference
+        android:icon="@drawable/ic_round_homescreen"
+        android:key="fragment_homescreen"
+        android:layout="@layout/item_preferences"
+        android:summary="@string/homescreen_summary"
+        android:title="@string/homescreen_title" />
+    <Preference
+        android:icon="@drawable/ic_round_icons"
+        android:key="fragment_icon"
+        android:layout="@layout/item_preferences"
+        android:summary="@string/icons_summary"
+        android:title="@string/icons_title" />
+    <Preference
+        android:icon="@drawable/ic_themes"
+        android:key="fragment_misc"
+        android:layout="@layout/item_preferences"
+        android:summary="@string/theme_summary"
+        android:title="@string/theme_title" />
+    <Preference
+        android:icon="@drawable/ic_round_lock"
+        android:key="hidden_app"
+        android:layout="@layout/item_preferences"
+        android:summary="@string/hide_app_sum"
+        android:title="@string/hide_app" />
+</PreferenceScreen>

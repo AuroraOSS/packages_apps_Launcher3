@@ -16,6 +16,7 @@
 
 package com.android.launcher3;
 
+import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -28,6 +29,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -39,6 +41,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.TransactionTooLargeException;
+import android.support.annotation.ColorInt;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -72,62 +75,47 @@ import java.util.regex.Pattern;
  */
 public final class Utilities {
 
-    private static final String TAG = "Launcher.Utilities";
-
-    private static final Pattern sTrimPattern =
-            Pattern.compile("^[\\s|\\p{javaSpaceChar}]*(.*)[\\s|\\p{javaSpaceChar}]*$");
-
-    private static final int[] sLoc0 = new int[2];
-    private static final int[] sLoc1 = new int[2];
-    private static final float[] sPoint = new float[2];
-    private static final Matrix sMatrix = new Matrix();
-    private static final Matrix sInverseMatrix = new Matrix();
-
     public static final boolean ATLEAST_P =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
-
     public static final boolean ATLEAST_OREO_MR1 =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1;
-
     public static final boolean ATLEAST_OREO =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
-
     public static final boolean ATLEAST_NOUGAT_MR1 =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1;
-
     public static final boolean ATLEAST_NOUGAT =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
-
     public static final boolean ATLEAST_MARSHMALLOW =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-
     public static final boolean ATLEAST_LOLLIPOP_MR1 =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1;
-
     public static final int SINGLE_FRAME_MS = 16;
-
     /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
      * add extra logging and not for changing the app behavior.
      */
     public static final boolean IS_DEBUG_DEVICE =
             Build.TYPE.toLowerCase(Locale.ROOT).contains("debug") ||
-            Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
-
+                    Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
     // An intent extra to indicate the horizontal scroll of the wallpaper.
     public static final String EXTRA_WALLPAPER_OFFSET = "com.android.launcher3.WALLPAPER_OFFSET";
-
     public static final int COLOR_EXTRACTION_JOB_ID = 1;
     public static final int WALLPAPER_COMPAT_JOB_ID = 2;
-
+    public static final String KEY_HIDDEN_APPS = "hidden_app";
+    public static final String KEY_HIDDEN_APPS_SET = "hidden_app_set";
+    public static final String PREF_NOTIFICATIONS_GESTURE = "pref_notifications_gesture";
+    private static final String TAG = "Launcher.Utilities";
+    private static final Pattern sTrimPattern =
+            Pattern.compile("^[\\s|\\p{javaSpaceChar}]*(.*)[\\s|\\p{javaSpaceChar}]*$");
+    private static final int[] sLoc0 = new int[2];
+    private static final int[] sLoc1 = new int[2];
+    private static final float[] sPoint = new float[2];
+    private static final Matrix sMatrix = new Matrix();
+    private static final Matrix sInverseMatrix = new Matrix();
     private static final String GRID_VALUE_SEPARATOR = "x";
     private static final int GRID_ROW_VALUE_DEFAULT = 4;
     private static final int GRID_COLUMN_VALUE_DEFAULT = 5;
     private static final String ICON_SIZE = "pref_icon_size";
-    public static final String KEY_HIDDEN_APPS = "hidden_app";
-    public static final String KEY_HIDDEN_APPS_SET = "hidden_app_set";
-    public static final String PREF_NOTIFICATIONS_GESTURE = "pref_notifications_gesture";
-
     // These values are same as that in {@link AsyncTask}.
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final int CORE_POOL_SIZE = CPU_COUNT + 1;
@@ -178,14 +166,14 @@ public final class Utilities {
      * Given a coordinate relative to the descendant, find the coordinate in a parent view's
      * coordinates.
      *
-     * @param descendant The descendant to which the passed coordinate is relative.
-     * @param ancestor The root view to make the coordinates relative to.
-     * @param coord The coordinate that we want mapped.
+     * @param descendant        The descendant to which the passed coordinate is relative.
+     * @param ancestor          The root view to make the coordinates relative to.
+     * @param coord             The coordinate that we want mapped.
      * @param includeRootScroll Whether or not to account for the scroll of the descendant:
-     *          sometimes this is relevant as in a child's coordinates within the descendant.
+     *                          sometimes this is relevant as in a child's coordinates within the descendant.
      * @return The factor by which this descendant is scaled relative to this DragLayer. Caution
-     *         this scale factor is assumed to be equal in X and Y, and so if at any point this
-     *         assumption fails, we will need to return a pair of scale factors.
+     * this scale factor is assumed to be equal in X and Y, and so if at any point this
+     * assumption fails, we will need to return a pair of scale factors.
      */
     public static float getDescendantCoordRelativeToAncestor(
             View descendant, View ancestor, int[] coord, boolean includeRootScroll) {
@@ -194,7 +182,7 @@ public final class Utilities {
 
         float scale = 1.0f;
         View v = descendant;
-        while(v != ancestor && v != null) {
+        while (v != ancestor && v != null) {
             // For TextViews, scroll has a meaning which relates to the text position
             // which is very strange... ignore the scroll.
             if (v != descendant || includeRootScroll) {
@@ -221,7 +209,7 @@ public final class Utilities {
     public static void mapCoordInSelfToDescendant(View descendant, View root, int[] coord) {
         sMatrix.reset();
         View v = descendant;
-        while(v != root) {
+        while (v != root) {
             sMatrix.postTranslate(-v.getScrollX(), -v.getScrollY());
             sMatrix.postConcat(v.getMatrix());
             sMatrix.postTranslate(v.getLeft(), v.getTop());
@@ -256,7 +244,7 @@ public final class Utilities {
         sLoc0[1] += (v0.getMeasuredHeight() * v0.getScaleY()) / 2;
         sLoc1[0] += (v1.getMeasuredWidth() * v1.getScaleX()) / 2;
         sLoc1[1] += (v1.getMeasuredHeight() * v1.getScaleY()) / 2;
-        return new int[] {sLoc1[0] - sLoc0[0], sLoc1[1] - sLoc0[1]};
+        return new int[]{sLoc1[0] - sLoc0[0], sLoc1[1] - sLoc0[1]};
     }
 
     public static void scaleRectFAboutCenter(RectF r, float scale) {
@@ -265,7 +253,7 @@ public final class Utilities {
             float cy = r.centerY();
             r.offset(-cx, -cy);
             r.left = r.left * scale;
-            r.top = r.top * scale ;
+            r.top = r.top * scale;
             r.right = r.right * scale;
             r.bottom = r.bottom * scale;
             r.offset(cx, cy);
@@ -314,15 +302,16 @@ public final class Utilities {
 
     /**
      * Maps t from one range to another range.
-     * @param t The value to map.
+     *
+     * @param t       The value to map.
      * @param fromMin The lower bound of the range that t is being mapped from.
      * @param fromMax The upper bound of the range that t is being mapped from.
-     * @param toMin The lower bound of the range that t is being mapped to.
-     * @param toMax The upper bound of the range that t is being mapped to.
+     * @param toMin   The lower bound of the range that t is being mapped to.
+     * @param toMax   The upper bound of the range that t is being mapped to.
      * @return The mapped value of t.
      */
     public static float mapToRange(float t, float fromMin, float fromMax, float toMin, float toMax,
-            Interpolator interpolator) {
+                                   Interpolator interpolator) {
         if (fromMin == fromMax || toMin == toMax) {
             Log.e(TAG, "mapToRange: range has 0 length");
             return toMin;
@@ -470,14 +459,16 @@ public final class Utilities {
         return false;
     }
 
-    public static float dpiFromPx(int size, DisplayMetrics metrics){
+    public static float dpiFromPx(int size, DisplayMetrics metrics) {
         float densityRatio = (float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
         return (size / densityRatio);
     }
+
     public static int pxFromDp(float size, DisplayMetrics metrics) {
         return (int) Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 size, metrics));
     }
+
     public static int pxFromSp(float size, DisplayMetrics metrics) {
         return (int) Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 size, metrics));
@@ -531,7 +522,8 @@ public final class Utilities {
     /**
      * Wraps a message with a TTS span, so that a different message is spoken than
      * what is getting displayed.
-     * @param msg original message
+     *
+     * @param msg    original message
      * @param ttsMsg message to be spoken
      */
     public static CharSequence wrapForTts(CharSequence msg, String ttsMsg) {
@@ -573,7 +565,8 @@ public final class Utilities {
                 WallpaperManager wm = context.getSystemService(WallpaperManager.class);
                 return (Boolean) wm.getClass().getDeclaredMethod("isSetWallpaperAllowed")
                         .invoke(wm);
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
         }
         return true;
     }
@@ -610,7 +603,9 @@ public final class Utilities {
         return true;
     }
 
-    /** Returns whether the collection is null or empty. */
+    /**
+     * Returns whether the collection is null or empty.
+     */
     public static boolean isEmpty(Collection c) {
         return c == null || c.isEmpty();
     }
@@ -634,7 +629,7 @@ public final class Utilities {
 
         try {
             return clazz.newInstance();
-        } catch (InstantiationException|IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
@@ -681,5 +676,14 @@ public final class Utilities {
     public static String getGridValue(int columns, int rows) {
         return String.format(Locale.ENGLISH, "%1$d%2$s%3$d", columns,
                 GRID_VALUE_SEPARATOR, rows);
+    }
+
+    @ColorInt
+    public static int getBackgroundColor(Activity activity) {
+        TypedValue typedValue = new TypedValue();
+        if (activity.getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true)) {
+            return typedValue.data;
+        } else
+            return Color.BLACK;
     }
 }

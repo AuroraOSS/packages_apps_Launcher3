@@ -52,4 +52,14 @@
     <string name="theme_style_dark">Dark</string>
     <string name="theme_style_black">Black</string>
 
+    <!-- Categories -->
+    <string name="gestures_title">Gestures</string>
+    <string name="gestures_summary">Swipe down and screen rotation</string>
+    <string name="homescreen_title">Home screen</string>
+    <string name="homescreen_summary">Set grid size and more</string>
+    <string name="icons_title">Icons</string>
+    <string name="icons_summary">Set icon shape and more</string>
+    <string name="theme_title">Themes</string>
+    <string name="theme_summary">Customize your launcher</string>
+
 </resources>

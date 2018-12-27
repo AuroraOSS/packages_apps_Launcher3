@@ -29,9 +29,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.launcher3.R;
-import com.android.launcher3.SelectableAdapter;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -40,10 +37,10 @@ import java.util.Set;
 
 class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecyclerViewAdapter.ViewHolder> {
 
+    private final Set<String> mBlackList = new HashSet<>();
     private List<Packages> mPackages;
     private ItemClickListener mClickListener;
     private PackageManager mPackageManager;
-    private final Set<String> mBlackList = new HashSet<>();
 
     MultiSelectRecyclerViewAdapter(Context context, List<ResolveInfo> resolveInfos, ItemClickListener clickListener) {
         mClickListener = clickListener;
@@ -80,6 +77,26 @@ class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecycl
     @Override
     public int getItemCount() {
         return mPackages.size();
+    }
+
+    @Override
+    void toggleSelection(ActionBar actionBar, int position) {
+        String packageName = mPackages.get(position).getPackageName();
+        if (mSelections.contains(packageName)) {
+            mSelections.remove(packageName);
+        } else {
+            mSelections.add(packageName);
+        }
+        if (!mSelections.isEmpty()) {
+            actionBar.setTitle(String.valueOf(mSelections.size()) + mContext.getString(R.string.hide_app_selected));
+        } else {
+            actionBar.setTitle(mContext.getString(R.string.hidden_app));
+        }
+        notifyItemChanged(position);
+    }
+
+    interface ItemClickListener {
+        void onItemClicked(int position);
     }
 
     private class Packages {
@@ -131,25 +148,5 @@ class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecycl
                 listener.onItemClicked(getAdapterPosition());
             }
         }
-    }
-
-    interface ItemClickListener {
-        void onItemClicked(int position);
-    }
-
-    @Override
-    void toggleSelection(ActionBar actionBar, int position) {
-        String packageName = mPackages.get(position).getPackageName();
-        if (mSelections.contains(packageName)) {
-            mSelections.remove(packageName);
-        } else {
-            mSelections.add(packageName);
-        }
-        if (!mSelections.isEmpty()) {
-            actionBar.setTitle(String.valueOf(mSelections.size()) + mContext.getString(R.string.hide_app_selected));
-        } else {
-            actionBar.setTitle(mContext.getString(R.string.hidden_app));
-        }
-        notifyItemChanged(position);
     }
 }
