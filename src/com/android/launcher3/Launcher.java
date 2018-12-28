@@ -649,7 +649,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            int[] grantResults) {
+                                           int[] grantResults) {
         PendingRequestArgs pendingArgs = mPendingRequestArgs;
         if (requestCode == REQUEST_PERMISSION_CALL_PHONE && pendingArgs != null
                 && pendingArgs.getRequestCode() == REQUEST_PERMISSION_CALL_PHONE) {
@@ -995,7 +995,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
      * @param data The intent describing the shortcut.
      */
     private void completeAddShortcut(Intent data, long container, long screenId, int cellX,
-            int cellY, PendingRequestArgs args) {
+                                     int cellY, PendingRequestArgs args) {
         if (args.getRequestCode() != REQUEST_CREATE_SHORTCUT
                 || args.getPendingIntent().getComponent() == null) {
             return;
@@ -1085,7 +1085,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
      * @param appWidgetId The app widget id
      */
     @Thunk void completeAddAppWidget(int appWidgetId, ItemInfo itemInfo,
-            AppWidgetHostView hostView, LauncherAppWidgetProviderInfo appWidgetInfo) {
+                                     AppWidgetHostView hostView, LauncherAppWidgetProviderInfo appWidgetInfo) {
 
         if (appWidgetInfo == null) {
             appWidgetInfo = mAppWidgetManager.getLauncherAppWidgetInfo(appWidgetId);
@@ -1371,10 +1371,10 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     @Override
     public void startIntentSenderForResult (IntentSender intent, int requestCode,
-            Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) {
+                                            Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) {
         try {
             super.startIntentSenderForResult(intent, requestCode,
-                fillInIntent, flagsMask, flagsValues, extraFlags, options);
+                    fillInIntent, flagsMask, flagsValues, extraFlags, options);
         } catch (IntentSender.SendIntentException e) {
             throw new ActivityNotFoundException();
         }
@@ -1386,7 +1386,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
      */
     @Override
     public void startSearch(String initialQuery, boolean selectInitialQuery,
-            Bundle appSearchData, boolean globalSearch) {
+                            Bundle appSearchData, boolean globalSearch) {
         if (appSearchData == null) {
             appSearchData = new Bundle();
             appSearchData.putString("source", "launcher-search");
@@ -1419,7 +1419,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     }
 
     void addAppWidgetFromDropImpl(int appWidgetId, ItemInfo info, AppWidgetHostView boundWidget,
-            WidgetAddFlowHandler addFlowHandler) {
+                                  WidgetAddFlowHandler addFlowHandler) {
         if (LOGD) {
             Log.d(TAG, "Adding widget from drop");
         }
@@ -1427,7 +1427,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     }
 
     void addAppWidgetImpl(int appWidgetId, ItemInfo info,
-            AppWidgetHostView boundWidget, WidgetAddFlowHandler addFlowHandler, int delay) {
+                          AppWidgetHostView boundWidget, WidgetAddFlowHandler addFlowHandler, int delay) {
         if (!addFlowHandler.startConfigActivity(this, appWidgetId, info, REQUEST_CREATE_APPWIDGET)) {
             // If the configuration flow was not started, add the widget
 
@@ -1444,7 +1444,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     }
 
     public void addPendingItem(PendingAddItemInfo info, long container, long screenId,
-            int[] cell, int spanX, int spanY) {
+                               int[] cell, int spanX, int spanY) {
         info.container = container;
         info.screenId = screenId;
         if (cell != null) {
@@ -1464,7 +1464,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
                 break;
             default:
                 throw new IllegalStateException("Unknown item type: " + info.itemType);
-            }
+        }
     }
 
     /**
@@ -1520,7 +1520,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     }
 
     FolderIcon addFolder(CellLayout layout, long container, final long screenId, int cellX,
-            int cellY) {
+                         int cellY) {
         final FolderInfo folderInfo = new FolderInfo();
         folderInfo.title = getText(R.string.folder_name);
 
@@ -1834,7 +1834,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     @Override
     public void bindAppsAdded(ArrayList<Long> newScreens, ArrayList<ItemInfo> addNotAnimated,
-            ArrayList<ItemInfo> addAnimated) {
+                              ArrayList<ItemInfo> addAnimated) {
         // Add the new screens
         if (newScreens != null) {
             bindAddScreens(newScreens);
@@ -1903,7 +1903,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
                     throw new RuntimeException("Invalid Item Type");
             }
 
-             /*
+            /*
              * Remove colliding items.
              */
             if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
@@ -2388,8 +2388,8 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
                     if (focusedView instanceof BubbleTextView
                             && focusedView.getTag() instanceof ItemInfo
                             && mAccessibilityDelegate.performAction(focusedView,
-                                    (ItemInfo) focusedView.getTag(),
-                                    LauncherAccessibilityDelegate.DEEP_SHORTCUTS)) {
+                            (ItemInfo) focusedView.getTag(),
+                            LauncherAccessibilityDelegate.DEEP_SHORTCUTS)) {
                         PopupContainerWithArrow.getOpen(this).requestFocus();
                         return true;
                     }

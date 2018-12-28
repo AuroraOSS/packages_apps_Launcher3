@@ -155,7 +155,6 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
     private boolean mDrawerLabelCustomization;
     private boolean mDrawerLabelShadow;
     private boolean mDrawerLabelCase;
-    private boolean mDrawerLabelVisibility;
     private boolean mDrawerSingleLine;
     @ColorInt
     private int mDrawerLabelColor;
@@ -166,7 +165,6 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
     private boolean mHomeLabelCustomization;
     private boolean mHomeLabelShadow;
     private boolean mHomeLabelCase;
-    private boolean mHomeLabelVisibility;
     private boolean mHomeSingleLine;
     @ColorInt
     private int mHomeLabelColor;
@@ -196,12 +194,11 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         SharedPreferences prefs = Utilities.getPrefs(context.getApplicationContext());
 
         mRainbowLabels = prefs.getBoolean(PREF_ALL_LABEL_RAINBOW, false);
-        getDrawerPreferences(prefs);
-        getHomeScreenPreferences(prefs);
 
         int display = a.getInteger(R.styleable.BubbleTextView_iconDisplay, DISPLAY_WORKSPACE);
         int defaultIconSize = grid.iconSizePx;
         if (display == DISPLAY_WORKSPACE) {
+            getHomeScreenPreferences(prefs);
             if (mHomeLabelCustomization) {
                 setTextColor(mHomeLabelColor);
                 setTypeface(getTypeface(), mHomeLabelStyle);
@@ -218,6 +215,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.iconTextSizePx);
             setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
         } else if (display == DISPLAY_ALL_APPS) {
+            getDrawerPreferences(prefs);
             if (mDrawerLabelCustomization) {
                 setTextColor(mDrawerLabelColor);
                 setTypeface(getTypeface(), mDrawerLabelStyle);
@@ -225,8 +223,6 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
                     setShadowLayer(1, -1, -1, ColorUtil.manipulateColor(mDrawerLabelColor, .75f));
                 if (mDrawerLabelCase)
                     setAllCaps(true);
-                if (!mDrawerLabelVisibility)
-                    setText("");
                 if (mDrawerSingleLine)
                     setSingleLine();
             }
@@ -272,7 +268,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         mDrawerLabelSize = Integer.parseInt(prefs.getString(PREF_DRAWER_LABEL_SIZE, "0"));
         mDrawerLabelShadow = prefs.getBoolean(PREF_DRAWER_LABEL_SHADOW, false);
         mDrawerLabelCase = prefs.getBoolean(PREF_DRAWER_LABEL_CASE, false);
-        mDrawerLabelVisibility = prefs.getBoolean(PREF_DRAWER_LABEL_VISIBILITY, false);
+        mShouldShowLabel = prefs.getBoolean(PREF_DRAWER_LABEL_VISIBILITY, true);
         mDrawerSingleLine = prefs.getBoolean(PREF_DRAWER_LABEL_LINE, false);
     }
 
@@ -286,7 +282,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         mHomeLabelSize = Integer.parseInt(prefs.getString(PREF_HOME_LABEL_SIZE, "0"));
         mHomeLabelShadow = prefs.getBoolean(PREF_HOME_LABEL_SHADOW, false);
         mHomeLabelCase = prefs.getBoolean(PREF_HOME_LABEL_CASE, false);
-        mHomeLabelVisibility = prefs.getBoolean(PREF_HOME_LABEL_VISIBILITY, false);
+        mShouldShowLabel = prefs.getBoolean(PREF_HOME_LABEL_VISIBILITY, true);
         mHomeSingleLine = prefs.getBoolean(PREF_HOME_LABEL_LINE, false);
     }
 
@@ -354,7 +350,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         }
 
         setIcon(iconDrawable);
-        if (mHomeLabelVisibility)
+        if (mShouldShowLabel)
             setText(info.title);
         if (info.contentDescription != null) {
             setContentDescription(info.isDisabled()
