@@ -97,7 +97,7 @@ public class ScrimView extends View implements Insettable, OnChangeListener,
     protected final Launcher mLauncher;
     private final WallpaperColorInfo mWallpaperColorInfo;
     private final AccessibilityManager mAM;
-    protected final int mEndScrim;
+    protected final int mEndScrim = 0x00000000;
 
     protected float mMaxScrimAlpha;
 
@@ -123,7 +123,6 @@ public class ScrimView extends View implements Insettable, OnChangeListener,
         super(context, attrs);
         mLauncher = Launcher.getLauncher(context);
         mWallpaperColorInfo = WallpaperColorInfo.getInstance(context);
-        mEndScrim = Themes.getAttrColor(context, R.attr.allAppsScrimColor);
 
         mMaxScrimAlpha = 0.7f;
 

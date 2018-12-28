@@ -17,6 +17,7 @@ package com.android.launcher3.allapps;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -61,6 +62,9 @@ import com.android.launcher3.views.SpringRelativeLayout;
 
 import java.util.List;
 
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_BG_COLOR;
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_BG_CUSTOMIZATION;
+
 /**
  * The all apps view container.
  */
@@ -97,6 +101,10 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private RecyclerViewFastScroller mTouchHandler;
     private final Point mFastScrollerOffset = new Point();
 
+    private SharedPreferences mPrefs;
+    private boolean mDrawerBgCustomization;
+    private int mDrawerBgColor;
+
     public AllAppsContainerView(Context context) {
         this(context, null);
     }
@@ -110,6 +118,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
         mLauncher = Launcher.getLauncher(context);
         mLauncher.addOnDeviceProfileChangeListener(this);
+
+        mPrefs = Utilities.getPrefs(context.getApplicationContext());
 
         mSearchQueryBuilder = new SpannableStringBuilder();
         Selection.setSelection(mSearchQueryBuilder, 0);
@@ -126,6 +136,13 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         addSpringView(R.id.all_apps_header);
         addSpringView(R.id.apps_list_view);
         addSpringView(R.id.all_apps_tabs_view_pager);
+
+        mDrawerBgCustomization = mPrefs.getBoolean(PREF_DRAWER_BG_CUSTOMIZATION, false);
+        mDrawerBgColor = mPrefs.getInt(PREF_DRAWER_BG_COLOR, Utilities.getScrimColor(context));
+        if (mDrawerBgCustomization)
+            setBackgroundColor(mDrawerBgColor);
+        else
+            setBackgroundColor(Utilities.getScrimColor(context));
     }
 
     public AllAppsStore getAppsStore() {

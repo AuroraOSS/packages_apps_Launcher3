@@ -694,6 +694,15 @@ public final class Utilities {
     }
 
     @ColorInt
+    public static int getScrimColor(Context context) {
+        TypedValue typedValue = new TypedValue();
+        if (context.getTheme().resolveAttribute(R.attr.allAppsScrimColor, typedValue, true)) {
+            return typedValue.data;
+        } else
+            return Color.BLACK;
+    }
+
+    @ColorInt
     public static int getTextColor(Activity activity) {
         TypedValue typedValue = new TypedValue();
         if (activity.getTheme().resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)) {
