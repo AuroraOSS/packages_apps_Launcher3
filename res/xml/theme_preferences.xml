@@ -7,4 +7,10 @@
         android:key="pref_theme_style"
         android:persistent="true"
         android:title="@string/theme_style_title" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="pref_all_labels_rainbow"
+        android:persistent="true"
+        android:summary="Use colorful label for apps based on icons"
+        android:title="Colorful label" />
 </PreferenceScreen>

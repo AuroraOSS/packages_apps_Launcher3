@@ -41,7 +41,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.TransactionTooLargeException;
-import androidx.annotation.ColorInt;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -52,6 +51,8 @@ import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.Interpolator;
+
+import androidx.annotation.ColorInt;
 
 import com.android.launcher3.config.FeatureFlags;
 
@@ -682,6 +683,15 @@ public final class Utilities {
     public static int getBackgroundColor(Activity activity) {
         TypedValue typedValue = new TypedValue();
         if (activity.getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true)) {
+            return typedValue.data;
+        } else
+            return Color.BLACK;
+    }
+
+    @ColorInt
+    public static int getTextColor(Activity activity) {
+        TypedValue typedValue = new TypedValue();
+        if (activity.getTheme().resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)) {
             return typedValue.data;
         } else
             return Color.BLACK;

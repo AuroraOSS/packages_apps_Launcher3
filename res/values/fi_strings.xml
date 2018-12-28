@@ -62,4 +62,20 @@
     <string name="theme_title">Themes</string>
     <string name="theme_summary">Customize your launcher</string>
 
+    <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>
+
+    <!-- LabelStyles -->
+    <string name="label_style_default">Normal</string>
+    <string name="label_style_bold">Bold</string>
+    <string name="label_style_italic">Italic</string>
+    <string name="label_style_bold_italic">Bold-Italic</string>
+
+    <!-- LabelSize -->
+    <string name="label_size_extraSmall">Extra Small</string>
+    <string name="label_size_small">Small</string>
+    <string name="label_size_normal">Normal</string>
+    <string name="label_size_large">Large</string>
+    <string name="label_size_extraLarge">Extra Large</string>
+
 </resources>

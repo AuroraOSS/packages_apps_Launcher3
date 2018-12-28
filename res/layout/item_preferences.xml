@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:baselineAligned="false"
     android:gravity="center_vertical"
-    android:minHeight="?android:actionBarSize">
+    android:minHeight="?android:attr/listPreferredItemHeight">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -14,10 +14,11 @@
 
         <ImageView
             android:id="@android:id/icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:alpha=".75"
             android:layout_gravity="center"
-            android:tint="?android:attr/colorAccent" />
+            android:tint="?android:attr/colorControlNormal" />
     </LinearLayout>
 
     <RelativeLayout

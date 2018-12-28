@@ -13,11 +13,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -25,6 +25,8 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+
+import androidx.annotation.Nullable;
 
 import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.util.ListViewHighlighter;
@@ -39,13 +41,21 @@ import static com.android.launcher3.SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGS;
 import static com.android.launcher3.SettingsActivity.ICON_BADGING_PREFERENCE_KEY;
 import static com.android.launcher3.SettingsActivity.KEY_GRID_SIZE;
 import static com.android.launcher3.SettingsActivity.KEY_SHOW_DESKTOP_LABELS;
-import static com.android.launcher3.SettingsActivity.KEY_SHOW_DRAWER_LABELS;
 import static com.android.launcher3.SettingsActivity.NOTIFICATION_BADGING;
 import static com.android.launcher3.SettingsActivity.NOTIFICATION_ENABLED_LISTENERS;
 import static com.android.launcher3.SettingsActivity.SAVE_HIGHLIGHTED_KEY;
 import static com.android.launcher3.Utilities.PREF_NOTIFICATIONS_GESTURE;
 
 public class HomescreenFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    public static final String PREF_HOME_LABEL_CUSTOMIZATION = "pref_home_label_customization";
+    public static final String PREF_HOME_LABEL_COLOR = "pref_home_label_color";
+    public static final String PREF_HOME_LABEL_STYLE = "pref_home_label_style";
+    public static final String PREF_HOME_LABEL_SHADOW = "pref_home_label_shadow";
+    public static final String PREF_HOME_LABEL_CASE = "pref_home_label_allCaps";
+    public static final String PREF_HOME_LABEL_SIZE = "pref_home_label_size";
+    public static final String PREF_HOME_LABEL_VISIBILITY = "pref_home_show_labels";
+    public static final String PREF_HOME_LABEL_LINE = "pref_home_label_line";
 
     private IconBadgingObserver mIconBadgingObserver;
 
@@ -98,6 +108,24 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
 
             mGridPref.setSummary(mPrefs.getString(KEY_GRID_SIZE, getDefaultGridSize()));
         }
+
+        ListPreference mLabelStyle = (ListPreference) findPreference(PREF_HOME_LABEL_STYLE);
+        mLabelStyle.setSummary(mLabelStyle.getEntry());
+        mLabelStyle.setOnPreferenceChangeListener((preference, newValue) -> {
+            int valueIndex = mLabelStyle.findIndexOfValue((String) newValue);
+            mLabelStyle.setSummary(mLabelStyle.getEntries()[valueIndex]);
+            SettingsActivity.mShouldRestart = true;
+            return true;
+        });
+
+        ListPreference mLabelSize = (ListPreference) findPreference(PREF_HOME_LABEL_SIZE);
+        mLabelSize.setSummary(mLabelSize.getEntry());
+        mLabelSize.setOnPreferenceChangeListener((preference, newValue) -> {
+            int valueIndex = mLabelSize.findIndexOfValue((String) newValue);
+            mLabelSize.setSummary(mLabelSize.getEntries()[valueIndex]);
+            SettingsActivity.mShouldRestart = true;
+            return true;
+        });
 
     }
 
@@ -161,6 +189,17 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
     }
 
     @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        String key = preference.getKey();
+        switch (key) {
+            case PREF_HOME_LABEL_COLOR:
+                SettingsActivity.mShouldRestart = true;
+                break;
+        }
+        return true;
+    }
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         switch (key) {
             case KEY_GRID_SIZE:
@@ -168,8 +207,12 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
                 SettingsActivity.mShouldRestart = true;
                 break;
             case KEY_SHOW_DESKTOP_LABELS:
-            case KEY_SHOW_DRAWER_LABELS:
             case PREF_NOTIFICATIONS_GESTURE:
+            case PREF_HOME_LABEL_CUSTOMIZATION:
+            case PREF_HOME_LABEL_SHADOW:
+            case PREF_HOME_LABEL_CASE:
+            case PREF_HOME_LABEL_VISIBILITY:
+            case PREF_HOME_LABEL_LINE:
                 SettingsActivity.mShouldRestart = true;
                 break;
         }

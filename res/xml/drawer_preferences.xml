@@ -1,88 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_add_icon_to_home"
+        android:defaultValue="false"
+        android:key="pref_drawer_background_customization"
         android:persistent="true"
-        android:summary="@string/auto_add_shortcuts_description"
-        android:title="@string/auto_add_shortcuts_label" />
-
-    <Preference
-        android:key="pref_grid_size"
+        android:summary="Enable background customizations"
+        android:title="Background customization" />
+    <com.android.launcher3.preferences.colorpicker.ColorPickerPreference
+        android:defaultValue="?android:attr/colorBackground"
+        android:dependency="pref_drawer_background_customization"
+        android:key="pref_drawer_bg_color"
         android:persistent="true"
-        android:title="@string/grid_size_text" />
-
-    <com.android.launcher3.views.ButtonPreference
-        android:key="pref_icon_badging"
-        android:persistent="false"
-        android:title="@string/icon_badging_title"
-        android:widgetLayout="@layout/notification_pref_warning">
-        <intent android:action="android.settings.NOTIFICATION_SETTINGS">
-            <!-- This extra highlights the "Allow icon badges" field in Notification settings -->
-            <extra
-                android:name=":settings:fragment_args_key"
-                android:value="notification_badging" />
-        </intent>
-    </com.android.launcher3.views.ButtonPreference>
-
+        android:summary="Set custom background color and alpha"
+        android:title="Background color" />
     <SwitchPreference
         android:defaultValue="false"
-        android:key="pref_home_label_customization"
+        android:key="pref_drawer_label_customization"
         android:persistent="true"
         android:summary="Enable app label customizations"
         android:title="Label customization" />
     <com.android.launcher3.preferences.colorpicker.ColorPickerPreference
         android:defaultValue="?android:attr/textColorPrimary"
-        android:dependency="pref_home_label_customization"
-        android:key="pref_home_label_color"
+        android:dependency="pref_drawer_label_customization"
+        android:key="pref_drawer_label_color"
         android:persistent="true"
         android:summary="Set custom app label color and alpha"
         android:title="Label color" />
     <ListPreference
         android:defaultValue="0"
-        android:dependency="pref_home_label_customization"
+        android:dependency="pref_drawer_label_customization"
         android:entries="@array/label_style_entries"
         android:entryValues="@array/label_style_values"
-        android:key="pref_home_label_style"
+        android:key="pref_drawer_label_style"
         android:persistent="true"
         android:summary="Make app labels bold"
         android:title="Label Style" />
     <SwitchPreference
         android:defaultValue="true"
-        android:dependency="pref_home_label_customization"
-        android:key="pref_home_show_labels"
+        android:dependency="pref_drawer_label_customization"
+        android:key="pref_drawer_show_labels"
         android:persistent="true"
-        android:summary="@string/home_screen_show_labels"
+        android:summary="@string/drawer_show_labels"
         android:title="Label visibility" />
     <SwitchPreference
         android:defaultValue="true"
-        android:dependency="pref_home_label_customization"
-        android:key="pref_home_label_line"
+        android:dependency="pref_drawer_label_customization"
+        android:key="pref_drawer_label_line"
         android:persistent="true"
         android:summary="Show single line labels"
         android:title="Label lines" />
     <SwitchPreference
         android:defaultValue="false"
-        android:dependency="pref_home_label_customization"
-        android:key="pref_home_label_shadow"
+        android:dependency="pref_drawer_label_customization"
+        android:key="pref_drawer_label_shadow"
         android:persistent="true"
         android:summary="Add shadow behind app labels"
         android:title="Label shadow" />
     <SwitchPreference
         android:defaultValue="false"
-        android:dependency="pref_home_label_customization"
-        android:key="pref_home_label_allCaps"
+        android:dependency="pref_drawer_label_customization"
+        android:key="pref_drawer_label_allCaps"
         android:persistent="true"
         android:summary="Use uppercase labels"
         android:title="Label case" />
     <ListPreference
         android:defaultValue="-1"
-        android:dependency="pref_home_label_customization"
+        android:dependency="pref_drawer_label_customization"
         android:entries="@array/label_size_entries"
         android:entryValues="@array/label_size_values"
-        android:key="pref_home_label_size"
+        android:key="pref_drawer_label_size"
         android:persistent="true"
         android:summary="Set app label font size"
         android:title="Label size" />
-
 </PreferenceScreen>

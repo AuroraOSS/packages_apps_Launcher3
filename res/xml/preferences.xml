@@ -13,6 +13,12 @@
         android:summary="@string/homescreen_summary"
         android:title="@string/homescreen_title" />
     <Preference
+        android:icon="@drawable/ic_round_drawer"
+        android:key="fragment_drawer"
+        android:layout="@layout/item_preferences"
+        android:summary="Set grid, background and more"
+        android:title="App drawer" />
+    <Preference
         android:icon="@drawable/ic_round_icons"
         android:key="fragment_icon"
         android:layout="@layout/item_preferences"

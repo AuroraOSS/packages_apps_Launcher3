@@ -17,6 +17,7 @@
 package com.android.launcher3;
 
 import android.animation.ObjectAnimator;
+import android.annotation.ColorInt;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -28,7 +29,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import androidx.core.graphics.ColorUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Property;
@@ -40,6 +40,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewDebug;
 import android.widget.TextView;
 
+import androidx.core.graphics.ColorUtils;
+
 import com.android.launcher3.IconCache.IconLoadRequest;
 import com.android.launcher3.IconCache.ItemInfoUpdateReceiver;
 import com.android.launcher3.Launcher.OnResumeCallback;
@@ -50,8 +52,29 @@ import com.android.launcher3.graphics.DrawableFactory;
 import com.android.launcher3.graphics.IconPalette;
 import com.android.launcher3.graphics.PreloadIconDrawable;
 import com.android.launcher3.model.PackageItemInfo;
+import com.android.launcher3.uioverrides.WallpaperColorInfo;
 
 import java.text.NumberFormat;
+
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_LABEL_CASE;
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_LABEL_COLOR;
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_LABEL_CUSTOMIZATION;
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_LABEL_LINE;
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_LABEL_SHADOW;
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_LABEL_SIZE;
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_LABEL_STYLE;
+import static com.android.launcher3.DrawerFragment.PREF_DRAWER_LABEL_VISIBILITY;
+import static com.android.launcher3.HomescreenFragment.PREF_HOME_LABEL_CASE;
+import static com.android.launcher3.HomescreenFragment.PREF_HOME_LABEL_COLOR;
+import static com.android.launcher3.HomescreenFragment.PREF_HOME_LABEL_CUSTOMIZATION;
+import static com.android.launcher3.HomescreenFragment.PREF_HOME_LABEL_LINE;
+import static com.android.launcher3.HomescreenFragment.PREF_HOME_LABEL_SHADOW;
+import static com.android.launcher3.HomescreenFragment.PREF_HOME_LABEL_SIZE;
+import static com.android.launcher3.HomescreenFragment.PREF_HOME_LABEL_STYLE;
+import static com.android.launcher3.HomescreenFragment.PREF_HOME_LABEL_VISIBILITY;
+import static com.android.launcher3.SettingsActivity.PREF_THEME_STYLE_KEY;
+import static com.android.launcher3.ThemeFragment.PREF_ALL_LABEL_RAINBOW;
+import static com.android.launcher3.Utilities.getPrefs;
 
 /**
  * TextView that draws a bubble behind the text. We cannot use a LineBackgroundSpan
@@ -59,29 +82,6 @@ import java.text.NumberFormat;
  * too aggressive.
  */
 public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, OnResumeCallback {
-
-    private static final int DISPLAY_WORKSPACE = 0;
-    private static final int DISPLAY_ALL_APPS = 1;
-    private static final int DISPLAY_FOLDER = 2;
-
-    private static final int[] STATE_PRESSED = new int[] {android.R.attr.state_pressed};
-
-    private static final String KEY_SHOW_DESKTOP_LABELS = "pref_desktop_show_labels";
-    private static final String KEY_SHOW_DRAWER_LABELS = "pref_drawer_show_labels";
-
-    private static final Property<BubbleTextView, Float> BADGE_SCALE_PROPERTY
-            = new Property<BubbleTextView, Float>(Float.TYPE, "badgeScale") {
-        @Override
-        public Float get(BubbleTextView bubbleTextView) {
-            return bubbleTextView.mBadgeScale;
-        }
-
-        @Override
-        public void set(BubbleTextView bubbleTextView, Float value) {
-            bubbleTextView.mBadgeScale = value;
-            bubbleTextView.invalidate();
-        }
-    };
 
     public static final Property<BubbleTextView, Float> TEXT_ALPHA_PROPERTY
             = new Property<BubbleTextView, Float>(Float.class, "textAlpha") {
@@ -95,18 +95,33 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
             bubbleTextView.setTextAlpha(alpha);
         }
     };
+    private static final int DISPLAY_WORKSPACE = 0;
+    private static final int DISPLAY_ALL_APPS = 1;
+    private static final int DISPLAY_FOLDER = 2;
+    private static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
+    private static final String KEY_SHOW_DESKTOP_LABELS = "pref_desktop_show_labels";
+    private static final String KEY_SHOW_DRAWER_LABELS = "pref_drawer_show_labels";
+    private static final Property<BubbleTextView, Float> BADGE_SCALE_PROPERTY
+            = new Property<BubbleTextView, Float>(Float.TYPE, "badgeScale") {
+        @Override
+        public Float get(BubbleTextView bubbleTextView) {
+            return bubbleTextView.mBadgeScale;
+        }
 
+        @Override
+        public void set(BubbleTextView bubbleTextView, Float value) {
+            bubbleTextView.mBadgeScale = value;
+            bubbleTextView.invalidate();
+        }
+    };
     private final BaseDraggingActivity mActivity;
-    private Drawable mIcon;
     private final boolean mCenterVertically;
-
     private final CheckLongPressHelper mLongPressHelper;
     private final StylusEventHelper mStylusEventHelper;
     private final float mSlop;
-
     private final boolean mLayoutHorizontal;
     private final int mIconSize;
-
+    private Drawable mIcon;
     @ViewDebug.ExportedProperty(category = "launcher")
     private boolean mIsIconVisible = true;
     @ViewDebug.ExportedProperty(category = "launcher")
@@ -131,6 +146,33 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     private boolean mShouldShowLabel;
 
+    //Rainbow Labels xD
+    private boolean mRainbowLabels;
+    private int mRainbowColorLight;
+    private int mRainbowColorDark;
+
+    //Drawer Customization Vars
+    private boolean mDrawerLabelCustomization;
+    private boolean mDrawerLabelShadow;
+    private boolean mDrawerLabelCase;
+    private boolean mDrawerLabelVisibility;
+    private boolean mDrawerSingleLine;
+    @ColorInt
+    private int mDrawerLabelColor;
+    private int mDrawerLabelStyle;
+    private int mDrawerLabelSize;
+
+    //HomeScreen Customization Vars
+    private boolean mHomeLabelCustomization;
+    private boolean mHomeLabelShadow;
+    private boolean mHomeLabelCase;
+    private boolean mHomeLabelVisibility;
+    private boolean mHomeSingleLine;
+    @ColorInt
+    private int mHomeLabelColor;
+    private int mHomeLabelStyle;
+    private int mHomeLabelSize;
+
     private IconLoadRequest mIconLoadRequest;
 
     public BubbleTextView(Context context) {
@@ -153,22 +195,51 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
         SharedPreferences prefs = Utilities.getPrefs(context.getApplicationContext());
 
+        mRainbowLabels = prefs.getBoolean(PREF_ALL_LABEL_RAINBOW, false);
+        getDrawerPreferences(prefs);
+        getHomeScreenPreferences(prefs);
+
         int display = a.getInteger(R.styleable.BubbleTextView_iconDisplay, DISPLAY_WORKSPACE);
         int defaultIconSize = grid.iconSizePx;
         if (display == DISPLAY_WORKSPACE) {
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.iconTextSizePx);
+            if (mHomeLabelCustomization) {
+                setTextColor(mHomeLabelColor);
+                setTypeface(getTypeface(), mHomeLabelStyle);
+                if (mHomeLabelShadow)
+                    setShadowLayer(1, -1, -1, ColorUtil.manipulateColor(mHomeLabelColor, .75f));
+                if (mHomeLabelCase)
+                    setAllCaps(true);
+                if (mHomeSingleLine)
+                    setSingleLine();
+            }
+            if (mHomeLabelCustomization && mHomeLabelSize != -1)
+                setTextSize(mHomeLabelSize);
+            else
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.iconTextSizePx);
             setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
-            mShouldShowLabel = prefs.getBoolean(KEY_SHOW_DESKTOP_LABELS, true);
         } else if (display == DISPLAY_ALL_APPS) {
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.allAppsIconTextSizePx);
+            if (mDrawerLabelCustomization) {
+                setTextColor(mDrawerLabelColor);
+                setTypeface(getTypeface(), mDrawerLabelStyle);
+                if (mDrawerLabelShadow)
+                    setShadowLayer(1, -1, -1, ColorUtil.manipulateColor(mDrawerLabelColor, .75f));
+                if (mDrawerLabelCase)
+                    setAllCaps(true);
+                if (!mDrawerLabelVisibility)
+                    setText("");
+                if (mDrawerSingleLine)
+                    setSingleLine();
+            }
+            if (mDrawerLabelCustomization && mDrawerLabelSize != -1)
+                setTextSize(mDrawerLabelSize);
+            else
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.allAppsIconTextSizePx);
             setCompoundDrawablePadding(grid.allAppsIconDrawablePaddingPx);
             defaultIconSize = grid.allAppsIconSizePx;
-            mShouldShowLabel = prefs.getBoolean(KEY_SHOW_DRAWER_LABELS, true);
         } else if (display == DISPLAY_FOLDER) {
             setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.folderChildTextSizePx);
             setCompoundDrawablePadding(grid.folderChildDrawablePaddingPx);
             defaultIconSize = grid.folderChildIconSizePx;
-            mShouldShowLabel = prefs.getBoolean(KEY_SHOW_DESKTOP_LABELS, true);
         }
         mCenterVertically = a.getBoolean(R.styleable.BubbleTextView_centerVertically, false);
 
@@ -191,12 +262,42 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
     }
 
+    /*
+     * Get DrawerCustomization values from SharedPreferences
+     */
+    private void getDrawerPreferences(SharedPreferences prefs) {
+        mDrawerLabelColor = prefs.getInt(PREF_DRAWER_LABEL_COLOR, Utilities.getTextColor(mActivity));
+        mDrawerLabelCustomization = prefs.getBoolean(PREF_DRAWER_LABEL_CUSTOMIZATION, false);
+        mDrawerLabelStyle = Integer.parseInt(prefs.getString(PREF_DRAWER_LABEL_STYLE, "0"));
+        mDrawerLabelSize = Integer.parseInt(prefs.getString(PREF_DRAWER_LABEL_SIZE, "0"));
+        mDrawerLabelShadow = prefs.getBoolean(PREF_DRAWER_LABEL_SHADOW, false);
+        mDrawerLabelCase = prefs.getBoolean(PREF_DRAWER_LABEL_CASE, false);
+        mDrawerLabelVisibility = prefs.getBoolean(PREF_DRAWER_LABEL_VISIBILITY, false);
+        mDrawerSingleLine = prefs.getBoolean(PREF_DRAWER_LABEL_LINE, false);
+    }
+
+    /*
+     * Get HomeScreenCustomization values from SharedPreferences
+     */
+    private void getHomeScreenPreferences(SharedPreferences prefs) {
+        mHomeLabelColor = prefs.getInt(PREF_HOME_LABEL_COLOR, Utilities.getTextColor(mActivity));
+        mHomeLabelCustomization = prefs.getBoolean(PREF_HOME_LABEL_CUSTOMIZATION, false);
+        mHomeLabelStyle = Integer.parseInt(prefs.getString(PREF_HOME_LABEL_STYLE, "0"));
+        mHomeLabelSize = Integer.parseInt(prefs.getString(PREF_HOME_LABEL_SIZE, "0"));
+        mHomeLabelShadow = prefs.getBoolean(PREF_HOME_LABEL_SHADOW, false);
+        mHomeLabelCase = prefs.getBoolean(PREF_HOME_LABEL_CASE, false);
+        mHomeLabelVisibility = prefs.getBoolean(PREF_HOME_LABEL_VISIBILITY, false);
+        mHomeSingleLine = prefs.getBoolean(PREF_HOME_LABEL_LINE, false);
+    }
+
     /**
      * Resets the view so it can be recycled.
      */
     public void reset() {
         mBadgeInfo = null;
         mBadgeColor = Color.TRANSPARENT;
+        mRainbowColorLight = Color.TRANSPARENT;
+        mRainbowColorDark = Color.TRANSPARENT;
         mBadgeScale = 0f;
         mForceHideBadge = false;
     }
@@ -244,15 +345,39 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         FastBitmapDrawable iconDrawable = DrawableFactory.get(getContext()).newIcon(info);
         mBadgeColor = IconPalette.getMutedColor(info.iconColor, 0.54f);
 
-        setIcon(iconDrawable);
-        if (mShouldShowLabel) {
-            setText(info.title);
+        if (mRainbowLabels) {
+            getRainbowColor(info);
+            if (isDark())
+                setTextColor(mRainbowColorDark);
+            else
+                setTextColor(mRainbowColorLight);
         }
+
+        setIcon(iconDrawable);
+        if (mHomeLabelVisibility)
+            setText(info.title);
         if (info.contentDescription != null) {
             setContentDescription(info.isDisabled()
                     ? getContext().getString(R.string.disabled_app_label, info.contentDescription)
                     : info.contentDescription);
         }
+    }
+
+    private void getRainbowColor(ItemInfoWithIcon info) {
+        mRainbowColorLight = IconPalette.getMutedColor(info.iconColor, 0.1f);
+        mRainbowColorLight = ColorUtil.manipulateColor(mRainbowColorLight, 0.5f);
+        mRainbowColorDark = IconPalette.getMutedColor(info.iconColor, 0.5f);
+    }
+
+    private boolean isDark() {
+        int mThemeStyle = Integer.parseInt(getPrefs(mActivity).getString(PREF_THEME_STYLE_KEY, "0"));
+        WallpaperColorInfo wallpaperColorInfo = WallpaperColorInfo.getInstance(mActivity);
+        if (mThemeStyle == 0 && wallpaperColorInfo.isDark())
+            return wallpaperColorInfo.supportsDarkText();
+        else if (mThemeStyle == 1)
+            return false;
+        else
+            return true;
     }
 
     /**
@@ -286,9 +411,21 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
         return drawableState;
     }
 
-    /** Returns the icon for this view. */
+    /**
+     * Returns the icon for this view.
+     */
     public Drawable getIcon() {
         return mIcon;
+    }
+
+    /**
+     * Sets the icon for this view based on the layout direction.
+     */
+    private void setIcon(Drawable icon) {
+        if (mIsIconVisible) {
+            applyCompoundDrawables(icon);
+        }
+        mIcon = icon;
     }
 
     @Override
@@ -365,6 +502,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     /**
      * Draws the icon badge in the top right corner of the icon bounds.
+     *
      * @param canvas The canvas to draw to.
      */
     protected void drawBadgeIfNecessary(Canvas canvas) {
@@ -461,6 +599,7 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
 
     /**
      * Creates an animator to fade the text in or out.
+     *
      * @param fadeIn Whether the text should fade in or fade out.
      */
     public ObjectAnimator createTextAlphaAnimator(boolean fadeIn) {
@@ -547,16 +686,6 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
                 }
             }
         }
-    }
-
-    /**
-     * Sets the icon for this view based on the layout direction.
-     */
-    private void setIcon(Drawable icon) {
-        if (mIsIconVisible) {
-            applyCompoundDrawables(icon);
-        }
-        mIcon = icon;
     }
 
     public void setIconVisible(boolean visible) {

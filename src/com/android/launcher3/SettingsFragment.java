@@ -12,6 +12,8 @@ public class SettingsFragment extends PreferenceFragment {
     private static final String FRAGMENT_HOMESCREEN = "fragment_homescreen";
     private static final String FRAGMENT_GESTURE = "fragment_gesture";
     private static final String FRAGMENT_MISC = "fragment_misc";
+    private static final String FRAGMENT_DRAWER = "fragment_drawer";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,9 @@ public class SettingsFragment extends PreferenceFragment {
                 break;
             case FRAGMENT_HOMESCREEN:
                 fragment = new HomescreenFragment();
+                break;
+            case FRAGMENT_DRAWER:
+                fragment = new DrawerFragment();
                 break;
             case FRAGMENT_GESTURE:
                 fragment = new GestureFragment();
