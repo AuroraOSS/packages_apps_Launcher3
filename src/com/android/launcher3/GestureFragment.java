@@ -4,9 +4,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import androidx.annotation.Nullable;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
+import static com.android.launcher3.Utilities.PREF_DOUBLETAP_GESTURE;
 import static com.android.launcher3.Utilities.PREF_NOTIFICATIONS_GESTURE;
 import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
 import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
@@ -40,7 +42,9 @@ public class GestureFragment extends PreferenceFragment implements SharedPrefere
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case PREF_NOTIFICATIONS_GESTURE: SettingsActivity.mShouldRestart = true;
+            case PREF_NOTIFICATIONS_GESTURE:
+            case PREF_DOUBLETAP_GESTURE:
+                SettingsActivity.mShouldRestart = true;
                 break;
         }
     }
