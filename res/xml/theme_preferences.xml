@@ -13,4 +13,17 @@
         android:persistent="true"
         android:summary="Use colorful label for apps based on icons"
         android:title="Colorful label" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="pref_adaptive_icons"
+        android:persistent="true"
+        android:summary="An adaptive icon will be created and applied to legacy icons"
+        android:title="Adaptive icons" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:dependency="pref_adaptive_icons"
+        android:key="pref_adaptive_bg"
+        android:persistent="true"
+        android:summary="Colorful backgrounds based on icons will be generated"
+        android:title="Adaptive backgrounds" />
 </PreferenceScreen>

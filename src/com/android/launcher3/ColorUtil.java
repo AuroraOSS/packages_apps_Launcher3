@@ -1,7 +1,13 @@
 package com.android.launcher3;
 
 import android.annotation.ColorInt;
+import android.content.Context;
 import android.graphics.Color;
+
+import com.android.launcher3.uioverrides.WallpaperColorInfo;
+
+import static com.android.launcher3.SettingsActivity.PREF_THEME_STYLE_KEY;
+import static com.android.launcher3.Utilities.getPrefs;
 
 public class ColorUtil {
 
@@ -23,6 +29,17 @@ public class ColorUtil {
     public static boolean isColorLight(@ColorInt int color) {
         final double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
         return darkness < 0.4;
+    }
+
+    public static boolean isDark(Context context) {
+        int mThemeStyle = Integer.parseInt(getPrefs(context).getString(PREF_THEME_STYLE_KEY, "0"));
+        WallpaperColorInfo wallpaperColorInfo = WallpaperColorInfo.getInstance(context);
+        if (mThemeStyle == 0 && wallpaperColorInfo.isDark())
+            return wallpaperColorInfo.supportsDarkText();
+        else if (mThemeStyle == 1)
+            return false;
+        else
+            return true;
     }
 
 }

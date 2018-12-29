@@ -16,11 +16,6 @@
 
 package com.android.launcher3.graphics;
 
-import static android.graphics.Paint.DITHER_FLAG;
-import static android.graphics.Paint.FILTER_BITMAP_FLAG;
-
-import static com.android.launcher3.graphics.ShadowGenerator.BLUR_FACTOR;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -35,13 +30,17 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
+import android.os.Build;
 import android.os.Process;
 import android.os.UserHandle;
+
 import androidx.annotation.Nullable;
 
 import com.android.launcher3.AppInfo;
+import com.android.launcher3.ColorUtil;
 import com.android.launcher3.FastBitmapDrawable;
 import com.android.launcher3.IconCache;
 import com.android.launcher3.InvariantDeviceProfile;
@@ -55,15 +54,42 @@ import com.android.launcher3.shortcuts.ShortcutInfoCompat;
 import com.android.launcher3.util.Provider;
 import com.android.launcher3.util.Themes;
 
+import static android.graphics.Paint.DITHER_FLAG;
+import static android.graphics.Paint.FILTER_BITMAP_FLAG;
+import static com.android.launcher3.graphics.ShadowGenerator.BLUR_FACTOR;
+
 /**
  * Helper methods for generating various launcher icons
  */
 public class LauncherIcons implements AutoCloseable {
 
-    private static final int DEFAULT_WRAPPER_BACKGROUND = Color.WHITE;
-
     public static final Object sPoolSync = new Object();
+    private static final int DEFAULT_WRAPPER_BACKGROUND = Color.WHITE;
     private static LauncherIcons sPool;
+    private final Rect mOldBounds = new Rect();
+    private final Context mContext;
+    private final Canvas mCanvas;
+    private final PackageManager mPm;
+    private final int mFillResIconDpi;
+    private final int mIconBitmapSize;
+    private IconNormalizer mNormalizer;
+    private ShadowGenerator mShadowGenerator;
+    private Drawable mWrapperIcon;
+    private int mWrapperBackgroundColor = DEFAULT_WRAPPER_BACKGROUND;
+    // sometimes we store linked lists of these things
+    private LauncherIcons next;
+
+    private LauncherIcons(Context context) {
+        mContext = context.getApplicationContext();
+        mPm = mContext.getPackageManager();
+
+        InvariantDeviceProfile idp = LauncherAppState.getIDP(mContext);
+        mFillResIconDpi = idp.fillResIconDpi;
+        mIconBitmapSize = idp.iconBitmapSize;
+
+        mCanvas = new Canvas();
+        mCanvas.setDrawFilter(new PaintFlagsDrawFilter(DITHER_FLAG, FILTER_BITMAP_FLAG));
+    }
 
     /**
      * Return a new Message instance from the global pool. Allows us to
@@ -79,6 +105,24 @@ public class LauncherIcons implements AutoCloseable {
             }
         }
         return new LauncherIcons(context);
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        int width = drawable.getIntrinsicWidth();
+        width = width > 0 ? width : 1;
+        int height = drawable.getIntrinsicHeight();
+        height = height > 0 ? height : 1;
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     /**
@@ -97,35 +141,6 @@ public class LauncherIcons implements AutoCloseable {
     @Override
     public void close() {
         recycle();
-    }
-
-    private final Rect mOldBounds = new Rect();
-    private final Context mContext;
-    private final Canvas mCanvas;
-    private final PackageManager mPm;
-
-    private final int mFillResIconDpi;
-    private final int mIconBitmapSize;
-
-    private IconNormalizer mNormalizer;
-    private ShadowGenerator mShadowGenerator;
-
-    private Drawable mWrapperIcon;
-    private int mWrapperBackgroundColor = DEFAULT_WRAPPER_BACKGROUND;
-
-    // sometimes we store linked lists of these things
-    private LauncherIcons next;
-
-    private LauncherIcons(Context context) {
-        mContext = context.getApplicationContext();
-        mPm = mContext.getPackageManager();
-
-        InvariantDeviceProfile idp = LauncherAppState.getIDP(mContext);
-        mFillResIconDpi = idp.fillResIconDpi;
-        mIconBitmapSize = idp.iconBitmapSize;
-
-        mCanvas = new Canvas();
-        mCanvas.setDrawFilter(new PaintFlagsDrawFilter(DITHER_FLAG, FILTER_BITMAP_FLAG));
     }
 
     public ShadowGenerator getShadowGenerator() {
@@ -180,16 +195,16 @@ public class LauncherIcons implements AutoCloseable {
      * The bitmap is also visually normalized with other icons.
      */
     public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user, int iconAppTargetSdk) {
-        return createBadgedIconBitmap(icon, user, iconAppTargetSdk, false, null);
+        return createBadgedIconBitmap(icon, user, iconAppTargetSdk, false);
     }
 
     public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user, int iconAppTargetSdk,
-            boolean isInstantApp) {
+                                             boolean isInstantApp) {
         return createBadgedIconBitmap(icon, user, iconAppTargetSdk, isInstantApp, null);
     }
 
     public BitmapInfo createIconPackBitmapInfo(Drawable icon) {
-        return (BitmapInfo) createIconBitmap(createIconBitmap(icon,1.0f));
+        return (BitmapInfo) createIconBitmap(createIconBitmap(icon, 1.0f));
     }
 
     /**
@@ -198,11 +213,11 @@ public class LauncherIcons implements AutoCloseable {
      * The bitmap is also visually normalized with other icons.
      */
     public BitmapInfo createBadgedIconBitmap(Drawable icon, UserHandle user, int iconAppTargetSdk,
-            boolean isInstantApp, float [] scale) {
+                                             boolean isInstantApp, float[] scale) {
         if (scale == null) {
             scale = new float[1];
         }
-        icon = normalizeAndWrapToAdaptiveIcon(icon, iconAppTargetSdk, null, scale);
+        icon = normalizeAndWrapToAdaptiveIcon(icon, iconAppTargetSdk, null, scale, user);
         Bitmap bitmap = createIconBitmap(icon, scale[0]);
         if (Utilities.ATLEAST_OREO && icon instanceof AdaptiveIconDrawable) {
             mCanvas.setBitmap(bitmap);
@@ -225,6 +240,7 @@ public class LauncherIcons implements AutoCloseable {
         } else {
             result = bitmap;
         }
+
         return BitmapInfo.fromBitmap(result);
     }
 
@@ -235,7 +251,7 @@ public class LauncherIcons implements AutoCloseable {
     public Bitmap createScaledBitmapWithoutShadow(Drawable icon, int iconAppTargetSdk) {
         RectF iconBounds = new RectF();
         float[] scale = new float[1];
-        icon = normalizeAndWrapToAdaptiveIcon(icon, iconAppTargetSdk, iconBounds, scale);
+        icon = normalizeAndWrapToAdaptiveIcon(icon, iconAppTargetSdk, iconBounds, scale, null);
         return createIconBitmap(icon,
                 Math.min(scale[0], ShadowGenerator.getScaleForBounds(iconBounds)));
     }
@@ -248,33 +264,61 @@ public class LauncherIcons implements AutoCloseable {
     }
 
     private Drawable normalizeAndWrapToAdaptiveIcon(Drawable icon, int iconAppTargetSdk,
-            RectF outIconBounds, float[] outScale) {
+                                                    RectF outIconBounds, float[] outScale, UserHandle user) {
         float scale = 1f;
-        /*if ((Utilities.ATLEAST_OREO && iconAppTargetSdk >= Build.VERSION_CODES.O) ||
-                Utilities.ATLEAST_P) {
-            boolean[] outShape = new boolean[1];
-            if (mWrapperIcon == null) {
-                mWrapperIcon = mContext.getDrawable(R.drawable.adaptive_icon_drawable_wrapper)
-                        .mutate();
+        if (Utilities.isAdaptiveLegacyEnabled(mContext)) {
+            BitmapInfo mBitmapInfo = null;
+            int colorBackground = Color.WHITE;
+
+            if (user != null) {
+                BitmapDrawable drawable = new FixedSizeBitmapDrawable(drawableToBitmap(icon));
+                Drawable badged = mPm.getUserBadgedIcon(drawable, user);
+                Bitmap result = ((BitmapDrawable) badged).getBitmap();
+                mBitmapInfo = BitmapInfo.fromBitmap(result);
             }
-            AdaptiveIconDrawable dr = (AdaptiveIconDrawable) mWrapperIcon;
-            dr.setBounds(0, 0, 1, 1);
-            scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
-            if (Utilities.ATLEAST_OREO && !outShape[0] && !(icon instanceof AdaptiveIconDrawable)) {
-                FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
-                fsd.setDrawable(icon);
-                fsd.setScale(scale);
-                icon = dr;
+
+            if ((Utilities.ATLEAST_OREO && iconAppTargetSdk >= Build.VERSION_CODES.O) ||
+                    Utilities.ATLEAST_P) {
+                boolean[] outShape = new boolean[1];
+                if (mWrapperIcon == null) {
+                    mWrapperIcon = mContext.getDrawable(R.drawable.adaptive_icon_drawable_wrapper)
+                            .mutate();
+                }
+                AdaptiveIconDrawable dr = (AdaptiveIconDrawable) mWrapperIcon;
+                dr.setBounds(0, 0, 1, 1);
+                scale = getNormalizer().getScale(icon, outIconBounds, dr.getIconMask(), outShape);
+                if (Utilities.ATLEAST_OREO && !outShape[0] && !(icon instanceof AdaptiveIconDrawable)) {
+                    FixedScaleDrawable fsd = ((FixedScaleDrawable) dr.getForeground());
+                    fsd.setDrawable(icon);
+                    fsd.setScale(scale);
+                    icon = dr;
+                    scale = getNormalizer().getScale(icon, outIconBounds, null, null);
+
+                    if (Utilities.isAdaptiveBackground(mContext) && mBitmapInfo != null) {
+                        colorBackground = getAdaptiveBgColor(mBitmapInfo);
+                    }
+
+                    ((ColorDrawable) dr.getBackground()).setColor(mBitmapInfo == null
+                            ? mWrapperBackgroundColor
+                            : colorBackground);
+                }
+            } else {
                 scale = getNormalizer().getScale(icon, outIconBounds, null, null);
-
-                ((ColorDrawable) dr.getBackground()).setColor(mWrapperBackgroundColor);
             }
-        } else {
-            scale = getNormalizer().getScale(icon, outIconBounds, null, null);
-        }*/
-
+        }
         outScale[0] = scale;
         return icon;
+    }
+
+    private int getAdaptiveBgColor(BitmapInfo mBitmapInfo) {
+        int colorBackground = Color.WHITE;
+        if (ColorUtil.isDark(mContext))
+            colorBackground = IconPalette.getMutedColor(mBitmapInfo.color, 0.5f);
+        else {
+            colorBackground = IconPalette.getMutedColor(mBitmapInfo.color, 0.1f);
+            colorBackground = ColorUtil.manipulateColor(colorBackground, 0.5f);
+        }
+        return colorBackground;
     }
 
     /**
@@ -335,8 +379,8 @@ public class LauncherIcons implements AutoCloseable {
                 Bitmap.Config.ARGB_8888);
         mCanvas.setBitmap(bitmap);
 
-        final int left = (textureWidth-width) / 2;
-        final int top = (textureHeight-height) / 2;
+        final int left = (textureWidth - width) / 2;
+        final int top = (textureHeight - height) / 2;
 
         mOldBounds.set(icon.getBounds());
         if (Utilities.ATLEAST_OREO && icon instanceof AdaptiveIconDrawable) {
@@ -344,7 +388,7 @@ public class LauncherIcons implements AutoCloseable {
             int size = Math.max(width, height);
             icon.setBounds(offset, offset, size - offset, size - offset);
         } else {
-            icon.setBounds(left, top, left+width, top+height);
+            icon.setBounds(left, top, left + width, top + height);
         }
         mCanvas.save();
         mCanvas.scale(scale, scale, textureWidth / 2, textureHeight / 2);
@@ -365,7 +409,7 @@ public class LauncherIcons implements AutoCloseable {
     }
 
     public BitmapInfo createShortcutIcon(ShortcutInfoCompat shortcutInfo,
-            boolean badged, @Nullable Provider<Bitmap> fallbackIconProvider) {
+                                         boolean badged, @Nullable Provider<Bitmap> fallbackIconProvider) {
         Drawable unbadgedDrawable = DeepShortcutManager.getInstance(mContext)
                 .getShortcutIconDrawable(shortcutInfo, mFillResIconDpi);
         IconCache cache = LauncherAppState.getInstance(mContext).getIconCache();

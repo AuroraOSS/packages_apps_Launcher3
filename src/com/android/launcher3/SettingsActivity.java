@@ -54,6 +54,7 @@ public class SettingsActivity extends Activity implements WallpaperColorInfo.OnC
     public static final String KEY_SHOW_DESKTOP_LABELS = "pref_desktop_show_labels";
     public static final String KEY_SHOW_DRAWER_LABELS = "pref_drawer_show_labels";
     public static final String ICON_SIZE = "pref_icon_size";
+    public static final String PREF_ICON_PACKAGE = "pref_iconPackPackage";
 
     public static boolean mShouldRestart = false;
     private int mThemeStyle;

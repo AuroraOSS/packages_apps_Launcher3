@@ -71,6 +71,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.android.launcher3.ThemeFragment.PREF_ADAPTIVE_BG;
+import static com.android.launcher3.ThemeFragment.PREF_ADAPTIVE_ICONS;
+
 /**
  * Various utilities shared amongst the Launcher's classes.
  */
@@ -136,6 +139,14 @@ public final class Utilities {
 
     public static boolean useDoubleTapGesture(Context context) {
         return getPrefs(context).getBoolean(PREF_DOUBLETAP_GESTURE, true);
+    }
+
+    public static boolean isAdaptiveLegacyEnabled(Context context) {
+        return getPrefs(context).getBoolean(PREF_ADAPTIVE_ICONS, true);
+    }
+
+    public static boolean isAdaptiveBackground(Context context) {
+        return getPrefs(context).getBoolean(PREF_ADAPTIVE_BG, true);
     }
 
     public static boolean isPropertyEnabled(String propertyName) {
