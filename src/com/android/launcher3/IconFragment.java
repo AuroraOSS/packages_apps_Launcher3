@@ -2,11 +2,11 @@ package com.android.launcher3;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import androidx.annotation.Nullable;
 import android.view.View;
+
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
 
 import com.android.launcher3.graphics.IconShapeOverride;
 
@@ -18,16 +18,14 @@ public class IconFragment extends PreferenceFragment implements SharedPreference
     private SharedPreferences mPrefs;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
+        addPreferencesFromResource(R.xml.icon_preferences);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
-        addPreferencesFromResource(R.xml.icon_preferences);
-        view.setBackgroundColor(Utilities.getBackgroundColor(getActivity()));
         mPrefs = Utilities.getPrefs(getActivity().getApplicationContext());
         mPrefs.registerOnSharedPreferenceChangeListener(this);
         Preference iconShapeOverride = findPreference(IconShapeOverride.KEY_PREFERENCE);

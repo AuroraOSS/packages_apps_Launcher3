@@ -16,7 +16,9 @@
 package com.android.launcher3.views;
 
 import android.content.Context;
-import android.preference.Preference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
+
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,10 +56,9 @@ public class ButtonPreference extends Preference {
     }
 
     @Override
-    protected void onBindView(View view) {
-        super.onBindView(view);
-
-        ViewGroup widgetFrame = view.findViewById(android.R.id.widget_frame);
+    public void onBindViewHolder(PreferenceViewHolder holder) {
+        super.onBindViewHolder(holder);
+        ViewGroup widgetFrame = holder.itemView.findViewById(android.R.id.widget_frame);
         if (widgetFrame != null) {
             widgetFrame.setVisibility(mWidgetFrameVisible ? View.VISIBLE : View.GONE);
         }

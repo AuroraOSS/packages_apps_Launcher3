@@ -3,13 +3,11 @@ package com.android.launcher3;
 import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 import android.view.View;
 
-import androidx.annotation.Nullable;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
 
 public class DrawerFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -28,16 +26,14 @@ public class DrawerFragment extends PreferenceFragment implements SharedPreferen
     private ActionBar mActionBar;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
+        addPreferencesFromResource(R.xml.drawer_preferences);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
-        addPreferencesFromResource(R.xml.drawer_preferences);
-        view.setBackgroundColor(Utilities.getBackgroundColor(getActivity()));
 
         mActionBar = getActivity().getActionBar();
         if (mActionBar != null)
@@ -66,7 +62,7 @@ public class DrawerFragment extends PreferenceFragment implements SharedPreferen
     }
 
     @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+    public boolean onPreferenceTreeClick(Preference preference) {
         String key = preference.getKey();
         switch (key) {
             case PREF_DRAWER_BG_COLOR:

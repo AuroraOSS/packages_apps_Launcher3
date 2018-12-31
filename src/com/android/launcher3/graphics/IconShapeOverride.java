@@ -15,8 +15,6 @@
  */
 package com.android.launcher3.graphics;
 
-import static com.android.launcher3.Utilities.getDevicePrefs;
-
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -26,15 +24,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.SystemClock;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-/*
-import android.provider.Settings;
-*/
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel;
@@ -44,16 +40,20 @@ import com.android.launcher3.util.LooperExecutor;
 
 import java.lang.reflect.Field;
 
+import static com.android.launcher3.Utilities.getDevicePrefs;
+
+/*
+import android.provider.Settings;
+*/
+
 /**
  * Utility class to override shape of {@link android.graphics.drawable.AdaptiveIconDrawable}.
  */
 @TargetApi(Build.VERSION_CODES.O)
 public class IconShapeOverride {
 
-    private static final String TAG = "IconShapeOverride";
-
     public static final String KEY_PREFERENCE = "pref_override_icon_shape";
-
+    private static final String TAG = "IconShapeOverride";
     // Time to wait before killing the process this ensures that the progress bar is visible for
     // sufficient time so that there is no flicker.
     private static final long PROCESS_KILL_DELAY_MS = 1000;

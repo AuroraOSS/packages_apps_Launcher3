@@ -1,10 +1,9 @@
 package com.android.launcher3;
 
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
-import android.view.View;
+
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -16,19 +15,13 @@ public class SettingsFragment extends PreferenceFragment {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
         addPreferencesFromResource(R.xml.preferences);
     }
 
     @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+    public boolean onPreferenceTreeClick(Preference preference) {
         String key = preference.getKey();
         PreferenceFragment fragment = null;
         switch (key) {
@@ -55,7 +48,7 @@ public class SettingsFragment extends PreferenceFragment {
         if (fragment != null) {
             getFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, fragment)
+                    .replace(android.R.id.content, fragment)
                     .addToBackStack(key)
                     .commit();
             return true;

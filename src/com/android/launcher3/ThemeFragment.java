@@ -2,11 +2,10 @@ package com.android.launcher3;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.PreferenceFragment;
 import android.view.View;
 
-import androidx.annotation.Nullable;
+import androidx.preference.ListPreference;
+import androidx.preference.PreferenceFragment;
 
 import static com.android.launcher3.SettingsActivity.PREF_THEME_STYLE_KEY;
 
@@ -19,16 +18,14 @@ public class ThemeFragment extends PreferenceFragment implements SharedPreferenc
     private SharedPreferences mPrefs;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
+        addPreferencesFromResource(R.xml.theme_preferences);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
-        addPreferencesFromResource(R.xml.theme_preferences);
-        view.setBackgroundColor(Utilities.getBackgroundColor(getActivity()));
 
         mPrefs = Utilities.getPrefs(getActivity().getApplicationContext());
         mPrefs.registerOnSharedPreferenceChangeListener(this);

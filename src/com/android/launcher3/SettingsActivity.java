@@ -63,13 +63,12 @@ public class SettingsActivity extends Activity implements WallpaperColorInfo.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(android.R.id.content, new SettingsFragment())
-                    .commit();
-        }
+        getFragmentManager()
+                .beginTransaction()
+                .replace(android.R.id.content, new SettingsFragment())
+                .commit();
         setTheme();
+        getActionBar().setElevation(0);
     }
 
     private void setTheme() {
@@ -99,11 +98,6 @@ public class SettingsActivity extends Activity implements WallpaperColorInfo.OnC
                         R.style.LauncherTheme_DarkText : R.style.PreferenceTheme;
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

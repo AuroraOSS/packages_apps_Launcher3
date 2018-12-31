@@ -1,6 +1,5 @@
 package com.android.launcher3;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -11,31 +10,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.ListView;
 import android.widget.NumberPicker;
 
-import androidx.annotation.Nullable;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
 
 import com.android.launcher3.notification.NotificationListener;
-import com.android.launcher3.util.ListViewHighlighter;
 import com.android.launcher3.util.SettingsObserver;
 import com.android.launcher3.views.ButtonPreference;
 
-import java.util.Objects;
-
-import static com.android.launcher3.SettingsActivity.DELAY_HIGHLIGHT_DURATION_MILLIS;
 import static com.android.launcher3.SettingsActivity.EXTRA_FRAGMENT_ARG_KEY;
 import static com.android.launcher3.SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGS;
 import static com.android.launcher3.SettingsActivity.ICON_BADGING_PREFERENCE_KEY;
@@ -43,7 +32,6 @@ import static com.android.launcher3.SettingsActivity.KEY_GRID_SIZE;
 import static com.android.launcher3.SettingsActivity.KEY_SHOW_DESKTOP_LABELS;
 import static com.android.launcher3.SettingsActivity.NOTIFICATION_BADGING;
 import static com.android.launcher3.SettingsActivity.NOTIFICATION_ENABLED_LISTENERS;
-import static com.android.launcher3.SettingsActivity.SAVE_HIGHLIGHTED_KEY;
 import static com.android.launcher3.Utilities.PREF_NOTIFICATIONS_GESTURE;
 
 public class HomescreenFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -59,26 +47,19 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
 
     private IconBadgingObserver mIconBadgingObserver;
 
-    private String mPreferenceKey;
-    private boolean mPreferenceHighlighted = false;
     private SharedPreferences mPrefs;
     private Preference mGridPref;
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            mPreferenceHighlighted = savedInstanceState.getBoolean(SAVE_HIGHLIGHTED_KEY);
-        }
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
+        addPreferencesFromResource(R.xml.homescreen_preferences);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
-        addPreferencesFromResource(R.xml.homescreen_preferences);
-        view.setBackgroundColor(Utilities.getBackgroundColor(getActivity()));
         mPrefs = Utilities.getPrefs(getActivity().getApplicationContext());
         mPrefs.registerOnSharedPreferenceChangeListener(this);
 
@@ -130,55 +111,6 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(SAVE_HIGHLIGHTED_KEY, mPreferenceHighlighted);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Intent intent = getActivity().getIntent();
-        mPreferenceKey = intent.getStringExtra(EXTRA_FRAGMENT_ARG_KEY);
-        if (isAdded() && !mPreferenceHighlighted && !TextUtils.isEmpty(mPreferenceKey)) {
-            getView().postDelayed(this::highlightPreference, DELAY_HIGHLIGHT_DURATION_MILLIS);
-        }
-    }
-
-    private void highlightPreference() {
-        Preference pref = findPreference(mPreferenceKey);
-        if (pref == null || getPreferenceScreen() == null) {
-            return;
-        }
-        PreferenceScreen screen = getPreferenceScreen();
-        if (Utilities.ATLEAST_OREO) {
-            screen = selectPreferenceRecursive(pref, screen);
-        }
-        if (screen == null) {
-            return;
-        }
-
-        View root = screen.getDialog() != null
-                ? screen.getDialog().getWindow().getDecorView() : getView();
-        ListView list = root.findViewById(android.R.id.list);
-        if (list == null || list.getAdapter() == null) {
-            return;
-        }
-        Adapter adapter = list.getAdapter();
-
-        // Find the position
-        int position = -1;
-        for (int i = adapter.getCount() - 1; i >= 0; i--) {
-            if (pref == adapter.getItem(i)) {
-                position = i;
-                break;
-            }
-        }
-        new ListViewHighlighter(list, position);
-        mPreferenceHighlighted = true;
-    }
-
-    @Override
     public void onDestroy() {
         if (mIconBadgingObserver != null) {
             mIconBadgingObserver.unregister();
@@ -189,7 +121,7 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
     }
 
     @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+    public boolean onPreferenceTreeClick(Preference preference) {
         String key = preference.getKey();
         switch (key) {
             case PREF_HOME_LABEL_COLOR:
@@ -256,25 +188,6 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
     private String getDefaultGridSize() {
         InvariantDeviceProfile profile = new InvariantDeviceProfile(getActivity());
         return Utilities.getGridValue(profile.numColumns, profile.numRows);
-    }
-
-    @TargetApi(Build.VERSION_CODES.O)
-    private PreferenceScreen selectPreferenceRecursive(
-            Preference pref, PreferenceScreen topParent) {
-        if (!(pref.getParent() instanceof PreferenceScreen)) {
-            return null;
-        }
-
-        PreferenceScreen parent = (PreferenceScreen) pref.getParent();
-        if (Objects.equals(parent.getKey(), topParent.getKey())) {
-            return parent;
-        } else if (selectPreferenceRecursive(parent, topParent) != null) {
-            ((PreferenceScreen) parent.getParent())
-                    .onItemClick(null, null, parent.getOrder(), 0);
-            return parent;
-        } else {
-            return null;
-        }
     }
 
     public static class IconBadgingObserver extends SettingsObserver.Secure

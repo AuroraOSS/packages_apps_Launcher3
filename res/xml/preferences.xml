@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
         android:icon="@drawable/ic_round_gesture"
         android:key="fragment_gesture"
@@ -36,4 +36,4 @@
         android:layout="@layout/item_preferences"
         android:summary="@string/hide_app_sum"
         android:title="@string/hide_app" />
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

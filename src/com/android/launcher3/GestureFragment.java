@@ -2,11 +2,10 @@ package com.android.launcher3;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.view.View;
 
-import androidx.annotation.Nullable;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
 
 import static com.android.launcher3.Utilities.PREF_DOUBLETAP_GESTURE;
 import static com.android.launcher3.Utilities.PREF_NOTIFICATIONS_GESTURE;
@@ -16,18 +15,15 @@ import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaul
 public class GestureFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
+        addPreferencesFromResource(R.xml.gesture_preferences);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
-        addPreferencesFromResource(R.xml.gesture_preferences);
-        view.setBackgroundColor(Utilities.getBackgroundColor(getActivity()));
         // Setup allow rotation preference
-
         getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
         Preference rotationPref = findPreference(ALLOW_ROTATION_PREFERENCE_KEY);
         if (getResources().getBoolean(R.bool.allow_rotation)) {

@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +18,16 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.preference.Preference;
+
+import com.android.launcher3.R;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.android.launcher3.R;
 
 public class IconPackPreference extends Preference {
 
@@ -44,12 +45,7 @@ public class IconPackPreference extends Preference {
         super(context, attrs, defStyleAttr);
         setLayoutResource(R.layout.preference_iconpack);
         pm = context.getPackageManager();
-    }
-
-    @Override
-    protected View onCreateView(ViewGroup parent) {
         init();
-        return super.onCreateView(parent);
     }
 
     private void init() {
