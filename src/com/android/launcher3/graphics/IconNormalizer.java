@@ -39,6 +39,7 @@ import com.android.launcher3.dragndrop.FolderAdaptiveIcon;
 
 import java.nio.ByteBuffer;
 
+
 public class IconNormalizer {
 
     private static final String TAG = "IconNormalizer";
@@ -60,6 +61,9 @@ public class IconNormalizer {
     private static final float BOUND_RATIO_MARGIN = .05f;
     private static final float PIXEL_DIFF_PERCENTAGE_THRESHOLD = 0.005f;
     private static final float SCALE_NOT_INITIALIZED = 0;
+
+    private static final Object LOCK = new Object();
+    private static IconNormalizer sIconNormalizer;
 
     // Ratio of the diameter of an normalized circular icon to the actual icon size.
     public static final float ICON_VISIBLE_AREA_FACTOR = 0.92f;
@@ -380,5 +384,14 @@ public class IconNormalizer {
     public static int getNormalizedCircleSize(int size) {
         float area = size * size * MAX_CIRCLE_AREA_FACTOR;
         return (int) Math.round(Math.sqrt((4 * area) / Math.PI));
+    }
+
+    public static IconNormalizer getInstance(Context context) {
+        synchronized (LOCK) {
+            if (sIconNormalizer == null) {
+                sIconNormalizer = new IconNormalizer(context);
+            }
+        }
+        return sIconNormalizer;
     }
 }

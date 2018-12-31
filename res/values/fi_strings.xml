@@ -20,6 +20,12 @@
     <string name="icon_size_large">Large</string>
     <string name="icon_size_extra_large">Extra large</string>
 
+    <!-- Icon packs -->
+    <string name="iconPackPackageDefault" translatable="false">""</string>
+    <string name="icon_pack">Icon pack</string>
+    <string name="icon_pack_summary">Select a custom icon pack</string>
+    <string name="icon_pack_none">None</string>
+
     <!-- Icon shape -->
     <string name="icon_shape_override_label_custom">Icon shape</string>
     <string name="icon_shape_rounded_square">Rounded square</string>

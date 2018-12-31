@@ -15,6 +15,8 @@ import static com.android.launcher3.Utilities.PREF_NOTIFICATIONS_GESTURE;
 
 public class IconFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    public final static String ICON_PACK_PREF = "pref_icon_pack";
+
     private SharedPreferences mPrefs;
 
     @Override
@@ -58,6 +60,8 @@ public class IconFragment extends PreferenceFragment implements SharedPreference
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         switch (key) {
             case PREF_NOTIFICATIONS_GESTURE:
+            case ICON_PACK_PREF:
+                LauncherAppState.getInstance(getActivity()).getIconCache().clear();
                 SettingsActivity.mShouldRestart = true;
                 break;
         }

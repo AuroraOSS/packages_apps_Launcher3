@@ -16,9 +16,8 @@
             android:id="@android:id/icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:alpha=".75"
             android:layout_gravity="center"
-            android:tint="?android:attr/colorControlNormal" />
+            android:alpha=".75" />
     </LinearLayout>
 
     <RelativeLayout

@@ -133,6 +133,7 @@ import java.util.Set;
 
 import static android.content.pm.ActivityInfo.CONFIG_ORIENTATION;
 import static android.content.pm.ActivityInfo.CONFIG_SCREEN_SIZE;
+import static com.android.launcher3.IconFragment.ICON_PACK_PREF;
 import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
 import static com.android.launcher3.LauncherState.ALL_APPS;
 import static com.android.launcher3.LauncherState.NORMAL;
@@ -824,6 +825,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         switch (key) {
             case PREF_ADAPTIVE_ICONS:
             case PREF_ADAPTIVE_BG:
+                LauncherAppState.getInstance(getApplicationContext()).getIconCache().clear();
                 break;
             case PREF_THEME_STYLE_KEY:
                 final int themeStyle = Integer.parseInt(sharedPreferences.getString(PREF_THEME_STYLE_KEY, "0"));

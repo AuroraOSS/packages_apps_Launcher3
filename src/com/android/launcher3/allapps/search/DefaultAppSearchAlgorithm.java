@@ -29,6 +29,7 @@ import java.util.List;
  */
 public class DefaultAppSearchAlgorithm implements SearchAlgorithm {
 
+    public final static String SEARCH_HIDDEN_APPS = "pref_search_hidden_apps";
     private final List<AppInfo> mApps;
     protected final Handler mResultHandler;
 

@@ -32,6 +32,7 @@ import androidx.annotation.UiThread;
 import android.util.ArrayMap;
 import android.util.Log;
 import com.android.launcher3.FastBitmapDrawable;
+import com.android.launcher3.ItemInfo;
 import com.android.launcher3.ItemInfoWithIcon;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
@@ -42,7 +43,7 @@ import com.android.launcher3.allapps.AllAppsBackgroundDrawable;
  */
 public class DrawableFactory {
 
-    private static final String TAG = "DrawableFactory";
+    private static final String TAG = "CustomDrawableFactory";
 
     private static DrawableFactory sInstance;
     private static final Object LOCK = new Object();
@@ -73,6 +74,10 @@ public class DrawableFactory {
 
     public FastBitmapDrawable newIcon(BitmapInfo info, ActivityInfo target) {
         return new FastBitmapDrawable(info);
+    }
+
+    public FastBitmapDrawable newIcon(Bitmap icon, ItemInfo info) {
+        return new FastBitmapDrawable(icon);
     }
 
     /**
