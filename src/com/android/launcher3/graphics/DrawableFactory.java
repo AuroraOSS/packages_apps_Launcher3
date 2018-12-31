@@ -80,6 +80,8 @@ public class DrawableFactory {
         return new FastBitmapDrawable(icon);
     }
 
+
+
     /**
      * Returns a FastBitmapDrawable with the icon.
      */
@@ -90,7 +92,7 @@ public class DrawableFactory {
         return new PreloadIconDrawable(info, mPreloadProgressPath, context);
     }
 
-    protected Path getPreloadProgressPath(Context context) {
+    public Path getPreloadProgressPath(Context context) {
         if (Utilities.ATLEAST_OREO) {
             try {
                 // Try to load the path from Mask Icon

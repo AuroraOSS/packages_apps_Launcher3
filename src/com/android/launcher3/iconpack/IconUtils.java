@@ -17,6 +17,7 @@ import com.android.launcher3.Utilities;
 import com.android.launcher3.allapps.search.DefaultAppSearchAlgorithm;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserManagerCompat;
+import com.android.launcher3.graphics.DrawableFactory;
 import com.android.launcher3.iconpack.clock.CustomClock;
 import com.android.launcher3.shortcuts.DeepShortcutManager;
 import com.android.launcher3.shortcuts.ShortcutInfoCompat;
@@ -34,6 +35,7 @@ import java.util.List;
 import static com.android.launcher3.IconFragment.ICON_PACK_PREF;
 
 public class IconUtils {
+
     private final static String[] ICON_INTENTS = new String[]{
             "com.fede.launcher.THEME_ICONPACK",
             "com.anddoes.launcher.THEME",
@@ -79,42 +81,39 @@ public class IconUtils {
         edit.apply();
     }
 
-    static boolean usingValidPack(Context context) {
+    public static boolean usingValidPack(Context context) {
         return isPackProvider(context, getCurrentPack(context));
     }
 
     static void applyIconPackAsync(final Context context) {
-        new LooperExecutor(LauncherModel.getWorkerLooper()).execute(new Runnable() {
-            @Override
-            public void run() {
-                UserManagerCompat userManagerCompat = UserManagerCompat.getInstance(context);
-                LauncherModel model = LauncherAppState.getInstance(context).getModel();
+        new LooperExecutor(LauncherModel.getWorkerLooper()).execute(() -> {
+            UserManagerCompat userManagerCompat = UserManagerCompat.getInstance(context);
+            LauncherModel model = LauncherAppState.getInstance(context).getModel();
 
-                boolean noPack = IconUtils.getCurrentPack(context).isEmpty();
-                Utilities.getPrefs(context).edit().putBoolean(DefaultAppSearchAlgorithm.SEARCH_HIDDEN_APPS, !noPack).apply();
-                for (UserHandle user : userManagerCompat.getUserProfiles()) {
-                    model.onPackagesReload(user);
+            boolean noPack = IconUtils.getCurrentPack(context).isEmpty();
+            Utilities.getPrefs(context).edit().putBoolean(DefaultAppSearchAlgorithm.SEARCH_HIDDEN_APPS, !noPack).apply();
+            for (UserHandle user : userManagerCompat.getUserProfiles()) {
+                model.onPackagesReload(user);
+            }
+
+            CustomIconProvider.clearDisabledApps(context);
+            ((CustomDrawableFactory) DrawableFactory.get(context)).reloadIconPack();
+
+            DeepShortcutManager shortcutManager = DeepShortcutManager.getInstance(context);
+            LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(context);
+            for (UserHandle user : userManagerCompat.getUserProfiles()) {
+                HashSet<String> pkgsSet = new HashSet<>();
+                for (LauncherActivityInfo info : launcherApps.getActivityList(null, user)) {
+                    pkgsSet.add(info.getComponentName().getPackageName());
                 }
-
-                CustomIconProvider.clearDisabledApps(context);
-                ((CustomDrawableFactory) com.android.launcher3.graphics.DrawableFactory.get(context)).reloadIconPack();
-
-                DeepShortcutManager shortcutManager = DeepShortcutManager.getInstance(context);
-                LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(context);
-                for (UserHandle user : userManagerCompat.getUserProfiles()) {
-                    HashSet<String> pkgsSet = new HashSet<>();
-                    for (LauncherActivityInfo info : launcherApps.getActivityList(null, user)) {
-                        pkgsSet.add(info.getComponentName().getPackageName());
-                    }
-                    for (String pkg : pkgsSet) {
-                        reloadIcon(shortcutManager, model, user, pkg);
-                    }
+                for (String pkg : pkgsSet) {
+                    reloadIcon(shortcutManager, model, user, pkg);
                 }
             }
         });
     }
 
-    static void reloadIconByKey(Context context, ComponentKey key) {
+    public static void reloadIconByKey(Context context, ComponentKey key) {
         LauncherModel model = LauncherAppState.getInstance(context).getModel();
         DeepShortcutManager shortcutManager = DeepShortcutManager.getInstance(context);
         reloadIcon(shortcutManager, model, key.user, key.componentName.getPackageName());

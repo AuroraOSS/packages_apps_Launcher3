@@ -78,4 +78,7 @@
     <string name="label_size_large">Large</string>
     <string name="label_size_extraLarge">Extra Large</string>
 
+    <!-- Bottomsheet -->
+    <string name="label_edit">Edit</string>
+
 </resources>

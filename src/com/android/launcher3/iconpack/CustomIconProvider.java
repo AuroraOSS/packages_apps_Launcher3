@@ -86,20 +86,8 @@ public class CustomIconProvider extends DynamicIconProvider {
         setDisabledApps(context, new HashSet<String>());
     }
 
-    static boolean isEnabledForApp(Context context, ComponentKey key) {
+    public static boolean isEnabledForApp(Context context, ComponentKey key) {
         return !getDisabledApps(context).contains(key.toString());
-    }
-
-    static void setAppState(Context context, ComponentKey key, boolean enabled) {
-        String comp = key.toString();
-        Set<String> disabledApps = getDisabledApps(context);
-        while (disabledApps.contains(comp)) {
-            disabledApps.remove(comp);
-        }
-        if (!enabled) {
-            disabledApps.add(comp);
-        }
-        setDisabledApps(context, disabledApps);
     }
 
     private static Set<String> getDisabledApps(Context context) {
@@ -110,6 +98,29 @@ public class CustomIconProvider extends DynamicIconProvider {
         SharedPreferences.Editor editor = Utilities.getPrefs(context).edit();
         editor.putStringSet(DISABLE_PACK_PREF, disabledApps);
         editor.apply();
+    }
+
+    public static void setAppState(Context context, String comp, boolean enabled) {
+        Set<String> disabledApps = getDisabledApps(context);
+        while (disabledApps.contains(comp)) {
+            disabledApps.remove(comp);
+        }
+        if (!enabled) {
+            disabledApps.add(comp);
+        }
+        setDisabledApps(context, disabledApps);
+    }
+
+    public static void setAppState(Context context, ComponentKey key, boolean enabled) {
+        String comp = key.toString();
+        Set<String> disabledApps = getDisabledApps(context);
+        while (disabledApps.contains(comp)) {
+            disabledApps.remove(comp);
+        }
+        if (!enabled) {
+            disabledApps.add(comp);
+        }
+        setDisabledApps(context, disabledApps);
     }
 
     @Override

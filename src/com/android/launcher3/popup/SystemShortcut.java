@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.BaseDraggingActivity;
+import com.android.launcher3.EditShortcut;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
@@ -38,6 +39,9 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
     }
 
     public abstract View.OnClickListener getOnClickListener(T activity, ItemInfo itemInfo);
+
+    public static class Edit extends EditShortcut {
+    }
 
     public static class Widgets extends SystemShortcut<Launcher> {
 

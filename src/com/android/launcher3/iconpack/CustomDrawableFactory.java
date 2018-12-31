@@ -24,12 +24,12 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 public class CustomDrawableFactory extends DynamicDrawableFactory implements Runnable {
-    final Map<ComponentName, Integer> packComponents = new HashMap<>();
-    final Map<ComponentName, String> packCalendars = new HashMap<>();
-    final Map<Integer, CustomClock.Metadata> packClocks = new HashMap<>();
+    public final Map<ComponentName, Integer> packComponents = new HashMap<>();
+    public final Map<ComponentName, String> packCalendars = new HashMap<>();
+    public final Map<Integer, CustomClock.Metadata> packClocks = new HashMap<>();
     private final Context mContext;
     private final BroadcastReceiver mAutoUpdatePack;
-    String iconPack;
+    public String iconPack;
     private boolean mRegistered = false;
     private CustomClock mCustomClockDrawer;
     private Semaphore waiter = new Semaphore(0);
@@ -82,7 +82,7 @@ public class CustomDrawableFactory extends DynamicDrawableFactory implements Run
         }
     }
 
-    synchronized void ensureInitialLoadComplete() {
+    public synchronized void ensureInitialLoadComplete() {
         if (waiter != null) {
             waiter.acquireUninterruptibly();
             waiter.release();

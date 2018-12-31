@@ -14,4 +14,4 @@ local.properties
 gradle/
 build/
 gradlew*
-
+aosp/

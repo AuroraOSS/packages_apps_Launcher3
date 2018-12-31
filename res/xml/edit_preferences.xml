@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--
-     Copyright (C) 2015 The Android Open Source Project
+<!-- Copyright (C) 2015 Google Inc.
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,8 +14,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="?android:attr/colorPrimary" />
-    <corners android:radius="@dimen/bg_round_rect_radius" />
-</shape>
+
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_hide"
+        android:key="pref_app_hide"
+        android:persistent="false"
+        android:summary="@string/hide_app_sum"
+        android:title="@string/hide_app" />
+
+</androidx.preference.PreferenceScreen>

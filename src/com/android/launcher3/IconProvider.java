@@ -11,14 +11,15 @@ public class IconProvider {
 
     protected String mSystemState;
 
+    public IconProvider() {
+    }
+
     public static IconProvider newInstance(Context context) {
         IconProvider provider = Utilities.getOverrideObject(
                 IconProvider.class, context, R.string.icon_provider_class);
         provider.updateSystemStateString(context);
         return provider;
     }
-
-    public IconProvider() { }
 
     public void updateSystemStateString(Context context) {
         final String locale;
