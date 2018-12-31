@@ -136,7 +136,6 @@ import static android.content.pm.ActivityInfo.CONFIG_SCREEN_SIZE;
 import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
 import static com.android.launcher3.LauncherState.ALL_APPS;
 import static com.android.launcher3.LauncherState.NORMAL;
-import static com.android.launcher3.SettingsActivity.PREF_ICON_PACKAGE;
 import static com.android.launcher3.SettingsActivity.PREF_THEME_STYLE_KEY;
 import static com.android.launcher3.ThemeFragment.PREF_ADAPTIVE_BG;
 import static com.android.launcher3.ThemeFragment.PREF_ADAPTIVE_ICONS;
@@ -277,7 +276,6 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         initDeviceProfile(app.getInvariantDeviceProfile());
 
         mSharedPrefs = Utilities.getPrefs(this);
-        mSharedPrefs.registerOnSharedPreferenceChangeListener(this);
         mIconCache = app.getIconCache();
         mAccessibilityDelegate = new LauncherAccessibilityDelegate(this);
 
@@ -823,13 +821,9 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
         switch (key) {
-            case PREF_ICON_PACKAGE:
             case PREF_ADAPTIVE_ICONS:
             case PREF_ADAPTIVE_BG:
-                mModel.clearIconCache();
-                mModel.forceReload();
                 break;
             case PREF_THEME_STYLE_KEY:
                 final int themeStyle = Integer.parseInt(sharedPreferences.getString(PREF_THEME_STYLE_KEY, "0"));
