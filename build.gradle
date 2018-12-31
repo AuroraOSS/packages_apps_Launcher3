@@ -22,8 +22,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -92,10 +91,6 @@ android {
             }
         }
 
-        debug {
-            manifest.srcFile "AndroidManifest.xml"
-        }
-
         aosp {
             java.srcDirs = ['src_flags', "src_ui_overrides"]
             manifest.srcFile "AndroidManifest.xml"
@@ -131,15 +126,6 @@ dependencies {
     implementation "androidx.dynamicanimation:dynamicanimation:${SUPPORT_LIBS_VERSION}"
     implementation "androidx.recyclerview:recyclerview:${SUPPORT_LIBS_VERSION}"
     implementation 'com.google.protobuf.nano:protobuf-javanano:3.2.0rc2'
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation "org.mockito:mockito-core:1.9.5"
-    androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
-    androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-    androidTestImplementation "androidx.annotation:annotation:${SUPPORT_LIBS_VERSION}"
 }
 
 protobuf {
