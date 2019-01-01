@@ -1,4 +1,4 @@
-package com.android.launcher3;
+package com.android.launcher3.preferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -6,6 +6,11 @@ import android.view.View;
 
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragment;
+
+import com.android.launcher3.LauncherFiles;
+import com.android.launcher3.R;
+import com.android.launcher3.SettingsActivity;
+import com.android.launcher3.Utilities;
 
 import static com.android.launcher3.SettingsActivity.PREF_THEME_STYLE_KEY;
 

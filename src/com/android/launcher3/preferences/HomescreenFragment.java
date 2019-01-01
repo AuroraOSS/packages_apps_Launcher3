@@ -1,4 +1,4 @@
-package com.android.launcher3;
+package com.android.launcher3.preferences;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,6 +21,12 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
 
+import com.android.launcher3.InvariantDeviceProfile;
+import com.android.launcher3.LauncherFiles;
+import com.android.launcher3.R;
+import com.android.launcher3.SessionCommitReceiver;
+import com.android.launcher3.SettingsActivity;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.util.SettingsObserver;
 import com.android.launcher3.views.ButtonPreference;

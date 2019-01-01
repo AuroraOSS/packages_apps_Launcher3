@@ -1,4 +1,4 @@
-package com.android.launcher3;
+package com.android.launcher3.preferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -6,6 +6,10 @@ import android.view.View;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
+
+import com.android.launcher3.LauncherFiles;
+import com.android.launcher3.R;
+import com.android.launcher3.SettingsActivity;
 
 import static com.android.launcher3.Utilities.PREF_DOUBLETAP_GESTURE;
 import static com.android.launcher3.Utilities.PREF_NOTIFICATIONS_GESTURE;

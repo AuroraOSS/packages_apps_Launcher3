@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.launcher3;
+package com.android.launcher3.preferences;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -36,6 +36,11 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.launcher3.LauncherAppState;
+import com.android.launcher3.MultiSelectRecyclerViewAdapter;
+import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +87,7 @@ public class HiddenFragment extends PreferenceFragment implements MultiSelectRec
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateHiddenApps() {
+    public void updateHiddenApps() {
         mAdapter.addSelectionsToHideList(getActivity().getApplicationContext());
         LauncherAppState appState = LauncherAppState.getInstanceNoCreate();
         if (appState != null) {
@@ -90,7 +95,7 @@ public class HiddenFragment extends PreferenceFragment implements MultiSelectRec
         }
     }
 
-    private void unhideHiddenApps() {
+    public void unhideHiddenApps() {
         mAdapter.removeSelectionsToHideList(getActivity().getApplicationContext());
         mAdapter.notifyDataSetChanged();
         mActionBar.setTitle(getString(R.string.hidden_app));

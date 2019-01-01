@@ -35,14 +35,14 @@ import java.util.List;
 import java.util.Set;
 
 
-class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecyclerViewAdapter.ViewHolder> {
+public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecyclerViewAdapter.ViewHolder> {
 
     private final Set<String> mBlackList = new HashSet<>();
     private List<Packages> mPackages;
     private ItemClickListener mClickListener;
     private PackageManager mPackageManager;
 
-    MultiSelectRecyclerViewAdapter(Context context, List<ResolveInfo> resolveInfos, ItemClickListener clickListener) {
+    public MultiSelectRecyclerViewAdapter(Context context, List<ResolveInfo> resolveInfos, ItemClickListener clickListener) {
         mClickListener = clickListener;
         mPackageManager = context.getPackageManager();
 
@@ -80,7 +80,7 @@ class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecycl
     }
 
     @Override
-    void toggleSelection(ActionBar actionBar, int position) {
+    public void toggleSelection(ActionBar actionBar, int position) {
         String packageName = mPackages.get(position).getPackageName();
         if (mSelections.contains(packageName)) {
             mSelections.remove(packageName);
@@ -95,7 +95,7 @@ class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecycl
         notifyItemChanged(position);
     }
 
-    interface ItemClickListener {
+    public interface ItemClickListener {
         void onItemClicked(int position);
     }
 

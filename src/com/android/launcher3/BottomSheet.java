@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.launcher3.preferences.PrefUtils;
 import com.android.launcher3.widget.WidgetsBottomSheet;
 
 import java.util.Map;

@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.android.launcher3.preferences.SettingsFragment;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 import com.android.launcher3.util.LooperExecutor;
 

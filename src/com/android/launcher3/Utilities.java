@@ -71,8 +71,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.android.launcher3.ThemeFragment.PREF_ADAPTIVE_BG;
-import static com.android.launcher3.ThemeFragment.PREF_ADAPTIVE_ICONS;
+import static com.android.launcher3.preferences.ThemeFragment.PREF_ADAPTIVE_BG;
+import static com.android.launcher3.preferences.ThemeFragment.PREF_ADAPTIVE_ICONS;
 
 /**
  * Various utilities shared amongst the Launcher's classes.

@@ -1,4 +1,4 @@
-package com.android.launcher3;
+package com.android.launcher3.preferences;
 
 import android.app.ActionBar;
 import android.content.SharedPreferences;
@@ -8,6 +8,11 @@ import android.view.View;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
+
+import com.android.launcher3.LauncherFiles;
+import com.android.launcher3.R;
+import com.android.launcher3.SettingsActivity;
+import com.android.launcher3.Utilities;
 
 public class DrawerFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 

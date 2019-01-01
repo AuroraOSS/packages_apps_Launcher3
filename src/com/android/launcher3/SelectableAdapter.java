@@ -52,13 +52,13 @@ abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> extends Rec
     void toggleSelection(ActionBar actionBar, int position) {
     }
 
-    void addSelectionsToHideList(Context context) {
+    public void addSelectionsToHideList(Context context) {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit().putStringSet(Utilities.KEY_HIDDEN_APPS_SET, mSelections).apply();
     }
 
-    void removeSelectionsToHideList(Context context) {
+    public void removeSelectionsToHideList(Context context) {
         Set<String> hiddenApps = PreferenceManager.getDefaultSharedPreferences(context).getStringSet(Utilities.KEY_HIDDEN_APPS_SET, null);;
 
         if (hiddenApps != null && !hiddenApps.isEmpty()) {

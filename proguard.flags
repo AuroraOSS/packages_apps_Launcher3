@@ -125,7 +125,7 @@
   *;
 }
 
--keep class com.android.launcher3.HiddenFragment {
+-keep class com.android.launcher3.preferences.HiddenFragment {
   *;
 }
 

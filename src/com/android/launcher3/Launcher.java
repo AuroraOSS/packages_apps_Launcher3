@@ -133,13 +133,12 @@ import java.util.Set;
 
 import static android.content.pm.ActivityInfo.CONFIG_ORIENTATION;
 import static android.content.pm.ActivityInfo.CONFIG_SCREEN_SIZE;
-import static com.android.launcher3.IconFragment.ICON_PACK_PREF;
 import static com.android.launcher3.LauncherAnimUtils.SPRING_LOADED_EXIT_DELAY;
 import static com.android.launcher3.LauncherState.ALL_APPS;
 import static com.android.launcher3.LauncherState.NORMAL;
 import static com.android.launcher3.SettingsActivity.PREF_THEME_STYLE_KEY;
-import static com.android.launcher3.ThemeFragment.PREF_ADAPTIVE_BG;
-import static com.android.launcher3.ThemeFragment.PREF_ADAPTIVE_ICONS;
+import static com.android.launcher3.preferences.ThemeFragment.PREF_ADAPTIVE_BG;
+import static com.android.launcher3.preferences.ThemeFragment.PREF_ADAPTIVE_ICONS;
 import static com.android.launcher3.dragndrop.DragLayer.ALPHA_INDEX_LAUNCHER_LOAD;
 import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
 import static com.android.launcher3.logging.LoggerUtils.newTarget;

@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.android.launcher3.IconFragment.ICON_PACK_PREF;
+import static com.android.launcher3.preferences.IconFragment.ICON_PACK_PREF;
 
 public class IconUtils {
 

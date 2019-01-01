@@ -1,7 +1,9 @@
-package com.android.launcher3;
+package com.android.launcher3.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.android.launcher3.Utilities;
 
 import org.json.JSONObject;
 

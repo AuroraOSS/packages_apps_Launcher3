@@ -49,6 +49,7 @@ import com.android.launcher3.graphics.BitmapInfo;
 import com.android.launcher3.graphics.BitmapRenderer;
 import com.android.launcher3.graphics.LauncherIcons;
 import com.android.launcher3.model.PackageItemInfo;
+import com.android.launcher3.preferences.PrefUtils;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.InstantAppResolver;
 import com.android.launcher3.util.Preconditions;
