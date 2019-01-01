@@ -17,18 +17,11 @@ package com.android.launcher3.allapps;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Process;
-import androidx.dynamicanimation.animation.DynamicAnimation;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
@@ -37,6 +30,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.DeviceProfile;
@@ -62,9 +62,6 @@ import com.android.launcher3.views.SpringRelativeLayout;
 
 import java.util.List;
 
-import static com.android.launcher3.DrawerFragment.PREF_DRAWER_BG_COLOR;
-import static com.android.launcher3.DrawerFragment.PREF_DRAWER_BG_CUSTOMIZATION;
-
 /**
  * The all apps view container.
  */
@@ -82,28 +79,19 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     private final AllAppsStore mAllAppsStore = new AllAppsStore();
 
     private final Paint mNavBarScrimPaint;
+    private final Point mFastScrollerOffset = new Point();
     private int mNavBarScrimHeight = 0;
-
     private SearchUiManager mSearchUiManager;
     private View mSearchContainer;
     private AllAppsPagedView mViewPager;
     private FloatingHeaderView mHeader;
-
     private SpannableStringBuilder mSearchQueryBuilder = null;
-
     private int mNumAppsPerRow;
     private int mNumPredictedAppsPerRow;
-
     private boolean mUsingTabs;
     private boolean mHasPredictions = false;
     private boolean mSearchModeWhileUsingTabs = false;
-
     private RecyclerViewFastScroller mTouchHandler;
-    private final Point mFastScrollerOffset = new Point();
-
-    private SharedPreferences mPrefs;
-    private boolean mDrawerBgCustomization;
-    private int mDrawerBgColor;
 
     public AllAppsContainerView(Context context) {
         this(context, null);
@@ -118,8 +106,6 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
         mLauncher = Launcher.getLauncher(context);
         mLauncher.addOnDeviceProfileChangeListener(this);
-
-        mPrefs = Utilities.getPrefs(context.getApplicationContext());
 
         mSearchQueryBuilder = new SpannableStringBuilder();
         Selection.setSelection(mSearchQueryBuilder, 0);
@@ -136,13 +122,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         addSpringView(R.id.all_apps_header);
         addSpringView(R.id.apps_list_view);
         addSpringView(R.id.all_apps_tabs_view_pager);
-
-        mDrawerBgCustomization = mPrefs.getBoolean(PREF_DRAWER_BG_CUSTOMIZATION, false);
-        mDrawerBgColor = mPrefs.getInt(PREF_DRAWER_BG_COLOR, Utilities.getScrimColor(context));
-        if (mDrawerBgCustomization)
-            setBackgroundColor(mDrawerBgColor);
-        else
-            setBackgroundColor(Utilities.getScrimColor(context));
+        setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
 
     public AllAppsStore getAppsStore() {
@@ -308,7 +288,8 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
     }
 
     @Override
-    public void onDropCompleted(View target, DragObject d, boolean success) { }
+    public void onDropCompleted(View target, DragObject d, boolean success) {
+    }
 
     @Override
     public void fillInLogContainerData(View v, ItemInfo info, Target target, Target targetParent) {
@@ -562,7 +543,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
                             new DynamicAnimation.OnAnimationEndListener() {
                                 @Override
                                 public void onAnimationEnd(DynamicAnimation animation,
-                                        boolean canceled, float value, float velocity) {
+                                                           boolean canceled, float value, float velocity) {
                                     removeSpringView(searchViewId);
                                 }
                             });
