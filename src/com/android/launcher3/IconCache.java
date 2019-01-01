@@ -60,8 +60,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+
+import static com.android.launcher3.BottomSheet.PREF_EDIT_TITLE;
 
 /**
  * Cache of application icons.  Icons can be made from any thread.
@@ -108,6 +111,7 @@ public class IconCache {
     private final BitmapFactory.Options mHighResOptions;
 
     private int mPendingIconRequestCount = 0;
+    private Map<String,String> mCustomTitles;
 
     public IconCache(Context context, InvariantDeviceProfile inv) {
         mContext = context;
@@ -513,6 +517,12 @@ public class IconCache {
         info.contentDescription = entry.contentDescription;
         info.usingLowResIcon = entry.isLowResIcon;
         ((entry.icon == null) ? getDefaultIcon(info.user) : entry).applyTo(info);
+        if (info.getTargetComponent() != null) {
+            mCustomTitles = PrefUtils.getMap(PREF_EDIT_TITLE , mContext);
+            String packageName = info.getTargetComponent().getPackageName();
+            if (mCustomTitles.containsKey(packageName))
+                info.title = mCustomTitles.get(packageName);
+        }
     }
 
     public synchronized BitmapInfo getDefaultIcon(UserHandle user) {

@@ -29,26 +29,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal" />
 
-    <TextView
+    <EditText
         android:id="@+id/title"
         style="@style/TextTitle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="24sp" />
-
-    <EditText
-        android:id="@+id/edit_title"
-        style="@style/TextTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:background="@android:color/transparent"
         android:gravity="center_horizontal"
+        android:imeOptions="actionDone"
         android:singleLine="true"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="24sp"
-        android:visibility="gone" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/package_name"
