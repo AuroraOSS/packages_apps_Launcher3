@@ -13,7 +13,7 @@
      limitations under the License.
 -->
 
-<com.android.launcher3.BottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
+<com.android.launcher3.EditBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
@@ -67,4 +67,4 @@
         android:background="?android:attr/colorBackground"
         android:focusable="false" />
 
-</com.android.launcher3.BottomSheet>
+</com.android.launcher3.EditBottomSheet>

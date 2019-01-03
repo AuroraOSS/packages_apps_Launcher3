@@ -20,7 +20,7 @@ public class EditShortcut extends SystemShortcut {
                 if (!mOpened) {
                     mOpened = true;
                     AbstractFloatingView.closeAllOpenViews(activity);
-                    BottomSheet cbs = (BottomSheet) activity.getLayoutInflater()
+                    EditBottomSheet cbs = (EditBottomSheet) activity.getLayoutInflater()
                             .inflate(R.layout.edit_layout, activity.getDragLayer(), false);
                     cbs.populateAndShow(itemInfo);
                 }

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2017 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<com.android.launcher3.InfoBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@drawable/bottomsheet_bg"
+    android:elevation="@dimen/deep_shortcuts_elevation"
+    android:orientation="vertical"
+    android:paddingTop="28dp"
+    android:theme="?attr/widgetsTheme">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/TextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/icon"
+            android:layout_centerHorizontal="true"
+            android:singleLine="true"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/package_version"
+            style="@style/TextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:gravity="center_horizontal"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/package_name"
+            style="@style/TextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/package_version"
+            android:layout_centerInParent="true"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp" />
+
+        <TableLayout
+            android:id="@+id/app_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/package_name"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center"
+            android:stretchColumns="*"
+            android:visibility="gone">
+
+            <TableRow android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:text="App size"
+                    android:textAlignment="viewStart" />
+
+                <TextView
+                    android:id="@+id/AppSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:textAlignment="viewEnd" />
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:text="User data"
+                    android:textAlignment="viewStart" />
+
+                <TextView
+                    android:id="@+id/UserData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:textAlignment="viewEnd" />
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:text="Cache"
+                    android:textAlignment="viewStart" />
+
+                <TextView
+                    android:id="@+id/CacheSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:textAlignment="viewEnd" />
+            </TableRow>
+
+        </TableLayout>
+
+        <RelativeLayout
+            android:id="@+id/app_perm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/package_name"
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/permission_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/permission_title"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/perm_btn"
+                style="@android:style/Widget.Material.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/permission_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:padding="5dp"
+                android:paddingStart="6dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="6dp"
+                android:paddingBottom="8dp"
+                android:text="@string/permission_ask" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/uninstall_btn"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/app_info"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:padding="5dp"
+            android:paddingStart="6dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="8dp"
+            android:text="@string/permission_uninstall"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</com.android.launcher3.InfoBottomSheet>

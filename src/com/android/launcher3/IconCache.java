@@ -65,7 +65,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import static com.android.launcher3.BottomSheet.PREF_EDIT_TITLE;
+import static com.android.launcher3.EditBottomSheet.PREF_EDIT_TITLE;
 
 /**
  * Cache of application icons.  Icons can be made from any thread.

@@ -80,5 +80,9 @@
 
     <!-- Bottomsheet -->
     <string name="label_edit">Edit</string>
-
+    <string name="app_system">System App</string>
+    <string name="app_user">User App</string>
+    <string name="permission_title">Allow app usage access permission</string>
+    <string name="permission_ask">Ask</string>
+    <string name="permission_uninstall">Uninstall</string>
 </resources>

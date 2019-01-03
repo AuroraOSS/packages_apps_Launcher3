@@ -366,6 +366,16 @@ public final class Utilities {
         }
     }
 
+    public static boolean isSystemApp(Context context, String packageName) {
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
+            return (info != null) && (info.applicationInfo != null) &&
+                    ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
     /*
      * Finds a system apk which had a broadcast receiver listening to a particular action.
      * @param action intent action used to find the apk

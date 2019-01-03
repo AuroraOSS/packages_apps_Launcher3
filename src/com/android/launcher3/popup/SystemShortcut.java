@@ -1,16 +1,12 @@
 package com.android.launcher3.popup;
 
-import static com.android.launcher3.userevent.nano.LauncherLogProto.Action;
-import static com.android.launcher3.userevent.nano.LauncherLogProto.ControlType;
-
 import android.content.Intent;
-import android.graphics.Rect;
-import android.os.Bundle;
 import android.view.View;
 
 import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.EditShortcut;
+import com.android.launcher3.InfoBottomSheet;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
@@ -22,6 +18,9 @@ import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.widget.WidgetsBottomSheet;
 
 import java.util.List;
+
+import static com.android.launcher3.userevent.nano.LauncherLogProto.Action;
+import static com.android.launcher3.userevent.nano.LauncherLogProto.ControlType;
 
 /**
  * Represents a system shortcut for a given app. The shortcut should have a static label and
@@ -51,7 +50,7 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
 
         @Override
         public View.OnClickListener getOnClickListener(final Launcher launcher,
-                final ItemInfo itemInfo) {
+            final ItemInfo itemInfo) {
             final List<WidgetItem> widgets =
                     launcher.getPopupDataProvider().getWidgetsForPackageUser(new PackageUserKey(
                             itemInfo.getTargetComponent().getPackageName(), itemInfo.user));
@@ -79,12 +78,10 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
         public View.OnClickListener getOnClickListener(
                 BaseDraggingActivity activity, ItemInfo itemInfo) {
             return (view) -> {
-                Rect sourceBounds = activity.getViewBounds(view);
-                Bundle opts = activity.getActivityLaunchOptionsAsBundle(view);
-                new PackageManagerHelper(activity).startDetailsActivityForInfo(
-                        itemInfo, sourceBounds, opts);
-                activity.getUserEventDispatcher().logActionOnControl(Action.Touch.TAP,
-                        ControlType.APPINFO_TARGET, view);
+                AbstractFloatingView.closeAllOpenViews(activity);
+                InfoBottomSheet infoBottomSheet = (InfoBottomSheet) activity.getLayoutInflater()
+                        .inflate(R.layout.info_layout, activity.getDragLayer(), false);
+                infoBottomSheet.populateAndShow(itemInfo);
             };
         }
     }

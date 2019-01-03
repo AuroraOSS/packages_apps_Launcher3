@@ -35,7 +35,7 @@ import java.util.Map;
 
 /*import android.content.res.ColorStateList;*/
 
-public class BottomSheet extends WidgetsBottomSheet implements TextView.OnEditorActionListener {
+public class EditBottomSheet extends WidgetsBottomSheet implements TextView.OnEditorActionListener {
 
     public static final String PREF_EDIT_TITLE = "pref_edit_title";
 
@@ -44,13 +44,12 @@ public class BottomSheet extends WidgetsBottomSheet implements TextView.OnEditor
     private Map<String, String> mCustomTitle;
     private EditText mTitleTxt;
     private TextView mPackageNameTxt;
-    private ItemInfo mAppInfo;
 
-    public BottomSheet(Context context, AttributeSet attrs) {
+    public EditBottomSheet(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public BottomSheet(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EditBottomSheet(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mFragmentManager = Launcher.getLauncher(context).getFragmentManager();
     }
@@ -58,7 +57,6 @@ public class BottomSheet extends WidgetsBottomSheet implements TextView.OnEditor
     @Override
     public void populateAndShow(ItemInfo itemInfo) {
         super.populateAndShow(itemInfo);
-        mAppInfo = itemInfo;
         mTitleTxt = findViewById(R.id.title);
         mPackageNameTxt = findViewById(R.id.package_name);
 
