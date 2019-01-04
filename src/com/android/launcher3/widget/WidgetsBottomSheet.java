@@ -76,6 +76,13 @@ public class WidgetsBottomSheet extends BaseWidgetSheet implements Insettable {
         animateOpen();
     }
 
+    public void populateAndShow() {
+        onWidgetsBound();
+        mLauncher.getDragLayer().addView(this);
+        mIsOpen = false;
+        animateOpen();
+    }
+
     @Override
     protected void onWidgetsBound() {
         List<WidgetItem> widgets = mLauncher.getPopupDataProvider().getWidgetsForPackageUser(

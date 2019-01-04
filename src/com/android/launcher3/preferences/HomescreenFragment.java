@@ -50,6 +50,7 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
     public static final String PREF_HOME_LABEL_SIZE = "pref_home_label_size";
     public static final String PREF_HOME_LABEL_VISIBILITY = "pref_home_show_labels";
     public static final String PREF_HOME_LABEL_LINE = "pref_home_label_line";
+    public static final String PREF_BOTTOM_OPTIONS = "pref_bottom_option";
 
     private IconBadgingObserver mIconBadgingObserver;
 

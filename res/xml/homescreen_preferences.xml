@@ -7,6 +7,13 @@
         android:summary="@string/auto_add_shortcuts_description"
         android:title="@string/auto_add_shortcuts_label" />
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_bottom_option"
+        android:persistent="true"
+        android:summary="Use bottom sheet to display workspace settings"
+        android:title="Workspace options" />
+
     <Preference
         android:key="pref_grid_size"
         android:persistent="true"

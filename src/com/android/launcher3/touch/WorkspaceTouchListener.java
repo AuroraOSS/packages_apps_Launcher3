@@ -15,14 +15,7 @@
  */
 package com.android.launcher3.touch;
 
-import static android.view.MotionEvent.ACTION_CANCEL;
-import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_POINTER_UP;
-import static android.view.MotionEvent.ACTION_UP;
-import static android.view.ViewConfiguration.getLongPressTimeout;
-
-import static com.android.launcher3.LauncherState.NORMAL;
-
+import android.content.SharedPreferences;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.view.HapticFeedbackConstants;
@@ -34,11 +27,22 @@ import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
+import com.android.launcher3.OptionsBottomSheet;
+import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace;
 import com.android.launcher3.dragndrop.DragLayer;
-import com.android.launcher3.views.OptionsPopupView;
+import com.android.launcher3.preferences.HomescreenFragment;
 import com.android.launcher3.userevent.nano.LauncherLogProto.Action;
 import com.android.launcher3.userevent.nano.LauncherLogProto.ContainerType;
+import com.android.launcher3.views.OptionsPopupView;
+
+import static android.view.MotionEvent.ACTION_CANCEL;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_POINTER_UP;
+import static android.view.MotionEvent.ACTION_UP;
+import static android.view.ViewConfiguration.getLongPressTimeout;
+import static com.android.launcher3.LauncherState.NORMAL;
 
 /**
  * Helper class to handle touch on empty space in workspace and show options popup on long press
@@ -62,10 +66,12 @@ public class WorkspaceTouchListener implements OnTouchListener, Runnable {
     private final PointF mTouchDownPoint = new PointF();
 
     private int mLongPressState = STATE_CANCELLED;
+    private SharedPreferences mPrefs;
 
     public WorkspaceTouchListener(Launcher launcher, Workspace workspace) {
         mLauncher = launcher;
         mWorkspace = workspace;
+        mPrefs = Utilities.getPrefs(mLauncher);
     }
 
     @Override
@@ -163,10 +169,20 @@ public class WorkspaceTouchListener implements OnTouchListener, Runnable {
                 mLauncher.getUserEventDispatcher().logActionOnContainer(Action.Touch.LONGPRESS,
                         Action.Direction.NONE, ContainerType.WORKSPACE,
                         mWorkspace.getCurrentPage());
-                OptionsPopupView.showDefaultOptions(mLauncher, mTouchDownPoint.x, mTouchDownPoint.y);
+                if (mPrefs.getBoolean(HomescreenFragment.PREF_BOTTOM_OPTIONS, true))
+                    showBottomSheetOptions();
+                else
+                    OptionsPopupView.showDefaultOptions(mLauncher, mTouchDownPoint.x, mTouchDownPoint.y);
             } else {
                 cancelLongPress();
             }
         }
+    }
+
+    private void showBottomSheetOptions() {
+        AbstractFloatingView.closeAllOpenViews(mLauncher);
+        OptionsBottomSheet optionsBottomSheet = (OptionsBottomSheet) mLauncher.getLayoutInflater()
+                .inflate(R.layout.options_layout, mLauncher.getDragLayer(), false);
+        optionsBottomSheet.populateAndShow();
     }
 }
