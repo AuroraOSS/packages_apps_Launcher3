@@ -142,11 +142,11 @@ public final class Utilities {
     }
 
     public static boolean isAdaptiveLegacyEnabled(Context context) {
-        return getPrefs(context).getBoolean(PREF_ADAPTIVE_ICONS, true);
+        return getPrefs(context).getBoolean(PREF_ADAPTIVE_ICONS, false);
     }
 
     public static boolean isAdaptiveBackground(Context context) {
-        return getPrefs(context).getBoolean(PREF_ADAPTIVE_BG, true);
+        return getPrefs(context).getBoolean(PREF_ADAPTIVE_BG, false);
     }
 
     public static boolean isPropertyEnabled(String propertyName) {

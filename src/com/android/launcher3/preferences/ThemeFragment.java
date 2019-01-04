@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragment;
 
+import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.R;
 import com.android.launcher3.SettingsActivity;
@@ -49,8 +50,11 @@ public class ThemeFragment extends PreferenceFragment implements SharedPreferenc
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case PREF_ALL_LABEL_RAINBOW:
+                SettingsActivity.mShouldRestart = true;
+                break;
             case PREF_ADAPTIVE_ICONS:
             case PREF_ADAPTIVE_BG:
+                LauncherAppState.getInstance(getActivity()).getIconCache().clear();
                 SettingsActivity.mShouldRestart = true;
                 break;
         }
