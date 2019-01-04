@@ -20,9 +20,10 @@
         android:title="@string/icon_size_title" />
 
     <com.android.launcher3.iconpack.CustomIconPreference
+        android:defaultValue=""
         android:key="pref_icon_pack"
-        android:title="@string/icon_pack"
-        android:summary="@string/icon_pack_summary"
-        android:persistent="true" />
+        android:persistent="true"
+        android:summary="%s"
+        android:title="@string/icon_pack" />
 
 </androidx.preference.PreferenceScreen>
