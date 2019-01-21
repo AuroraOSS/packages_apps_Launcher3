@@ -11,7 +11,6 @@ import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.R;
 import com.android.launcher3.SettingsActivity;
 
-import static com.android.launcher3.Utilities.PREF_DOUBLETAP_GESTURE;
 import static com.android.launcher3.Utilities.PREF_NOTIFICATIONS_GESTURE;
 import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
 import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
@@ -43,7 +42,6 @@ public class GestureFragment extends PreferenceFragment implements SharedPrefere
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case PREF_NOTIFICATIONS_GESTURE:
-            case PREF_DOUBLETAP_GESTURE:
                 SettingsActivity.mShouldRestart = true;
                 break;
         }

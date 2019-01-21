@@ -12,10 +12,4 @@
         android:persistent="true"
         android:summary="@string/pref_notifications_gesture_summary"
         android:title="@string/pref_notifications_gesture_title" />
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_doubletap_gesture"
-        android:persistent="true"
-        android:summary="DT2S on home screen (System only)"
-        android:title="Home screen gesture" />
 </androidx.preference.PreferenceScreen>

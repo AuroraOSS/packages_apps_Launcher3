@@ -37,8 +37,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcelable;
-import android.os.PowerManager;
-import android.os.SystemClock;
 import android.os.UserHandle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -269,19 +267,6 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                 new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
                     @Override
-                    public boolean onDoubleTap(MotionEvent e) {
-                        try {
-                            if (Utilities.useDoubleTapGesture(context)) {
-                                turnScreenOff(context);
-                            }
-                        } catch (SecurityException ex) {
-                            Log.e(TAG, ex.getMessage());
-                        } catch (Exception ignored) {
-                        }
-                        return true;
-                    }
-
-                    @Override
                     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                         try {
                             // skip horizontal unwanted swipes
@@ -294,7 +279,8 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
                                     openNotifications();
                                 }
                             }
-                        } catch (Exception ignored) {
+                        } catch (Exception e) {
+
                         }
                         return true;
                     }
@@ -303,26 +289,19 @@ public class Workspace extends PagedView<WorkspacePageIndicator>
         setOnTouchListener(new WorkspaceTouchListener(mLauncher, this));
     }
 
-
-    public static void turnScreenOff(Context context) {
-        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        if (powerManager != null) {
-            powerManager.goToSleep(SystemClock.uptimeMillis());
-        }
-    }
-
-
-    private void openNotifications() {
+    private boolean openNotifications() {
         try {
             Class.forName("android.app.StatusBarManager")
                     .getMethod("expandNotificationsPanel")
                     .invoke(mLauncher.getSystemService("statusbar"));
-        } catch (Exception ignored) {
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
-    public void checkCustomGestures(MotionEvent ev) {
-        mGestureListener.onTouchEvent(ev);
+    public boolean checkCustomGestures(MotionEvent ev) {
+        return mGestureListener.onTouchEvent(ev);
     }
 
     @Override

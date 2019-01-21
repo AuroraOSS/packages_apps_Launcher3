@@ -108,7 +108,6 @@ public final class Utilities {
     public static final String KEY_HIDDEN_APPS = "hidden_app";
     public static final String KEY_HIDDEN_APPS_SET = "hidden_app_set";
     public static final String PREF_NOTIFICATIONS_GESTURE = "pref_notifications_gesture";
-    public static final String PREF_DOUBLETAP_GESTURE = "pref_doubletap_gesture";
     private static final String TAG = "Launcher.Utilities";
     private static final Pattern sTrimPattern =
             Pattern.compile("^[\\s|\\p{javaSpaceChar}]*(.*)[\\s|\\p{javaSpaceChar}]*$");
@@ -135,10 +134,6 @@ public final class Utilities {
 
     public static boolean useNotificationsGesture(Context context) {
         return getPrefs(context).getBoolean(PREF_NOTIFICATIONS_GESTURE, true);
-    }
-
-    public static boolean useDoubleTapGesture(Context context) {
-        return getPrefs(context).getBoolean(PREF_DOUBLETAP_GESTURE, true);
     }
 
     public static boolean isAdaptiveLegacyEnabled(Context context) {
