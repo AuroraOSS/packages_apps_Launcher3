@@ -26,6 +26,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Process;
 import android.os.UserHandle;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
@@ -158,7 +159,7 @@ public class InfoBottomSheet extends WidgetsBottomSheet {
         final StorageManager sm = (StorageManager)
                 getContext().getSystemService(Context.STORAGE_SERVICE);
         final List<StorageVolume> sv = sm.getStorageVolumes();
-        final UserHandle user = getContext().getUser();
+        final UserHandle user = Process.myUserHandle();
         for (StorageVolume storageVolume : sv) {
             try {
                 final String uuidStr = storageVolume.getUuid();
