@@ -1,8 +1,9 @@
 package com.android.launcher3;
 
-import android.annotation.ColorInt;
 import android.content.Context;
 import android.graphics.Color;
+
+import androidx.annotation.ColorInt;
 
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
 

@@ -17,7 +17,6 @@
 package com.android.launcher3;
 
 import android.animation.ObjectAnimator;
-import android.annotation.ColorInt;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -40,6 +39,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewDebug;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.core.graphics.ColorUtils;
 
 import com.android.launcher3.IconCache.IconLoadRequest;
@@ -56,6 +56,8 @@ import com.android.launcher3.uioverrides.WallpaperColorInfo;
 
 import java.text.NumberFormat;
 
+import static com.android.launcher3.SettingsActivity.PREF_THEME_STYLE_KEY;
+import static com.android.launcher3.Utilities.getPrefs;
 import static com.android.launcher3.preferences.DrawerFragment.PREF_DRAWER_LABEL_CASE;
 import static com.android.launcher3.preferences.DrawerFragment.PREF_DRAWER_LABEL_COLOR;
 import static com.android.launcher3.preferences.DrawerFragment.PREF_DRAWER_LABEL_CUSTOMIZATION;
@@ -72,9 +74,7 @@ import static com.android.launcher3.preferences.HomescreenFragment.PREF_HOME_LAB
 import static com.android.launcher3.preferences.HomescreenFragment.PREF_HOME_LABEL_SIZE;
 import static com.android.launcher3.preferences.HomescreenFragment.PREF_HOME_LABEL_STYLE;
 import static com.android.launcher3.preferences.HomescreenFragment.PREF_HOME_LABEL_VISIBILITY;
-import static com.android.launcher3.SettingsActivity.PREF_THEME_STYLE_KEY;
 import static com.android.launcher3.preferences.ThemeFragment.PREF_ALL_LABEL_RAINBOW;
-import static com.android.launcher3.Utilities.getPrefs;
 
 /**
  * TextView that draws a bubble behind the text. We cannot use a LineBackgroundSpan
