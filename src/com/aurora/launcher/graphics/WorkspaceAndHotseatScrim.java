@@ -47,6 +47,7 @@ import com.aurora.launcher.util.Themes;
 
 import static android.content.Intent.ACTION_SCREEN_OFF;
 import static android.content.Intent.ACTION_USER_PRESENT;
+import static com.aurora.launcher.preferences.HomescreenFragment.PREF_HOME_SCRIM;
 
 /**
  * View scrim which draws behind hotseat and workspace
@@ -278,8 +279,14 @@ public class WorkspaceAndHotseatScrim implements
 
     private void reapplySysUiAlphaNoInvalidate() {
         float factor = mSysUiProgress * mSysUiAnimMultiplier;
-        mBottomMaskPaint.setAlpha(Math.round(MAX_HOTSEAT_SCRIM_ALPHA * factor));
-        mTopScrim.setAlpha(Math.round(255 * factor));
+        boolean showScrim = Utilities.getPrefs(mLauncher).getBoolean(PREF_HOME_SCRIM, true);
+        if (showScrim) {
+            mBottomMaskPaint.setAlpha(Math.round(MAX_HOTSEAT_SCRIM_ALPHA * factor));
+            mTopScrim.setAlpha(Math.round(255 * factor));
+        } else {
+            mBottomMaskPaint.setAlpha(0);
+            mTopScrim.setAlpha(0);
+        }
     }
 
     public void invalidate() {

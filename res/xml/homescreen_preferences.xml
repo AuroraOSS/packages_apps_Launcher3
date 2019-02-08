@@ -31,7 +31,12 @@
                 android:value="notification_badging" />
         </intent>
     </com.aurora.launcher.views.ButtonPreference>
-
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_home_scrim"
+        android:persistent="true"
+        android:summary="Places a shadow at the top and bottom of the home screen, good for light wallpapers"
+        android:title="Show shadow" />
     <SwitchPreference
         android:defaultValue="false"
         android:key="pref_home_label_customization"

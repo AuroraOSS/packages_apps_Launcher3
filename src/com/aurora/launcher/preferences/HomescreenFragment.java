@@ -52,6 +52,7 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
     public static final String PREF_HOME_LABEL_VISIBILITY = "pref_home_show_labels";
     public static final String PREF_HOME_LABEL_LINE = "pref_home_label_line";
     public static final String PREF_BOTTOM_OPTIONS = "pref_bottom_option";
+    public static final String PREF_HOME_SCRIM = "pref_home_scrim";
 
     private IconBadgingObserver mIconBadgingObserver;
 
@@ -160,6 +161,7 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
             case PREF_HOME_LABEL_CASE:
             case PREF_HOME_LABEL_VISIBILITY:
             case PREF_HOME_LABEL_LINE:
+            case PREF_HOME_SCRIM:
                 SettingsActivity.mShouldRestart = true;
                 break;
         }
