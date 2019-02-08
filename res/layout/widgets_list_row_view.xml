@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2015 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2015 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,19 +12,18 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res-auto"
     android:id="@+id/widgets_cell_list_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:descendantFocusability="afterDescendants"
     android:focusable="true"
-    android:descendantFocusability="afterDescendants">
+    android:orientation="vertical">
 
     <!-- Section info -->
 
-    <com.android.launcher3.BubbleTextView
+    <com.aurora.launcher.BubbleTextView
         android:id="@+id/section"
         android:layout_width="match_parent"
         android:layout_height="@dimen/widget_section_height"
@@ -33,14 +31,14 @@
         android:drawablePadding="@dimen/widget_section_horizontal_padding"
         android:focusable="true"
         android:gravity="start|center_vertical"
-        android:paddingBottom="@dimen/widget_section_vertical_padding"
         android:paddingLeft="@dimen/widget_section_horizontal_padding"
-        android:paddingRight="@dimen/widget_section_horizontal_padding"
         android:paddingTop="@dimen/widget_section_vertical_padding"
+        android:paddingRight="@dimen/widget_section_horizontal_padding"
+        android:paddingBottom="@dimen/widget_section_vertical_padding"
         android:singleLine="true"
+        android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
-        android:textAlignment="viewStart"
         launcher:iconDisplay="widget_section"
         launcher:iconSizeOverride="@dimen/widget_section_icon_size"
         launcher:layoutHorizontal="true" />

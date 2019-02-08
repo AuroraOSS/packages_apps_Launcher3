@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2017 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2017 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,8 +13,7 @@
      limitations under the License.
 -->
 
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -24,8 +22,9 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/notification_header_height"
-        android:paddingEnd="@dimen/notification_padding_end"
-        android:paddingStart="@dimen/notification_padding_start">
+        android:paddingStart="@dimen/notification_padding_start"
+        android:paddingEnd="@dimen/notification_padding_end">
+
         <TextView
             android:id="@+id/notification_text"
             android:layout_width="wrap_content"
@@ -35,6 +34,7 @@
             android:text="@string/notifications_header"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/notification_header_text_size" />
+
         <TextView
             android:id="@+id/notification_count"
             android:layout_width="@dimen/notification_icon_size"
@@ -47,12 +47,12 @@
     </FrameLayout>
 
     <!-- Main view -->
-    <com.android.launcher3.notification.NotificationMainView
+    <com.aurora.launcher.notification.NotificationMainView
         android:id="@+id/main_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/notification_main_height"
         android:background="@drawable/bg_notification_content"
-        android:focusable="true" >
+        android:focusable="true">
 
         <LinearLayout
             android:id="@+id/text_and_background"
@@ -61,9 +61,10 @@
             android:background="?attr/popupColorPrimary"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:paddingBottom="14dp"
+            android:paddingStart="@dimen/notification_padding_start"
             android:paddingEnd="@dimen/notification_main_text_padding_end"
-            android:paddingStart="@dimen/notification_padding_start">
+            android:paddingBottom="14dp">
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -91,10 +92,10 @@
             android:layout_width="@dimen/notification_icon_size"
             android:layout_height="@dimen/notification_icon_size"
             android:layout_gravity="center_vertical|end"
-            android:layout_marginBottom="7dp"
-            android:layout_marginEnd="@dimen/notification_padding_end" />
+            android:layout_marginEnd="@dimen/notification_padding_end"
+            android:layout_marginBottom="7dp" />
 
-    </com.android.launcher3.notification.NotificationMainView>
+    </com.aurora.launcher.notification.NotificationMainView>
 
     <!-- Divider -->
     <View
@@ -105,7 +106,7 @@
         android:background="?attr/popupColorTertiary" />
 
     <!-- Footer -->
-    <com.android.launcher3.notification.NotificationFooterLayout
+    <com.aurora.launcher.notification.NotificationFooterLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/notification_footer_height"
@@ -120,7 +121,7 @@
             android:clipToPadding="false"
             android:gravity="end|center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/notification_footer_icon_row_padding"/>
+            android:padding="@dimen/notification_footer_icon_row_padding" />
 
         <View
             android:id="@+id/overflow"
@@ -130,5 +131,5 @@
             android:layout_marginStart="@dimen/horizontal_ellipsis_offset"
             android:background="@drawable/horizontal_ellipsis" />
 
-    </com.android.launcher3.notification.NotificationFooterLayout>
+    </com.aurora.launcher.notification.NotificationFooterLayout>
 </merge>

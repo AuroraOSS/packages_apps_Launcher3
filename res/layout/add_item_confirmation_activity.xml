@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
 ** Copyright 2017, The Android Open Source Project
 **
@@ -20,6 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -34,10 +34,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="20dp"
                 android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:paddingTop="4dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="20dp"
                 android:text="@string/add_item_request_drag_hint" />
 
             <FrameLayout
@@ -46,7 +46,7 @@
                 android:background="?android:attr/colorPrimaryDark"
                 android:theme="@style/WidgetContainerTheme">
 
-                <com.android.launcher3.dragndrop.LivePreviewWidgetCell
+                <com.aurora.launcher.dragndrop.LivePreviewWidgetCell
                     android:id="@+id/widget_cell"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,11 +55,11 @@
                     android:background="?android:attr/colorPrimaryDark"
                     android:focusable="true"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
-                    <include layout="@layout/widget_cell_content"  />
+                    <include layout="@layout/widget_cell_content" />
 
-                </com.android.launcher3.dragndrop.LivePreviewWidgetCell>
+                </com.aurora.launcher.dragndrop.LivePreviewWidgetCell>
             </FrameLayout>
         </LinearLayout>
     </ScrollView>
@@ -69,16 +69,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:paddingBottom="4dp"
-        android:paddingEnd="12dp"
         android:paddingStart="12dp"
-        android:paddingTop="4dp" >
+        android:paddingTop="4dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="4dp">
+
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onCancelClick"
             android:text="@android:string/cancel" />
+
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"

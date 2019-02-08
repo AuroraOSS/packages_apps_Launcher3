@@ -12,15 +12,14 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.android.launcher3.LauncherRootView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.aurora.launcher.LauncherRootView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res-auto"
     android:id="@+id/launcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <com.android.launcher3.dragndrop.DragLayer
+    <com.aurora.launcher.dragndrop.DragLayer
         android:id="@+id/drag_layer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,7 +29,7 @@
 
         <!-- The workspace contains 5 screens of cells -->
         <!-- DO NOT CHANGE THE ID -->
-        <com.android.launcher3.Workspace
+        <com.aurora.launcher.Workspace
             android:id="@+id/workspace"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -45,7 +44,7 @@
 
         <!-- Keep these behind the workspace so that they are not visible when
          we go into AllApps -->
-        <com.android.launcher3.pageindicators.WorkspacePageIndicator
+        <com.aurora.launcher.pageindicators.WorkspacePageIndicator
             android:id="@+id/page_indicator"
             android:layout_width="match_parent"
             android:layout_height="@dimen/vertical_drag_handle_size"
@@ -56,7 +55,8 @@
             android:id="@+id/drop_target_bar"
             layout="@layout/drop_target_bar" />
 
-        <include android:id="@+id/scrim_view"
+        <include
+            android:id="@+id/scrim_view"
             layout="@layout/scrim_view" />
 
         <include
@@ -72,6 +72,6 @@
             layout="@layout/hotseat"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </com.android.launcher3.dragndrop.DragLayer>
+    </com.aurora.launcher.dragndrop.DragLayer>
 
-</com.android.launcher3.LauncherRootView>
+</com.aurora.launcher.LauncherRootView>

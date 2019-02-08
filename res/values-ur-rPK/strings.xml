@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<?xml version="1.0" encoding="UTF-8"?><!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -17,11 +16,9 @@
 */
  -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name" msgid="649227358658669779">"Launcher3"</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" msgid="649227358658669779">"Aurora Launcher"</string>
     <string name="folder_name" msgid="7371454440695724752"></string>
-    <string name="work_folder_name" msgid="3753320833950115786">"دفتری"</string>
     <string name="activity_not_found" msgid="8071924732094499514">"ایپ انسٹال نہیں ہے۔"</string>
     <string name="activity_not_available" msgid="7456344436509528827">"ایپ دستیاب نہیں ہے"</string>
     <string name="safemode_shortcut_error" msgid="9160126848219158407">"ڈاؤن لوڈ کردہ ایپ کو محفوظ وضع میں غیر فعال کر دیا گیا"</string>
@@ -65,8 +62,8 @@
     <string name="folder_hint_text" msgid="6617836969016293992">"بلا نام فولڈر"</string>
     <string name="disabled_app_label" msgid="6673129024321402780">"<xliff:g id="APP_NAME">%1$s</xliff:g> غیر فعال ہے"</string>
     <plurals name="badged_app_label" formatted="false" msgid="7948068486082879291">
-      <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g> میں <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> اطلاعات ہیں</item>
-      <item quantity="one"><xliff:g id="APP_NAME_0">%1$s</xliff:g> میں <xliff:g id="NOTIFICATION_COUNT_1">%2$d</xliff:g> اطلاع ہے</item>
+        <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g> میں <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> اطلاعات ہیں</item>
+        <item quantity="one"><xliff:g id="APP_NAME_0">%1$s</xliff:g> میں <xliff:g id="NOTIFICATION_COUNT_1">%2$d</xliff:g> اطلاع ہے</item>
     </plurals>
     <string name="default_scroll_format" msgid="7475544710230993317">"‏صفحہ ‎%1$d از ‎%2$d"</string>
     <string name="workspace_scroll_format" msgid="8458889198184077399">"‏ہوم اسکرین ‎%1$d از ‎%2$d"</string>
@@ -130,7 +127,6 @@
     <string name="action_decrease_height" msgid="282377193880900022">"اونچائی کم کریں"</string>
     <string name="widget_resized" msgid="9130327887929620">"ویجیٹ کے سائز کو چوڑائی <xliff:g id="NUMBER_0">%1$s</xliff:g> اونچائی <xliff:g id="NUMBER_1">%2$s</xliff:g> میں تبدیل کر دیا گیا"</string>
     <string name="action_deep_shortcut" msgid="2864038805849372848">"شارٹ کٹس"</string>
-    <string name="shortcuts_menu_description" msgid="406159963824238648">"<xliff:g id="APP_NAME">%2$s</xliff:g> کیلئے <xliff:g id="NUMBER_OF_SHORTCUTS">%1$d</xliff:g> شارٹ کٹس"</string>
     <string name="shortcuts_menu_with_notifications_description" msgid="8985659504915468840">"<xliff:g id="APP_NAME">%3$s</xliff:g> کے <xliff:g id="NUMBER_OF_SHORTCUTS">%1$d</xliff:g> شارٹ کٹس اور <xliff:g id="NUMBER_OF_NOTIFICATIONS">%2$d</xliff:g> اطلاعات"</string>
     <string name="action_dismiss_notification" msgid="5909461085055959187">"برخاست کریں"</string>
     <string name="notification_dismissed" msgid="6002233469409822874">"اطلاع مسترد ہو گئی"</string>

@@ -19,7 +19,7 @@
         android:summary="%s"
         android:title="@string/icon_size_title" />
 
-    <com.android.launcher3.iconpack.CustomIconPreference
+    <com.aurora.launcher.iconpack.CustomIconPreference
         android:defaultValue=""
         android:key="pref_icon_pack"
         android:persistent="true"

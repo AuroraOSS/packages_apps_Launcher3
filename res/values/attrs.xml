@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /* Copyright 2008, The Android Open Source Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +28,7 @@
     <attr name="isWorkspaceDarkText" format="boolean" />
     <attr name="workspaceTextColor" format="color" />
     <attr name="workspaceShadowColor" format="color" />
-    <attr name="workspaceAmbientShadowColor" format="color"/>
+    <attr name="workspaceAmbientShadowColor" format="color" />
     <attr name="workspaceKeyShadowColor" format="color" />
     <attr name="workspaceStatusBarScrim" format="reference" />
     <attr name="widgetsTheme" format="reference" />
@@ -127,7 +126,7 @@
         <attr name="android:src" />
         <attr name="android:shadowColor" />
         <attr name="android:elevation" />
-        <attr name="darkTintColor" format="color"/>
+        <attr name="darkTintColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="RecyclerViewFastScroller">

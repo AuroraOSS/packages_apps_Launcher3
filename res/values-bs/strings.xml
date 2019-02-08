@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<?xml version="1.0" encoding="UTF-8"?><!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -17,11 +16,9 @@
 */
  -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name" msgid="649227358658669779">"Launcher3"</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" msgid="649227358658669779">"Aurora Launcher"</string>
     <string name="folder_name" msgid="7371454440695724752"></string>
-    <string name="work_folder_name" msgid="3753320833950115786">"Posao"</string>
     <string name="activity_not_found" msgid="8071924732094499514">"Aplikacija nije instalirana."</string>
     <string name="activity_not_available" msgid="7456344436509528827">"Aplikacija nije dostupna"</string>
     <string name="safemode_shortcut_error" msgid="9160126848219158407">"Preuzeta aplikacija je onemogućena u sigurnom načinu rada"</string>
@@ -65,9 +62,9 @@
     <string name="folder_hint_text" msgid="6617836969016293992">"Neimenovani folder"</string>
     <string name="disabled_app_label" msgid="6673129024321402780">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> je onemogućena"</string>
     <plurals name="badged_app_label" formatted="false" msgid="7948068486082879291">
-      <item quantity="one"><xliff:g id="APP_NAME_2">%1$s</xliff:g> ima <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> obavještenje</item>
-      <item quantity="few"><xliff:g id="APP_NAME_2">%1$s</xliff:g> ima <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> obavještenja</item>
-      <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g> ima <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> obavještenja</item>
+        <item quantity="one"><xliff:g id="APP_NAME_2">%1$s</xliff:g> ima <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> obavještenje</item>
+        <item quantity="few"><xliff:g id="APP_NAME_2">%1$s</xliff:g> ima <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> obavještenja</item>
+        <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g> ima <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> obavještenja</item>
     </plurals>
     <string name="default_scroll_format" msgid="7475544710230993317">"Strana %1$d od %2$d"</string>
     <string name="workspace_scroll_format" msgid="8458889198184077399">"Početni ekran %1$d od %2$d"</string>

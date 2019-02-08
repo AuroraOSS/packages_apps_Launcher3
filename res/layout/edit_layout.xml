@@ -13,7 +13,7 @@
      limitations under the License.
 -->
 
-<com.android.launcher3.EditBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
+<com.aurora.launcher.EditBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
@@ -53,7 +53,7 @@
 
     <fragment
         android:id="@+id/sheet_prefs"
-        android:name="com.android.launcher3.EditPreference"
+        android:name="com.aurora.launcher.EditPreference"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -67,4 +67,4 @@
         android:background="?android:attr/colorBackground"
         android:focusable="false" />
 
-</com.android.launcher3.EditBottomSheet>
+</com.aurora.launcher.EditBottomSheet>

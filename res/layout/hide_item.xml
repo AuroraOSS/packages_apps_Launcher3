@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2017 Paranoid Android
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,16 +24,16 @@
         android:layout_height="@android:dimen/app_icon_size"
         android:layout_alignParentStart="true"
         android:layout_margin="8dp"
-        android:contentDescription="@string/hide_app"/>
+        android:contentDescription="@string/hide_app" />
 
     <TextView
         android:id="@+id/label"
-        android:layout_toEndOf="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center_vertical"
         android:layout_margin="8dp"
+        android:layout_toEndOf="@+id/icon"
         android:textSize="18sp" />
 
     <CheckBox

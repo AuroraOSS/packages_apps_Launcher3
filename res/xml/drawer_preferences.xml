@@ -6,7 +6,7 @@
         android:persistent="true"
         android:summary="Enable background customizations"
         android:title="Background customization" />
-    <com.android.launcher3.preferences.colorpicker.ColorPickerPreference
+    <com.aurora.launcher.preferences.colorpicker.ColorPickerPreference
         android:defaultValue="?android:attr/colorBackground"
         android:dependency="pref_drawer_background_customization"
         android:key="pref_drawer_bg_color"
@@ -19,7 +19,7 @@
         android:persistent="true"
         android:summary="Enable app label customizations"
         android:title="Label customization" />
-    <com.android.launcher3.preferences.colorpicker.ColorPickerPreference
+    <com.aurora.launcher.preferences.colorpicker.ColorPickerPreference
         android:defaultValue="?android:attr/textColorPrimary"
         android:dependency="pref_drawer_label_customization"
         android:key="pref_drawer_label_color"

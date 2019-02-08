@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2018 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +19,12 @@
     android:layout_height="wrap_content"
     android:background="@drawable/tooltip_frame"
     android:ellipsize="end"
-    android:maxLines="1"
+    android:fontFamily="sans-serif"
     android:maxWidth="256dp"
-    android:paddingBottom="6.5dp"
-    android:paddingEnd="16dp"
+    android:maxLines="1"
     android:paddingStart="16dp"
     android:paddingTop="6.5dp"
-    android:textSize="14sp"
-    android:fontFamily="sans-serif"
-    android:textColor="?android:attr/colorForeground" />
+    android:paddingEnd="16dp"
+    android:paddingBottom="6.5dp"
+    android:textColor="?android:attr/colorForeground"
+    android:textSize="14sp" />

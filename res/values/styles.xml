@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -44,7 +43,7 @@
         <item name="widgetsTheme">@style/WidgetContainerTheme</item>
     </style>
 
-    <style name="LauncherTheme" parent="@style/BaseLauncherThemeWithCustomAttrs"/>
+    <style name="LauncherTheme" parent="@style/BaseLauncherThemeWithCustomAttrs" />
 
     <style name="LauncherTheme.DarkText" parent="@style/LauncherTheme">
         <item name="workspaceTextColor">#FF212121</item>
@@ -83,16 +82,6 @@
         <item name="isMainColorDark">true</item>
     </style>
 
-    <style name="LauncherTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark">
-        <item name="allAppsInterimScrimAlpha">25</item>
-        <item name="workspaceTextColor">#FF212121</item>
-        <item name="workspaceShadowColor">@android:color/transparent</item>
-        <item name="workspaceAmbientShadowColor">@android:color/transparent</item>
-        <item name="workspaceKeyShadowColor">@android:color/transparent</item>
-        <item name="isWorkspaceDarkText">true</item>
-        <item name="workspaceStatusBarScrim">@null</item>
-    </style>
-
     <style name="PreferenceTheme" parent="@android:style/Theme.DeviceDefault.Light">
         <item name="isMainColorDark">false</item>
     </style>
@@ -114,9 +103,8 @@
     <!-- A derivative project can extend these themes to customize the application theme without
          affecting the base theme -->
     <style name="AppTheme" parent="@style/LauncherTheme" />
-    <style name="AppTheme.DarkText" parent="@style/LauncherTheme.DarkText" />
+
     <style name="AppTheme.Dark" parent="@style/LauncherTheme.Dark" />
-    <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText" />
 
     <!--
     Theme overrides to element on homescreen, i.e., which are drawn on top on wallpaper.
@@ -140,7 +128,7 @@
 
     <style name="WidgetContainerTheme.Black" />
 
-    <style name="FastScrollerPopup" >
+    <style name="FastScrollerPopup">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:minWidth">@dimen/fastscroll_popup_width</item>
         <item name="android:layout_height">@dimen/fastscroll_popup_height</item>
@@ -211,14 +199,11 @@
         <item name="android:colorControlHighlight">#BDBDBD</item>
         <item name="android:colorForeground">@color/all_apps_bg_hand_fill</item>
     </style>
+
     <style name="AllAppsEmptySearchBackground.Dark">
         <item name="android:colorPrimary">#9AA0A6</item>
         <item name="android:colorControlHighlight">#DFE1E5</item>
         <item name="android:colorForeground">@color/all_apps_bg_hand_fill_dark</item>
     </style>
-    <style name="AllAppsEmptySearchBackground.Black">
-        <item name="android:colorPrimary">#000</item>
-        <item name="android:colorControlHighlight">#DFE1E5</item>
-        <item name="android:colorForeground">@color/all_apps_bg_hand_fill_dark</item>
-    </style>
+
 </resources>

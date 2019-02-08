@@ -15,7 +15,7 @@
  */
 syntax = "proto2";
 
-option java_package = "com.android.launcher3.userevent";
+option java_package = "com.aurora.launcher.userevent";
 option java_outer_classname = "LauncherLogExtensions";
 
 package userevent;

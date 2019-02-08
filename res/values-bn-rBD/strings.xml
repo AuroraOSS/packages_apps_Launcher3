@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<?xml version="1.0" encoding="UTF-8"?><!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -17,11 +16,9 @@
 */
  -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name" msgid="649227358658669779">"Launcher3"</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" msgid="649227358658669779">"Aurora Launcher"</string>
     <string name="folder_name" msgid="7371454440695724752"></string>
-    <string name="work_folder_name" msgid="3753320833950115786">"কাজ"</string>
     <string name="activity_not_found" msgid="8071924732094499514">"অ্যাপ্লিকেশান ইনস্টল করা নেই৷"</string>
     <string name="activity_not_available" msgid="7456344436509528827">"অ্যাপ্লিকেশান অনুপলব্ধ"</string>
     <string name="safemode_shortcut_error" msgid="9160126848219158407">"ডাউনলোড করা অ্যাপ্লিকেশান নিরাপদ মোডে অক্ষম রয়েছে"</string>
@@ -65,8 +62,8 @@
     <string name="folder_hint_text" msgid="6617836969016293992">"নামবিহীন ফোল্ডার"</string>
     <string name="disabled_app_label" msgid="6673129024321402780">"<xliff:g id="APP_NAME">%1$s</xliff:g> অক্ষম করা হয়েছে"</string>
     <plurals name="badged_app_label" formatted="false" msgid="7948068486082879291">
-      <item quantity="one"><xliff:g id="APP_NAME_2">%1$s</xliff:g> এ <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g>টি বিজ্ঞপ্তি আছে</item>
-      <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g> এ <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g>টি বিজ্ঞপ্তি আছে</item>
+        <item quantity="one"><xliff:g id="APP_NAME_2">%1$s</xliff:g> এ <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g>টি বিজ্ঞপ্তি আছে</item>
+        <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g> এ <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g>টি বিজ্ঞপ্তি আছে</item>
     </plurals>
     <string name="default_scroll_format" msgid="7475544710230993317">"%2$dটির মধ্যে %1$dটি পৃষ্ঠা"</string>
     <string name="workspace_scroll_format" msgid="8458889198184077399">"%2$dটির %1$d নম্বর হোম স্ক্রিন"</string>
@@ -130,7 +127,6 @@
     <string name="action_decrease_height" msgid="282377193880900022">"উচ্চতা কমান"</string>
     <string name="widget_resized" msgid="9130327887929620">"উইজেটের আকার প্রস্থ <xliff:g id="NUMBER_0">%1$s</xliff:g> উচ্চতা <xliff:g id="NUMBER_1">%2$s</xliff:g> তে পরিবর্তন করা হয়েছে"</string>
     <string name="action_deep_shortcut" msgid="2864038805849372848">"শর্টকাট"</string>
-    <string name="shortcuts_menu_description" msgid="406159963824238648">"<xliff:g id="APP_NAME">%2$s</xliff:g> এর <xliff:g id="NUMBER_OF_SHORTCUTS">%1$d</xliff:g>টি শর্টকার্ট"</string>
     <string name="shortcuts_menu_with_notifications_description" msgid="8985659504915468840">"<xliff:g id="APP_NAME">%3$s</xliff:g> এর জন্য <xliff:g id="NUMBER_OF_SHORTCUTS">%1$d</xliff:g>টি শর্টকাট এবং <xliff:g id="NUMBER_OF_NOTIFICATIONS">%2$d</xliff:g>টি বিজ্ঞপ্তি"</string>
     <string name="action_dismiss_notification" msgid="5909461085055959187">"খারিজ করুন"</string>
     <string name="notification_dismissed" msgid="6002233469409822874">"বিজ্ঞপ্তি খারিজ করা হয়েছে"</string>

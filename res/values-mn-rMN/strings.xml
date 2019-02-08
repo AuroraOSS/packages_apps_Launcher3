@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<?xml version="1.0" encoding="UTF-8"?><!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -17,11 +16,9 @@
 */
  -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name" msgid="649227358658669779">"Launcher3"</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" msgid="649227358658669779">"Aurora Launcher"</string>
     <string name="folder_name" msgid="7371454440695724752"></string>
-    <string name="work_folder_name" msgid="3753320833950115786">"Ажил"</string>
     <string name="activity_not_found" msgid="8071924732094499514">"Апп суугаагүй байна."</string>
     <string name="activity_not_available" msgid="7456344436509528827">"Апп-г ашиглах боломжгүй"</string>
     <string name="safemode_shortcut_error" msgid="9160126848219158407">"Татаж авсан апп-г Аюулгүй горим дотроос идэвхгүйжүүлсэн"</string>
@@ -65,8 +62,8 @@
     <string name="folder_hint_text" msgid="6617836969016293992">"Нэргүй фолдер"</string>
     <string name="disabled_app_label" msgid="6673129024321402780">"<xliff:g id="APP_NAME">%1$s</xliff:g>-г идэвхгүй болгосон"</string>
     <plurals name="badged_app_label" formatted="false" msgid="7948068486082879291">
-      <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g>, <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> мэдэгдэл байна</item>
-      <item quantity="one"><xliff:g id="APP_NAME_0">%1$s</xliff:g>, <xliff:g id="NOTIFICATION_COUNT_1">%2$d</xliff:g> мэдэгдэл байна</item>
+        <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g>, <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> мэдэгдэл байна</item>
+        <item quantity="one"><xliff:g id="APP_NAME_0">%1$s</xliff:g>, <xliff:g id="NOTIFICATION_COUNT_1">%2$d</xliff:g> мэдэгдэл байна</item>
     </plurals>
     <string name="default_scroll_format" msgid="7475544710230993317">"%2$d-н %1$d хуудас"</string>
     <string name="workspace_scroll_format" msgid="8458889198184077399">"%2$d-н Нүүр дэлгэц %1$d"</string>
@@ -130,7 +127,6 @@
     <string name="action_decrease_height" msgid="282377193880900022">"Намсгах"</string>
     <string name="widget_resized" msgid="9130327887929620">"Виджэтийн өргөн <xliff:g id="NUMBER_0">%1$s</xliff:g>, өндөр <xliff:g id="NUMBER_1">%2$s</xliff:g> болсон"</string>
     <string name="action_deep_shortcut" msgid="2864038805849372848">"Товчлол"</string>
-    <string name="shortcuts_menu_description" msgid="406159963824238648">"<xliff:g id="APP_NAME">%2$s</xliff:g>-н <xliff:g id="NUMBER_OF_SHORTCUTS">%1$d</xliff:g> товчлол"</string>
     <string name="shortcuts_menu_with_notifications_description" msgid="8985659504915468840">"<xliff:g id="NUMBER_OF_SHORTCUTS">%1$d</xliff:g> товчлол болон <xliff:g id="APP_NAME">%3$s</xliff:g>-н <xliff:g id="NUMBER_OF_NOTIFICATIONS">%2$d</xliff:g> мэдэгдэл"</string>
     <string name="action_dismiss_notification" msgid="5909461085055959187">"Хаах"</string>
     <string name="notification_dismissed" msgid="6002233469409822874">"Мэдэгдлийг хаасан"</string>

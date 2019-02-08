@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2012 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2012 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,7 +13,7 @@
      limitations under the License.
 -->
 
-<favorites xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3">
+<favorites xmlns:launcher="http://schemas.android.com/apk/res-auto/com.aurora.launcher">
 
     <!-- Hotseat -->
     <include launcher:workspace="@xml/dw_tablet_hotseat" />
@@ -22,14 +21,14 @@
     <!-- Bottom row -->
     <favorite
         launcher:screen="0"
+        launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_CONTACTS;end"
         launcher:x="0"
-        launcher:y="-1"
-        launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_CONTACTS;end" />
+        launcher:y="-1" />
 
     <resolve
         launcher:screen="0"
         launcher:x="-1"
-        launcher:y="-1" >
+        launcher:y="-1">
         <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MARKET;end" />
         <favorite launcher:uri="market://details?id=com.android.launcher" />
     </resolve>

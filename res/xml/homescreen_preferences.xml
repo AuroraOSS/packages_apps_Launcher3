@@ -19,7 +19,7 @@
         android:persistent="true"
         android:title="@string/grid_size_text" />
 
-    <com.android.launcher3.views.ButtonPreference
+    <com.aurora.launcher.views.ButtonPreference
         android:key="pref_icon_badging"
         android:persistent="false"
         android:title="@string/icon_badging_title"
@@ -30,7 +30,7 @@
                 android:name=":settings:fragment_args_key"
                 android:value="notification_badging" />
         </intent>
-    </com.android.launcher3.views.ButtonPreference>
+    </com.aurora.launcher.views.ButtonPreference>
 
     <SwitchPreference
         android:defaultValue="false"
@@ -38,7 +38,7 @@
         android:persistent="true"
         android:summary="Enable app label customizations"
         android:title="Label customization" />
-    <com.android.launcher3.preferences.colorpicker.ColorPickerPreference
+    <com.aurora.launcher.preferences.colorpicker.ColorPickerPreference
         android:defaultValue="?android:attr/textColorPrimary"
         android:dependency="pref_home_label_customization"
         android:key="pref_home_label_color"

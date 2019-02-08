@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<?xml version="1.0" encoding="UTF-8"?><!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -17,11 +16,9 @@
 */
  -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="649227358658669779">"ലോഞ്ചർ3"</string>
     <string name="folder_name" msgid="7371454440695724752"></string>
-    <string name="work_folder_name" msgid="3753320833950115786">"ഔദ്യോഗികം"</string>
     <string name="activity_not_found" msgid="8071924732094499514">"അപ്ലിക്കേഷൻ ഇൻസ്‌റ്റാളുചെ‌യ്‌തിട്ടില്ല."</string>
     <string name="activity_not_available" msgid="7456344436509528827">"അപ്ലിക്കേഷൻ ലഭ്യമല്ല"</string>
     <string name="safemode_shortcut_error" msgid="9160126848219158407">"ഡൗൺലോഡുചെയ്‌ത അപ്ലിക്കേഷൻ സുരക്ഷാ മോഡിൽ പ്രവർത്തനരഹിതമാക്കി"</string>
@@ -65,8 +62,8 @@
     <string name="folder_hint_text" msgid="6617836969016293992">"പേരുനൽകാത്ത ഫോൾഡർ"</string>
     <string name="disabled_app_label" msgid="6673129024321402780">"<xliff:g id="APP_NAME">%1$s</xliff:g> പ്രവർത്തനരഹിതമാക്കി"</string>
     <plurals name="badged_app_label" formatted="false" msgid="7948068486082879291">
-      <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g>-ന്, <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> അറിയിപ്പുകൾ ഉണ്ട്</item>
-      <item quantity="one"><xliff:g id="APP_NAME_0">%1$s</xliff:g>-ന്, <xliff:g id="NOTIFICATION_COUNT_1">%2$d</xliff:g> അറിയിപ്പ് ഉണ്ട്</item>
+        <item quantity="other"><xliff:g id="APP_NAME_2">%1$s</xliff:g>-ന്, <xliff:g id="NOTIFICATION_COUNT_3">%2$d</xliff:g> അറിയിപ്പുകൾ ഉണ്ട്</item>
+        <item quantity="one"><xliff:g id="APP_NAME_0">%1$s</xliff:g>-ന്, <xliff:g id="NOTIFICATION_COUNT_1">%2$d</xliff:g> അറിയിപ്പ് ഉണ്ട്</item>
     </plurals>
     <string name="default_scroll_format" msgid="7475544710230993317">"പേജ് %1$d / %2$d"</string>
     <string name="workspace_scroll_format" msgid="8458889198184077399">"ഹോം സ്‌ക്രീൻ %1$d / %2$d"</string>
@@ -130,7 +127,6 @@
     <string name="action_decrease_height" msgid="282377193880900022">"ഉയരം കുറയ്‌ക്കുക"</string>
     <string name="widget_resized" msgid="9130327887929620">"വീതി <xliff:g id="NUMBER_0">%1$s</xliff:g> ഉയരം <xliff:g id="NUMBER_1">%2$s</xliff:g>-ലേക്ക് വിഡ്‌ജെറ്റിന്റെ വലുപ്പം മാറ്റി"</string>
     <string name="action_deep_shortcut" msgid="2864038805849372848">"കുറുക്കുവഴികൾ"</string>
-    <string name="shortcuts_menu_description" msgid="406159963824238648">"<xliff:g id="APP_NAME">%2$s</xliff:g> ആപ്പിനുള്ള <xliff:g id="NUMBER_OF_SHORTCUTS">%1$d</xliff:g> കുറുക്കുവഴികൾ"</string>
     <string name="shortcuts_menu_with_notifications_description" msgid="8985659504915468840">"<xliff:g id="APP_NAME">%3$s</xliff:g> ആപ്പിനായുള്ള <xliff:g id="NUMBER_OF_SHORTCUTS">%1$d</xliff:g> കുറുക്കുവഴികളും <xliff:g id="NUMBER_OF_NOTIFICATIONS">%2$d</xliff:g> അറിയിപ്പുകളും"</string>
     <string name="action_dismiss_notification" msgid="5909461085055959187">"നിരസിക്കുക"</string>
     <string name="notification_dismissed" msgid="6002233469409822874">"അറിയിപ്പ് നിരസിച്ചു"</string>
