@@ -8,6 +8,7 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:navigationBarColor">@color/gray_dark</item>
+        <item name="android:actionBarSize">90dp</item>
         <item name="isMainColorDark">true</item>
     </style>
 
@@ -18,6 +19,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:actionBarSize">90dp</item>
         <item name="isMainColorDark">false</item>
     </style>
 </resources>
