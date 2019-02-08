@@ -207,7 +207,9 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
                 if (mHomeLabelCase)
                     setAllCaps(true);
                 if (mHomeSingleLine)
-                    setSingleLine();
+                    setMaxLines(1);
+                else
+                    setMaxLines(2);
             }
             if (mHomeLabelCustomization && mHomeLabelSize != -1)
                 setTextSize(mHomeLabelSize);
@@ -224,7 +226,9 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver, 
                 if (mDrawerLabelCase)
                     setAllCaps(true);
                 if (mDrawerSingleLine)
-                    setSingleLine();
+                    setMaxLines(1);
+                else
+                    setMaxLines(2);
             }
             if (mDrawerLabelCustomization && mDrawerLabelSize != -1)
                 setTextSize(mDrawerLabelSize);
