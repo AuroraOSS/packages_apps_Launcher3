@@ -1,5 +1,6 @@
 package com.android.launcher3.preferences;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -56,7 +57,7 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
 
     private SharedPreferences mPrefs;
     private Preference mGridPref;
-
+    private ActionBar mActionBar;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -67,6 +68,11 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mActionBar = getActivity().getActionBar();
+        if (mActionBar != null)
+            mActionBar.setTitle(getString(R.string.homescreen_title));
+
         mPrefs = Utilities.getPrefs(getActivity().getApplicationContext());
         mPrefs.registerOnSharedPreferenceChangeListener(this);
 
@@ -124,6 +130,8 @@ public class HomescreenFragment extends PreferenceFragment implements SharedPref
             mIconBadgingObserver = null;
         }
         mPrefs.unregisterOnSharedPreferenceChangeListener(this);
+        if (mActionBar != null)
+            mActionBar.setTitle(getString(R.string.settings_title));
         super.onDestroy();
     }
 

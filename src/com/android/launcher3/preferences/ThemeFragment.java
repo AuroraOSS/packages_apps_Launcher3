@@ -1,5 +1,6 @@
 package com.android.launcher3.preferences;
 
+import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,7 @@ public class ThemeFragment extends PreferenceFragment implements SharedPreferenc
     public static final String PREF_ADAPTIVE_BG = "pref_adaptive_bg";
 
     private SharedPreferences mPrefs;
+    private ActionBar mActionBar;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -32,6 +34,11 @@ public class ThemeFragment extends PreferenceFragment implements SharedPreferenc
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mActionBar = getActivity().getActionBar();
+        if (mActionBar != null)
+            mActionBar.setTitle(getString(R.string.theme_title));
+
 
         mPrefs = Utilities.getPrefs(getActivity().getApplicationContext());
         mPrefs.registerOnSharedPreferenceChangeListener(this);
@@ -44,6 +51,13 @@ public class ThemeFragment extends PreferenceFragment implements SharedPreferenc
             SettingsActivity.mShouldRestart = true;
             return true;
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mActionBar != null)
+            mActionBar.setTitle(getString(R.string.settings_title));
+        super.onDestroy();
     }
 
     @Override

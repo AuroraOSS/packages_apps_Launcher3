@@ -1,5 +1,6 @@
 package com.android.launcher3.preferences;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -17,11 +18,15 @@ public class SettingsFragment extends PreferenceFragment {
     private static final String FRAGMENT_MISC = "fragment_misc";
     private static final String FRAGMENT_DRAWER = "fragment_drawer";
 
+    private ActionBar mActionBar;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
         addPreferencesFromResource(R.xml.preferences);
+        mActionBar = getActivity().getActionBar();
+        if (mActionBar != null)
+            mActionBar.setTitle(getString(R.string.settings_title));
     }
 
     @Override

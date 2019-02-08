@@ -17,6 +17,7 @@
 package com.android.launcher3;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -26,6 +27,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.android.launcher3.preferences.SettingsFragment;
 import com.android.launcher3.uioverrides.WallpaperColorInfo;
@@ -60,6 +62,7 @@ public class SettingsActivity extends Activity implements WallpaperColorInfo.OnC
     public static boolean mShouldRestart = false;
     private int mThemeStyle;
     private int mThemeRes = R.style.PreferenceTheme;
+    private ActionBar mActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +72,28 @@ public class SettingsActivity extends Activity implements WallpaperColorInfo.OnC
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
         setTheme();
-        getActionBar().setElevation(0);
+        mActionBar = getActionBar();
+        if (mActionBar != null) {
+            mActionBar.setElevation(2);
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setTheme() {
         WallpaperColorInfo wallpaperColorInfo = WallpaperColorInfo.getInstance(this);
         wallpaperColorInfo.addOnChangeListener(this);
-        int themeRes = getThemeRes(wallpaperColorInfo);
-        if (themeRes != mThemeRes) {
-            mThemeRes = themeRes;
-            setTheme(themeRes);
-        }
+        mThemeRes = getThemeRes(wallpaperColorInfo);
+        setTheme(mThemeRes);
     }
 
     protected int getThemeRes(WallpaperColorInfo wallpaperColorInfo) {

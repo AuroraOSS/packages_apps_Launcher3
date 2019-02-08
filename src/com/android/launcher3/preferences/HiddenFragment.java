@@ -149,7 +149,7 @@ public class HiddenFragment extends PreferenceFragment implements MultiSelectRec
     @Override
     public void onDestroy() {
         if (mActionBar != null)
-            mActionBar.setTitle(getString(R.string.settings_button_text));
+            mActionBar.setTitle(getString(R.string.settings_title));
         super.onDestroy();
     }
 

@@ -14,7 +14,7 @@
         android:icon="@drawable/ic_round_drawer"
         android:key="fragment_drawer"
         android:summary="Set grid, background and more"
-        android:title="App drawer" />
+        android:title="@string/appdrawer_title" />
     <Preference
         android:icon="@drawable/ic_round_icons"
         android:key="fragment_icon"

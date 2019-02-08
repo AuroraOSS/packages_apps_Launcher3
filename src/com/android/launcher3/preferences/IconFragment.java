@@ -1,5 +1,6 @@
 package com.android.launcher3.preferences;
 
+import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ public class IconFragment extends PreferenceFragment implements SharedPreference
     public final static String ICON_PACK_PREF = "pref_icon_pack";
 
     private SharedPreferences mPrefs;
+    private ActionBar mActionBar;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -33,6 +35,11 @@ public class IconFragment extends PreferenceFragment implements SharedPreference
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mActionBar = getActivity().getActionBar();
+        if (mActionBar != null)
+            mActionBar.setTitle(getString(R.string.icons_title));
+
         mPrefs = Utilities.getPrefs(getActivity().getApplicationContext());
         mPrefs.registerOnSharedPreferenceChangeListener(this);
         Preference iconShapeOverride = findPreference(IconShapeOverride.KEY_PREFERENCE);
@@ -58,6 +65,8 @@ public class IconFragment extends PreferenceFragment implements SharedPreference
     @Override
     public void onDestroy() {
         mPrefs.unregisterOnSharedPreferenceChangeListener(this);
+        if (mActionBar != null)
+            mActionBar.setTitle(getString(R.string.settings_title));
         super.onDestroy();
     }
 

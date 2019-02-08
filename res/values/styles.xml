@@ -98,8 +98,8 @@
     </style>
 
     <style name="PreferenceTheme.Dark" parent="@android:style/Theme.DeviceDefault">
-        <item name="android:colorPrimary">#FF212121</item>
-        <item name="android:colorPrimaryDark">#FF212121</item>
+        <item name="android:colorPrimary">@color/gray_dark</item>
+        <item name="android:colorPrimaryDark">@color/gray_dark</item>
         <item name="isMainColorDark">true</item>
     </style>
 
@@ -108,7 +108,7 @@
         <item name="android:colorPrimaryDark">@android:color/black</item>
         <item name="android:colorBackground">@android:color/black</item>
         <item name="android:windowBackground">@android:color/black</item>
-        <item name="android:background">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
     </style>
 
     <!-- A derivative project can extend these themes to customize the application theme without

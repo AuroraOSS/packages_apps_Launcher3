@@ -42,7 +42,7 @@ public class DrawerFragment extends PreferenceFragment implements SharedPreferen
 
         mActionBar = getActivity().getActionBar();
         if (mActionBar != null)
-            mActionBar.setTitle("Drawer Settings");
+            mActionBar.setTitle(getString(R.string.appdrawer_title));
 
         mPrefs = Utilities.getPrefs(getActivity().getApplicationContext());
         mPrefs.registerOnSharedPreferenceChangeListener(this);
@@ -95,7 +95,7 @@ public class DrawerFragment extends PreferenceFragment implements SharedPreferen
     @Override
     public void onDestroy() {
         if (mActionBar != null)
-            mActionBar.setTitle(getString(R.string.settings_button_text));
+            mActionBar.setTitle(getString(R.string.settings_title));
         super.onDestroy();
     }
 }
